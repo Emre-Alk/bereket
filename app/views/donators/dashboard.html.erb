@@ -1,0 +1,11 @@
+<div>
+  <h1 class="font-bold text-4xl">Donators#dashboard</h1>
+  <p>Find me in app/views/donators/dashboard.html.erb</p>
+
+  <p>Is asso ?<%= current_user.asso? %></p>
+  <p>Is donator ?<%= current_user.donator? %></p>
+
+  <%= link_to  "sign out",  destroy_user_session_path, data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"}%>
+  <%= link_to  "sign in",  new_user_session_path %>
+
+</div>

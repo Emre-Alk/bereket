@@ -4,6 +4,19 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one :donator
-  has_one :asso
+  has_one :donator, dependent: :destroy
+  has_one :asso, dependent: :destroy
+
+  ROLES = %w[donator asso]
+
+  validates :role, presence: true
+  validates :role, inclusion: { in: ROLES }
+
+  def donator?
+    role == 'donator'
+  end
+
+  def asso?
+    role == 'asso'
+  end
 end
