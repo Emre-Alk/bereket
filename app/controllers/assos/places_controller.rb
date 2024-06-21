@@ -23,6 +23,7 @@ class Assos::PlacesController < AssosController
     if @place.save
       redirect_to assos_place_path(@place)
     else
+      puts '🚫🚫🚫🚫🚫🚫'
       render :new, status: :unprocessable_entity
     end
   end
