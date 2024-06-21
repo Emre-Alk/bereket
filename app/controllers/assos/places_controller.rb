@@ -35,6 +35,6 @@ class Assos::PlacesController < AssosController
   private
 
   def set_place_params
-    params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_types_id)
+    params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_type_id)
   end
 end
