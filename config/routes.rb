@@ -7,13 +7,15 @@ Rails.application.routes.draw do
   # --------------assos--------------
   # this line sends the user to the asso's dashboard view in views/assos/dashboard.html.erb
   # a before action to authenticate user is expected in the controler "assos"
-  get "/asso", to: "assos#dashboard", as: :asso_root
+  get "/assos", to: "assos#dashboard", as: :asso_root
 
   # this line is to create a portal dedicated to the asso users
+
   # namespace :assos do
   #   resources :places, only: %i[index show new create]
   # end
   resources :assos, only: %i[new create]
+
 
   # -----------------donator------------
   # this line sends the user to the donator's dashboard view in views/assos/dashboard.html.erb
