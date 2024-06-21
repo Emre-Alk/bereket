@@ -1,0 +1,10 @@
+<div>
+  <h1>Landing page here</h1><br>
+  <p>user sign in ?<%= user_signed_in? %></p>
+  <p>
+    <%= link_to  "sign out",  destroy_user_session_path, data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"}%>
+  </p><br>
+  <p>
+    <%= link_to  "sign in",  new_user_session_path %>
+  </p>
+</div>

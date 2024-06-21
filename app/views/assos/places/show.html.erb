@@ -1,0 +1,15 @@
+<div>
+  <p><strong>name:</strong> <%= @place.name %></p> <br>
+
+  <p><strong>address:</strong> <%= @place.address %></p> <br>
+  <p><strong>street_no:</strong> <%= @place.street_no %></p> <br>
+  <p><strong>city:</strong> <%= @place.city %></p><br>
+  <p><strong>country:</strong> <%= @place.country %></p><br>
+
+  <p><strong>asso name:</strong> <%= @place.asso.name %></p>
+  <p><strong>asso NRA:</strong> <%= @place.asso.code_nra %></p>
+  <p><strong>asso created by user:</strong> <%= @place.asso.user.email %></p>
+
+  <p><strong>place type:</strong> <%= @place.place_type.name %></p>
+
+</div>
