@@ -19,7 +19,7 @@
 
 <div>
   <% if !current_user.asso.nil? %>
-    <%= link_to "Ajouter une place", asso_root_path, class: "block px-4 py-2 rounded bg-black text-white" %>
+    <%= link_to "Ajouter une place",  new_assos_place_path, class: "block px-4 py-2 rounded bg-black text-white" %>
   <% else %>
     <%= link_to "Ajouter une association", new_asso_path, class: "block px-4 py-2 rounded bg-black text-white" %>
   <% end %>
