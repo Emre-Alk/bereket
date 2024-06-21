@@ -1,0 +1,26 @@
+<%= form_with model: [asso] do |f| %>
+  <div>
+    <%= f.label :name, "Nom d'enregistrement de votre association" %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :email, "Email d'enregistrement de votre association" %>
+    <%= f.text_field :email, placeholder: "ex.: xyz@xyz.com" %>
+  </div>
+
+  <div>
+    <%= f.label :code_nra, "Numéro NRA de votre association" %>
+    <%= f.text_field :code_nra, placeholder: "ex.: W123456789" %>
+  </div>
+
+  <div>
+    <%= f.label :asso_type_id, value: "Indiquez le type d'associtation" %>
+    <%= f.collection_select :asso_type_id, AssoType.all, :id, :name, prompt: true %>
+  </div>
+
+  <div>
+    <%= f.submit 'Enregistrer' %>
+  </div>
+
+<% end %>

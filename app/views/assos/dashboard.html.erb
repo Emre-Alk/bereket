@@ -1,11 +1,21 @@
 <div>
-  <h1 class="font-bold text-4xl">Assos#dashboard</h1>
+  <div>
+    <h1 class="font-bold text-4xl">Assos#dashboard</h1>
 
-  <p>Is asso ?<%= current_user.asso? %></p>
-  <p>Is donator ?<%= current_user.donator? %></p>
+    <p>Is asso ?<%= current_user.asso? %></p>
+    <p>Is donator ?<%= current_user.donator? %></p>
 
-  <p>Find me in app/views/assos/dashboard.html.erb</p>
-  <p><%= link_to  "sign out",  destroy_user_session_path, data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"}%></p>
-  <p><%= link_to  "sign in",  new_user_session_path %></p>
+    <p>Find me in app/views/assos/dashboard.html.erb</p>
+  </div>
 
+  <div>
+    <%= link_to  "sign out",  destroy_user_session_path, class: "block my-1 px-4 py-2 rounded bg-blue-500 text-white",
+                                                            data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"} %>
+    <%= link_to  "sign in",  new_user_session_path, class: "block my-1 px-4 py-2 rounded bg-blue-500 text-white" %>
+  </div>
+</div>
+
+
+<div>
+  <%= link_to "Ajouter une association", new_asso_path, class: "block px-4 py-2 rounded bg-black text-white" %>
 </div>

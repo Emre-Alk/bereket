@@ -4,4 +4,26 @@ class AssosController < ApplicationController
 
   def dashboard
   end
+
+  def new
+    @asso = Asso.new
+    @asso.email = current_user.email
+  end
+
+  def create
+    @asso = Asso.new(set_asso_params)
+    @asso.user = current_user
+    if @asso.save
+      redirect_to asso_root_path
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def set_asso_params
+    params.require(:asso).permit(:name, :code_nra, :email, :asso_type_id)
+  end
+
 end

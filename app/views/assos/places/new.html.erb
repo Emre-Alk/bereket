@@ -15,8 +15,8 @@
   <%= f.label :country %>
   <%= f.text_field :country %>
 
-  <%= f.label :place_types_id, value: "select the type of place" %>
-  <%= f.collection_select :place_types_id, PlaceType.all, :id, :name, prompt: true %>
+  <%= f.label :place_type_id, value: "select the type of place" %>
+  <%= f.collection_select :place_type_id, PlaceType.all, :id, :name, prompt: true %>
 
 <%= f.submit "ajouter" %>
 <% end %>

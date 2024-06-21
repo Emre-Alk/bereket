@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # namespace :assos do
   #   resources :places, only: %i[index show new create]
   # end
+  resources :assos, only: %i[new create]
 
   # -----------------donator------------
   # this line sends the user to the donator's dashboard view in views/assos/dashboard.html.erb
