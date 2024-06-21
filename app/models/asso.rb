@@ -6,7 +6,9 @@ class Asso < ApplicationRecord
   # validation presence pour asso_type_id ?
   # validations sur siret et siren à faire si necessaire sinon voir si peut supprimer ces deux attributs
   validates :name, :email, :code_nra, presence: true
-  validates :name, :email, :code_nra, :code_siret, :code_siren, uniqueness: true
+  validates :name, :code_nra, uniqueness: true
+  validates :email, uniqueness: true, unless: -> { email == user.email }
+  validates :code_siret, :code_siren, uniqueness: true, allow_nil: true
   validates :code_nra, length: { is: 10 }
   validates :code_nra, format: {
     with: /\A[wW]\d{9}\z/,
