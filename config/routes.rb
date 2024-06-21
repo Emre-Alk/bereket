@@ -11,9 +11,10 @@ Rails.application.routes.draw do
 
   # this line is to create a portal dedicated to the asso users
 
-  # namespace :assos do
-  #   resources :places, only: %i[index show new create]
-  # end
+  namespace :assos do
+    resources :places, only: %i[index show new create]
+  end
+
   resources :assos, only: %i[new create]
 
 

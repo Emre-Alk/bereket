@@ -1,8 +1,8 @@
 class Assos::PlacesController < AssosController
 
   def index
-    # later
     # list all the current asso's places
+    @places = current_user.asso.places
   end
 
   def show
