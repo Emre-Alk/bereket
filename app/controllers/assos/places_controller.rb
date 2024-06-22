@@ -8,6 +8,19 @@ class Assos::PlacesController < AssosController
   def show
     # show one of the current asso's places
     @place = Place.find(params[:id])
+
+    # qr code start
+    @qr_code = RQRCode::QRCode.new(@place.qr_code)
+    @qr_code_svg = @qr_code.as_svg(
+      offset: 0,
+      color: '000',
+      shape_rendering: 'crispEdges',
+      standalone: true
+    )
+    # tune options to get right size see: https://github.com/whomwah/rqrcode#as-svg
+    # qr code finish
+
+
   end
 
   def new
@@ -20,6 +33,10 @@ class Assos::PlacesController < AssosController
     # associate the current asso id to the new place
     @place = Place.new(set_place_params)
     @place.asso = current_user.asso
+
+    # next change url to right location once donation path are coded
+    url = "url to place's donation page"
+    @place.qr_code = url
     if @place.save
       redirect_to assos_place_path(@place)
     else
@@ -35,6 +52,6 @@ class Assos::PlacesController < AssosController
   private
 
   def set_place_params
-    params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_type_id)
+    params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_type_id, :qr_code)
   end
 end
