@@ -2,7 +2,7 @@
   <h2>My asso's places</h2>
   <ul>
   <% @places.each do |place| %>
-    <li><%= place.name %></li>
+    <li><%= link_to place.name, assos_place_path(place) %></li>
   <% end %>
   </ul>
 

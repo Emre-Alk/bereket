@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'qr_codes/new'
+  get 'qr_codes/create'
   devise_for :users
 
   # this line sends any user to the landing page
@@ -16,7 +18,6 @@ Rails.application.routes.draw do
   end
 
   resources :assos, only: %i[new create]
-
 
   # -----------------donator------------
   # this line sends the user to the donator's dashboard view in views/assos/dashboard.html.erb
