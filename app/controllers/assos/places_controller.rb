@@ -10,17 +10,10 @@ class Assos::PlacesController < AssosController
     @place = Place.find(params[:id])
 
     # qr code start
-    @qr_code = RQRCode::QRCode.new(@place.qr_code)
-    @qr_code_svg = @qr_code.as_svg(
-      offset: 0,
-      color: '000',
-      shape_rendering: 'crispEdges',
-      standalone: true
-    )
-    # tune options to get right size see: https://github.com/whomwah/rqrcode#as-svg
+    # -----------SVG with active storage attach to model instance -> works ---------------
+    # -----------to be removed if use Qr code PNG instead + modify view also
+    @qr_dwl = @place.qr_image.download
     # qr code finish
-
-
   end
 
   def new
@@ -37,7 +30,13 @@ class Assos::PlacesController < AssosController
     # next change url to right location once donation path are coded
     url = "url to place's donation page"
     @place.qr_code = url
+
     if @place.save
+      # ----------if want Qr code in SVG--------------------
+      attach_qr_code_svg(@place, @place.qr_code)
+      # ----------if want Qr code in PNG--------------------
+      # attach_qr_code_png(@place, @place.qr_code)
+
       redirect_to assos_place_path(@place)
     else
       render :new, status: :unprocessable_entity
@@ -53,5 +52,48 @@ class Assos::PlacesController < AssosController
 
   def set_place_params
     params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_type_id, :qr_code)
+  end
+
+  def attach_qr_code_svg(place, url)
+    qrcode = RQRCode::QRCode.new(url)
+    svg = qrcode.as_svg(
+      color: "000",
+      shape_rendering: "crispEdges",
+      module_size: 11,
+      standalone: true,
+      use_path: true
+    )
+    # tune options to get right size see: https://github.com/whomwah/rqrcode#as-svg
+
+    Tempfile.create(['qr_image', '.svg']) do |file|
+      file.write(svg)
+      file.rewind
+      place.qr_image.attach(
+        io: file,
+        filename: 'qr_image.svg',
+        content_type: 'image/svg+xml'
+      )
+    end
+  end
+
+  def attach_qr_code_png(place, url)
+    qrcode = RQRCode::QRCode.new(url)
+    png = qrcode.as_png(
+      bit_depth: 1,
+      border_modules: 4,
+      color_mode: ChunkyPNG::COLOR_GRAYSCALE,
+      color: "black",
+      file: nil,
+      fill: "white",
+      module_px_size: 6,
+      resize_exactly_to: false,
+      resize_gte_to: false,
+      size: 120
+    )
+    place.qr_image.attach(
+      io: StringIO.new(png.to_s),
+      filename: "qr_image.png",
+      content_type: "image/png"
+    )
   end
 end

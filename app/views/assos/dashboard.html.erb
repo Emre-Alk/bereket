@@ -1,14 +1,9 @@
 <div>
-
   <div>
     <h1 class="font-bold text-4xl">Assos#dashboard</h1>
-
     <p>Is asso ?<%= current_user.asso? %></p>
     <p>Is donator ?<%= current_user.donator? %></p>
-
-    <p>Find me in app/views/assos/dashboard.html.erb</p>
   </div>
-
   <div>
     <%= link_to  "sign out",  destroy_user_session_path, class: "block my-1 px-4 py-2 rounded bg-blue-500 text-white",
                                                             data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"} %>
@@ -16,11 +11,27 @@
   </div>
 </div>
 
-
 <div>
   <% if !current_user.asso.nil? %>
     <%= link_to "Ajouter une place",  new_assos_place_path, class: "block px-4 py-2 rounded bg-black text-white" %>
   <% else %>
     <%= link_to "Ajouter une association", new_asso_path, class: "block px-4 py-2 rounded bg-black text-white" %>
   <% end %>
+</div>
+
+<div>
+  <p>mon asso: <%= @my_asso.name %></p>
+  <ul>
+    <p>mes places: <% @my_places.each do |place| %></p>
+      <li><%= place.id %>-<%= place.name %>-<%= place.place_type.name %></li>
+    <% end %>
+  </ul>
+  <p>mes donations:</p>
+  <ul>
+    <%= @my_donations.each do |don| %>
+    <li>don: <%= don %></li>
+    <% end %>
+  </ul>
+
+
 </div>

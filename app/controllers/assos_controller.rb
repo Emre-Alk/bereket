@@ -3,6 +3,11 @@ class AssosController < ApplicationController
   before_action :is_asso?
 
   def dashboard
+    @my_asso = current_user.asso
+    @my_places = @my_asso.places.all
+    @my_donations = @my_places.each do |place|
+      place.donations
+    end
   end
 
   def new

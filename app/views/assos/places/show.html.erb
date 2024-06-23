@@ -12,6 +12,14 @@
 
   <p><strong>place type:</strong> <%= @place.place_type.name %></p>
 
-  <p><strong>place Qrcode:</strong> <%= @qr_code_svg.html_safe %></p>
+  <!-- display qr code if logic is png w/ method "attach_qr_code_png"
+    <p><strong>place Qrcode:</strong> pe image_tag @place.qr_image pe</p>
+  -->
 
+  <!-- display qr code if logic is svg w/out attach to model instance
+    <p><strong>place Qrcode:</strong> pe @qr_code_svg.html_safe pe </p>
+  -->
+
+  <!-- display qr code if logic is svg w/ method "attach_qr_code_svg" -->
+  <p><strong>place Qrcode:</strong> <%= raw @qr_dwl  %> </p>
 </div>
