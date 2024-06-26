@@ -1,37 +1,124 @@
-<div>
-  <div>
-    <h1 class="font-bold text-4xl">Assos#dashboard</h1>
-    <p>Is asso ?<%= current_user.asso? %></p>
-    <p>Is donator ?<%= current_user.donator? %></p>
+<div class="flex flex-col gap-y-4"> <!-- container start -->
+  <!-- nav - start -->
+  <div class="flex flex-row justify-between items-center bg-pink-300 px-5 py-5">
+    <%= icon("fa-solid", "bars")%>
+    <%= icon("fa-solid", "plus") %>
   </div>
-  <div>
-    <%= link_to  "sign out",  destroy_user_session_path, class: "block my-1 px-4 py-2 rounded bg-blue-500 text-white",
-                                                            data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"} %>
-    <%= link_to  "sign in",  new_user_session_path, class: "block my-1 px-4 py-2 rounded bg-blue-500 text-white" %>
+  <!-- nav - end -->
+
+  <!-- card - start -->
+  <div class="flex flex-row justify-center items-center gap-x-16 py-2 bg-blue-300">
+    <%= icon("fa-solid", "chevron-left") %>
+    <div class="flex flex-col items-center text-sm">
+      <%= image_tag("mosqué.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
+      <p>nom mosqué</p>
+      <p>adresse mosqué</p>
+    </div>
+    <%= icon("fa-solid", "chevron-right") %>
   </div>
-</div>
+  <!-- card - end -->
 
-<div>
-  <% if !current_user.asso.nil? %>
-    <%= link_to "Ajouter une place",  new_assos_place_path, class: "block px-4 py-2 rounded bg-black text-white" %>
-  <% else %>
-    <%= link_to "Ajouter une association", new_asso_path, class: "block px-4 py-2 rounded bg-black text-white" %>
-  <% end %>
-</div>
+  <!-- total - start -->
+  <div class="bg-pink-300 flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg">5.987,37 €
+  </div>
+  <!-- total - end -->
 
-<div>
-  <p>mon asso: <%= @my_asso.name %></p>
-  <ul>
-    <p>mes places: <% @my_places.each do |place| %></p>
-      <li><%= place.id %>-<%= place.name %>-<%= place.place_type.name %></li>
-    <% end %>
-  </ul>
-  <p>mes donations:</p>
-  <ul>
-    <%= @my_donations.each do |don| %>
-    <li>don: <%= don %></li>
-    <% end %>
-  </ul>
+  <!-- chart - start -->
+  <div class="bg-blue-300 py-2 px-2 rounded-lg h-40">
+    <%= image_tag("chart.png", class:"h-40 w-full h-full") %>
+  </div>
+  <!-- chart - end -->
+
+  <!-- top 10 donateur - start -->
+  <div>
+    <div class="roboto-thin text-slate-800 text-sm">Top donateurs</div>
+    <div class="bg-green-300 flex flex-row justify-evenly gap-2 h-28 p-2 rounded-lg overflow-x-auto text-center">
+
+      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
+        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+        <p class="w-full truncate">hello world coucou jusqu'ou</p>
+      </div>
+      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
+        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+        <p class="w-full truncate">hello world coucou jusqu'ou</p>
+      </div>
+      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
+        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+        <p class="w-full truncate">hello world coucou jusqu'ou</p>
+      </div>
+      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
+        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+        <p class="w-full truncate">hello world coucou jusqu'ou</p>
+      </div>
+      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
+        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+        <p class="w-full truncate">hello world coucou jusqu'ou</p>
+      </div>
+      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
+        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+        <p class="w-full truncate">hello world coucou jusqu'ou</p>
+      </div>
+
+    </div>
+  </div>
+  <!-- top 10 donateur - end -->
+
+  <!-- last 10 donations - start -->
+    <div>
+      <div class="roboto-thin text-slate-800 text-sm">Derniers dons</div>
+      <div class="bg-green-300 flex flex-col gap-2 h-40 rounded-lg p-2 overflow-y-auto">
+
+        <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">
+          <div class="bg-blue-300">
+            <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+          </div>
+
+          <div class="bg-pink-300 flex flex-col justify-evenly ">
+            <p>Nom donateur</p>
+            <p>10 €</p>
+            <p>le 01/01/2024</p>
+          </div>
+        </div>
+
+        <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">
+          <div class="bg-blue-300">
+            <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+          </div>
+
+          <div class="bg-pink-300 flex flex-col justify-evenly ">
+            <p>Nom donateur</p>
+            <p>10 €</p>
+            <p>le 01/01/2024</p>
+          </div>
+        </div>
+
+        <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">
+          <div class="bg-blue-300">
+            <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+          </div>
+
+          <div class="bg-pink-300 flex flex-col justify-evenly ">
+            <p>Nom donateur</p>
+            <p>10 €</p>
+            <p>le 01/01/2024</p>
+          </div>
+        </div>
+
+        <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">
+          <div class="bg-blue-300">
+            <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+          </div>
+
+          <div class="bg-pink-300 flex flex-col justify-evenly ">
+            <p>Nom donateur</p>
+            <p>10 €</p>
+            <p>le 01/01/2024</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  <!-- last 10 donations - end -->
 
 
-</div>
+</div><!-- container end -->

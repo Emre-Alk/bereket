@@ -1,0 +1,17 @@
+<div>
+  <div>
+    <div>
+      <%= link_to  "sign out",  destroy_user_session_path, class: "block my-1 px-4 py-2 rounded bg-blue-500 text-white",
+                                                              data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"} %>
+      <%= link_to  "sign in",  new_user_session_path, class: "block my-1 px-4 py-2 rounded bg-blue-500 text-white" %>
+    </div>
+  </div>
+
+  <div>
+    <% if !current_user.asso.nil? %>
+      <%= link_to "Ajouter une place",  new_assos_place_path, class: "block px-4 py-2 rounded bg-black text-white" %>
+    <% else %>
+      <%= link_to "Ajouter une association", new_asso_path, class: "block px-4 py-2 rounded bg-black text-white" %>
+    <% end %>
+  </div>
+</div>

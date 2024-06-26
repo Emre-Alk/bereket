@@ -4,10 +4,7 @@ class AssosController < ApplicationController
 
   def dashboard
     @my_asso = current_user.asso
-    @my_places = @my_asso.places.all
-    @my_donations = @my_places.each do |place|
-      place.donations
-    end
+    @my_places = @my_asso.places.first
   end
 
   def new
