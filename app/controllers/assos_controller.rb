@@ -4,7 +4,13 @@ class AssosController < ApplicationController
 
   def dashboard
     @my_asso = current_user.asso
-    @my_places = @my_asso.places.first
+    @my_place = @my_asso.places.first # "first" afin de faire simple pour l'exemple mais reprendre pour carousselle
+    @donations = @my_place.donations
+    @table = @donations.map { |i| [i.donator.id, i.amount] }
+    @sum = 0
+    @table.each do |e|
+      @sum += e[1]
+    end
   end
 
   def new

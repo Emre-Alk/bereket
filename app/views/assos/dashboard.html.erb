@@ -11,15 +11,16 @@
     <%= icon("fa-solid", "chevron-left") %>
     <div class="flex flex-col items-center text-sm">
       <%= image_tag("mosqué.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
-      <p>nom mosqué</p>
-      <p>adresse mosqué</p>
+      <p><%= @my_place.name %></p>
+      <p><%= @my_place.street_no %> <%= @my_place.address %>, <%= @my_place.city %>, <%= @my_place.country %></p>
     </div>
     <%= icon("fa-solid", "chevron-right") %>
   </div>
   <!-- card - end -->
 
   <!-- total - start -->
-  <div class="bg-pink-300 flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg">5.987,37 €
+  <div class="bg-pink-300 flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg">
+    <%= @sum.to_f / 100 %> €
   </div>
   <!-- total - end -->
 
@@ -66,6 +67,7 @@
   <!-- last 10 donations - start -->
     <div>
       <div class="roboto-thin text-slate-800 text-sm">Derniers dons</div>
+      <!-- h-dvh or h-40 or h-screen. A voir... -->
       <div class="bg-green-300 flex flex-col gap-2 h-40 rounded-lg p-2 overflow-y-auto">
 
         <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">

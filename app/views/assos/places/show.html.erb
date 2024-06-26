@@ -11,7 +11,14 @@
   <p><strong>asso created by user:</strong> <%= @place.asso.user.email %></p>
 
   <p><strong>place type:</strong> <%= @place.place_type.name %></p>
-
+  <div>
+  <p><strong>votre photo de couverture</strong></p>
+    <% if @place.place_image.attached? %>
+      <%= image_tag @place.place_image %>
+    <% else %>
+      <%= image_tag("default_avatar.png", class:"size-12") %>
+    <% end %>
+  </div>
   <!-- display qr code if logic is png w/ method "attach_qr_code_png"
     <p><strong>place Qrcode:</strong> pe image_tag @place.qr_image pe</p>
   -->
@@ -21,5 +28,8 @@
   -->
 
   <!-- display qr code if logic is svg w/ method "attach_qr_code_svg" -->
-  <p><strong>place Qrcode:</strong> <%= raw @qr_dwl  %> </p>
+  <div>
+    <p><strong>place Qrcode:</strong></p>
+    <%= raw @qr_dwl %>
+  </div>
 </div>

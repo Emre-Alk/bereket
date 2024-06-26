@@ -18,5 +18,8 @@
   <%= f.label :place_type_id, value: "select the type of place" %>
   <%= f.collection_select :place_type_id, PlaceType.all, :id, :name, prompt: true %>
 
+  <%= f.label :place_image, value: "Ajouter une photo de votre lieu de culte" %>
+  <%= f.file_field :place_image %>
+
 <%= f.submit "ajouter" %>
 <% end %>

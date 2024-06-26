@@ -51,7 +51,7 @@ class Assos::PlacesController < AssosController
   private
 
   def set_place_params
-    params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_type_id, :qr_code)
+    params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_type_id, :qr_code, :place_image)
   end
 
   def attach_qr_code_svg(place, url)

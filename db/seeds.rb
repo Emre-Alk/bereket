@@ -30,7 +30,7 @@ place = Place.create!(name: 'malik', address: 'test', street_no: 'test', city: '
 puts "creating donations ..."
 date = [1.day.from_now, 2.days.from_now, 3.days.from_now, 4.days.from_now, Date.today]
 5.times do
-  money = rand(10..30)
+  money = rand(10..30) * 100
   datepicker = date.sample
   index = date.index(datepicker)
   Donation.create!(donator: , place: , amount: money, occured_on: datepicker)
