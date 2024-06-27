@@ -10,7 +10,13 @@
   <div class="flex flex-row justify-center items-center gap-x-16 py-2 bg-blue-300">
     <%= icon("fa-solid", "chevron-left") %>
     <div class="flex flex-col items-center text-sm">
-      <%= image_tag("mosqué.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
+
+      <% if @my_place.place_image.attached? %>
+        <%= image_tag(@my_place.place_image, alt:"picture", class:"rounded-full size-20 mb-1") %>
+      <% else %>
+        <%= image_tag("default_avatar.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
+      <% end %>
+
       <p><%= @my_place.name %></p>
       <p><%= @my_place.street_no %> <%= @my_place.address %>, <%= @my_place.city %>, <%= @my_place.country %></p>
     </div>
@@ -34,32 +40,20 @@
   <div>
     <div class="roboto-thin text-slate-800 text-sm">Top donateurs</div>
     <div class="bg-green-300 flex flex-row justify-evenly gap-2 h-28 p-2 rounded-lg overflow-x-auto text-center">
-
+<!--start-->
+    <% @top.first(10).each do |don| %>
       <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
-        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-        <p class="w-full truncate">hello world coucou jusqu'ou</p>
+        <% if don[0].profile_image.attached? %>
+        <%= image_tag(don[0].profile_image, class:"size-14 rounded-full") %>
+        <% else %>
+        <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
+        <% end %>
+        <p class="w-full truncate">
+          <%= don[0].first_name %>
+        </p>
       </div>
-      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
-        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-        <p class="w-full truncate">hello world coucou jusqu'ou</p>
-      </div>
-      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
-        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-        <p class="w-full truncate">hello world coucou jusqu'ou</p>
-      </div>
-      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
-        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-        <p class="w-full truncate">hello world coucou jusqu'ou</p>
-      </div>
-      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
-        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-        <p class="w-full truncate">hello world coucou jusqu'ou</p>
-      </div>
-      <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
-        <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-        <p class="w-full truncate">hello world coucou jusqu'ou</p>
-      </div>
-
+    <% end %>
+<!--end-->
     </div>
   </div>
   <!-- top 10 donateur - end -->
@@ -69,58 +63,24 @@
       <div class="roboto-thin text-slate-800 text-sm">Derniers dons</div>
       <!-- h-dvh or h-40 or h-screen. A voir... -->
       <div class="bg-green-300 flex flex-col gap-2 h-40 rounded-lg p-2 overflow-y-auto">
-
+<!--start-->
+      <% @sorted_donations.each do |don| %>
         <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">
           <div class="bg-blue-300">
-            <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
+            <% if don.donator.profile_image.attached? %>
+              <%= image_tag(don.donator.profile_image, class:"size-14 rounded-full") %>
+            <% else %>
+              <%= image_tag("default_avatar", class:"size-14 rounded-full") %>
+            <% end %>
           </div>
 
           <div class="bg-pink-300 flex flex-col justify-evenly ">
-            <p>Nom donateur</p>
-            <p>10 €</p>
-            <p>le 01/01/2024</p>
+            <p><%= don.donator.first_name %> <%= don.donator.last_name %></p>
+            <p><%= don.amount.to_f / 100 %> €</p>
+            <p>Le <%= don.occured_on.strftime("%d/%m/%Y")  %></p>
           </div>
         </div>
-
-        <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">
-          <div class="bg-blue-300">
-            <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-          </div>
-
-          <div class="bg-pink-300 flex flex-col justify-evenly ">
-            <p>Nom donateur</p>
-            <p>10 €</p>
-            <p>le 01/01/2024</p>
-          </div>
-        </div>
-
-        <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">
-          <div class="bg-blue-300">
-            <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-          </div>
-
-          <div class="bg-pink-300 flex flex-col justify-evenly ">
-            <p>Nom donateur</p>
-            <p>10 €</p>
-            <p>le 01/01/2024</p>
-          </div>
-        </div>
-
-        <div class="bg-orange-300 flex flex-row justify-start items-center px-1 py-2 gap-2 w-full">
-          <div class="bg-blue-300">
-            <%= image_tag("avatar.jpeg", class:"size-16 rounded-full") %>
-          </div>
-
-          <div class="bg-pink-300 flex flex-col justify-evenly ">
-            <p>Nom donateur</p>
-            <p>10 €</p>
-            <p>le 01/01/2024</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
+        <% end %>
+<!--end-->
   <!-- last 10 donations - end -->
-
-
 </div><!-- container end -->
