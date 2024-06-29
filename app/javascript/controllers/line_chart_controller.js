@@ -7,5 +7,6 @@ Chart.register(...registerables)
 export default class extends Controller {
   connect() {
     console.log("hello chart");
+
   }
 }
