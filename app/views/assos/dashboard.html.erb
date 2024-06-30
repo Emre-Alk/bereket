@@ -31,8 +31,8 @@
   <!-- total - end -->
 
   <!-- chart - start -->
-  <div class="bg-blue-300 py-2 px-2 rounded-lg h-40" >
-    <canvas data-controller="line-chart" data-line-chart-revenu-value="" id="revenueChart" aria-label="courbe" role="revenu" width="w-full" height="h-full">
+  <div class="bg-blue-300 py-2 px-2 rounded-lg h-40" data-controller="line-chart" data-line-chart-revenue-value= "<%= @revenue_per_day_current_month.to_json %>" data-line-chart-timeframe-value="<%= @array_complete_days_current_month.to_json %>">
+    <canvas id="revenueChart" aria-label="courbe" role="revenu" width="w-full" height="h-full">
     </canvas>
   </div>
   <!-- chart - end -->
@@ -42,7 +42,7 @@
     <div class="roboto-thin text-slate-800 text-sm">Top donateurs</div>
     <div class="bg-green-300 flex flex-row justify-evenly gap-2 h-28 p-2 rounded-lg overflow-x-auto text-center">
 <!--start-->
-    <% @top.first(10).each do |don| %>
+    <% @top_donators.first(10).each do |don| %>
       <div class="bg-blue-300 flex flex-col justify-evenly items-center gap-y-1 w-20 h-24 p-1 text-sm">
         <% if don[0].profile_image.attached? %>
         <%= image_tag(don[0].profile_image, class:"size-14 rounded-full") %>

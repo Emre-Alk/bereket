@@ -5,8 +5,14 @@ Chart.register(...registerables)
 
 // Connects to data-controller="line-chart"
 export default class extends Controller {
+  static values = {
+    revenue: Array,
+    timeframe: Array
+  }
+
   connect() {
-    console.log("hello chart");
+
+  // creer le graph ici
 
   }
 }
