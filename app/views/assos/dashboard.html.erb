@@ -1,16 +1,21 @@
 <div class="fixed top-0 inset-x-0 bg-neutral-100"> <!-- fixed top page start -->
   <!-- nav - start -->
-  <div class="pt-6">
+  <div class="pt-4">
     <div class="flex flex-row justify-between items-center px-5 py-2">
       <p>ici mon logo</p>
-      <%= icon("fa-solid", "bars")%>
+      <div>
+        <%= icon("fa-solid", "bars")%>
+        <%= render "assos/navbar" %>
+      </div>
     </div>
 
     <!-- nav - end -->
 
     <!-- card - start -->
     <div class="flex flex-row justify-center items-center gap-x-16 py-2">
-      <%= icon("fa-solid", "chevron-left") %>
+      <div class="hidden"> <!-- stimulus controller to toggle this -->
+        <%= icon("fa-solid", "chevron-left")%> <!-- add "unless @my_place.length == 1 -->
+      </div>
       <div class="flex flex-col items-center text-sm">
 
         <% if @my_place.place_image.attached? %>
@@ -22,13 +27,15 @@
         <p class="roboto-thin text-sm"><%= @my_place.name %></p>
         <p class="roboto-thin text-sm"><%= @my_place.street_no %> <%= @my_place.address %>, <%= @my_place.city %>, <%= @my_place.country %></p>
       </div>
-      <%= icon("fa-solid", "chevron-right") %>
+      <div class="hidden">
+        <%= icon("fa-solid", "chevron-right") %>
+      </div>
     </div>
     <!-- card - end -->
   </div>
 </div> <!-- fixed top page end -->
 
-<div class="flex flex-col pt-44 gap-y-4"> <!-- scrolled page start -->
+<div class="flex flex-col pt-48 gap-y-4"> <!-- scrolled page start -->
   <!-- total - start -->
   <div class="bg-white flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
     <%= @sum.to_f / 100 %> €
