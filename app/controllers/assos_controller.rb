@@ -32,7 +32,7 @@ class AssosController < ApplicationController
     # ===== revenue of the current month ===== start
     start_month = Date.today.beginning_of_month
     # astuce car 'Date.today' seul ne comptera pas les dons du cours de la journée car occured_on etc.. de class Time
-    end_month = Date.today.next - 1.seconds
+    end_month = Date.today.end_of_month
     # current_month sent to the view so can fetch it to the chart.js controller with stymulus for setting the time axis
     @current_month = (start_month..end_month)
     # here I filter all donations occured this month
@@ -50,7 +50,9 @@ class AssosController < ApplicationController
       @array_complete_days_current_month = @current_month.to_a.map { |day| day.strftime('%d') }
       # pour chaque jour manquant dans revenue, je remplace la indice[1] par 0 => ex [[26,x€], [27, 0]...[30,x€]]
       revenue_complete_days_current_month = @array_complete_days_current_month.map { |day| [day, revenue_hash.fetch(day, 0)] }
-      @revenue_per_day_current_month = revenue_complete_days_current_month
+      # revenue_complete_days_current_month = @array_complete_days_current_month.map { |day| [day, revenue_hash.fetch(day, 0)] unless day > Date.today.strftime('%d') }
+      @revenue_per_day_current_month = revenue_complete_days_current_month.reject { |day| day[0] > Date.today.strftime('%d') }
+
     end
     # ===== revenue of the current month ===== end
   end

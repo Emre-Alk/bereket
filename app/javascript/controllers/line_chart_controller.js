@@ -13,7 +13,8 @@ export default class extends Controller {
 
   connect() {
     const data = this.revenueValue.map((earning) => earning[1]/100.0)
-    const labels = this.revenueValue.map((day) => day[0])
+    // const labels = this.timeframeValue.map((day) => day[0])
+    const labels = this.timeframeValue
 
     const ctx = this.revenueChartTarget
     const config = {

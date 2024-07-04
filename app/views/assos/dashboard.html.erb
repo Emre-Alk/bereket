@@ -1,33 +1,34 @@
-<div class="fixed top-0 left-0 right-0 bg-neutral-100">
+<div class="fixed top-0 inset-x-0 bg-neutral-100"> <!-- fixed top page start -->
   <!-- nav - start -->
-  <div class="flex flex-row justify-between items-center px-4 py-2">
-    <%= icon("fa-solid", "bars")%>
-    <%= icon("fa-solid", "plus") %>
-  </div>
-  <!-- nav - end -->
-
-  <!-- card - start -->
-  <div class="flex flex-row justify-center items-center gap-x-16 py-2">
-    <%= icon("fa-solid", "chevron-left") %>
-    <div class="flex flex-col items-center text-sm">
-
-      <% if @my_place.place_image.attached? %>
-        <%= image_tag(@my_place.place_image, alt:"picture", class:"rounded-full size-20 mb-1") %>
-      <% else %>
-        <%= image_tag("default_avatar.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
-      <% end %>
-
-      <p class="roboto-thin text-sm"><%= @my_place.name %></p>
-      <p class="roboto-thin text-sm"><%= @my_place.street_no %> <%= @my_place.address %>, <%= @my_place.city %>, <%= @my_place.country %></p>
+  <div class="pt-6">
+    <div class="flex flex-row justify-between items-center px-5 py-2">
+      <p>ici mon logo</p>
+      <%= icon("fa-solid", "bars")%>
     </div>
-    <%= icon("fa-solid", "chevron-right") %>
+
+    <!-- nav - end -->
+
+    <!-- card - start -->
+    <div class="flex flex-row justify-center items-center gap-x-16 py-2">
+      <%= icon("fa-solid", "chevron-left") %>
+      <div class="flex flex-col items-center text-sm">
+
+        <% if @my_place.place_image.attached? %>
+          <%= image_tag(@my_place.place_image, alt:"picture", class:"rounded-full size-20 mb-1") %>
+        <% else %>
+          <%= image_tag("default_avatar.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
+        <% end %>
+
+        <p class="roboto-thin text-sm"><%= @my_place.name %></p>
+        <p class="roboto-thin text-sm"><%= @my_place.street_no %> <%= @my_place.address %>, <%= @my_place.city %>, <%= @my_place.country %></p>
+      </div>
+      <%= icon("fa-solid", "chevron-right") %>
+    </div>
+    <!-- card - end -->
   </div>
-  <!-- card - end -->
-</div>
+</div> <!-- fixed top page end -->
 
-<div class="flex flex-col pt-44 gap-y-4"> <!-- container start -->
-
-
+<div class="flex flex-col pt-44 gap-y-4"> <!-- scrolled page start -->
   <!-- total - start -->
   <div class="bg-white flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
     <%= @sum.to_f / 100 %> €
@@ -91,4 +92,4 @@
   </div>
   <!-- last 10 donations - end -->
 
-</div><!-- container end -->
+</div><!-- scrolled page end -->
