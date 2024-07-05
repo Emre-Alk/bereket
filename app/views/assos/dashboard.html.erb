@@ -3,9 +3,13 @@
   <div class="pt-4">
     <div class="flex flex-row justify-between items-center px-5 py-2">
       <p>ici mon logo</p>
-      <div>
-        <%= icon("fa-solid", "bars")%>
-        <%= render "assos/navbar" %>
+      <div data-controller="navbar"> <!-- stimulus ctrl to toggle button -->
+        <button data-action="click->navbar#toggle">
+          <%= icon("fa-solid", "bars")%>
+        </button>
+        <div data-navbar-target="menu">
+          <%= render partial: "assos/navbar", locals: { donations: @donations, top_donators: @top_donators }%>
+        </div>
       </div>
     </div>
 

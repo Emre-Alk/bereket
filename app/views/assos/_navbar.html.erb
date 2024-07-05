@@ -1,48 +1,61 @@
-<div class="flex flex-col">
+<nav class="flex flex-col fixed inset-y-0 -right-64 h-screen w-64 gap-y-8 bg-white transform transition-transform duration-300 ease-in-out -translate-x-3/4">
   <!--indicateurs - start -->
-  <div class="flex flex-row">
-    <div class="flex flex-col">
+  <div class="flex flex-row justify-evenly items-center">
+    <!--indicateur box 1 -->
+    <div class="flex flex-col justify-center items-center">
       <%= icon("fa-solid", "gift") %>
-      <p>55 dons</p>
+      <p><%= donations.count %> dons </p>
     </div>
+    <!--indicateur box 2 -->
     <div class="flex flex-col">
       <%= icon("fa-solid", "users") %>
-      <p>20 donateurs</p>
+      <p><%= top_donators.count %> donateurs</p>
     </div>
+
   </div>
   <!--indicateurs - end -->
 
   <!--menu items - start -->
   <div>
-    <ul class="flex flex-col">
+    <ul class="flex flex-col justify-center items-start gap-y-12">
 
       <li>
-        <div class="flex flex-row">
-          <%= icon("fa-solid", "hand") %>
-          <p></p>
-        </div>
+        <%= link_to "#" do %>
+          <div class="flex flex-row justify-center items-baseline gap-x-2">
+            <%= icon("fa-solid", "gift") %>
+            <p>Mes donations</p>
+          </div>
+        <% end %>
       </li>
 
       <li>
-        <div class="flex flex-row">
-          <%= icon("fa-solid", "hand") %>
-          <p></p>
-        </div>
+        <%= link_to "#" do %>
+          <div class="flex flex-row justify-center items-baseline gap-x-2">
+            <%= icon("fa-solid", "users") %>
+            <p>Mes donateurs</p>
+          </div>
+        <% end %>
       </li>
 
       <li>
-        <div class="flex flex-row">
-          <%= icon("fa-solid", "hand") %>
-          <p></p>
-        </div>
+        <%= link_to "#" do %>
+          <div class="flex flex-row justify-center items-baseline gap-x-2">
+            <%= icon("fa-solid", "qrcode") %>
+            <p>Mon QR code</p>
+          </div>
+        <% end %>
       </li>
 
-      <li>x</li>
+      <li>
+        <%= link_to "#" do %>
+          <div class="flex flex-row justify-center items-baseline gap-x-2">
+            <%= icon("fa-solid", "gear") %>
+            <p>Mon compte</p>
+          </div>
+        <% end %>
+      </li>
 
-      <li>y</li>
     </ul>
-
   </div>
   <!--menu items - end -->
-
-</div>
+</nav>
