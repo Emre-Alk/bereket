@@ -1,13 +1,13 @@
-<nav class="flex flex-col fixed inset-y-0 -right-64 h-screen w-64 gap-y-8 bg-white transform transition-transform duration-300 ease-in-out -translate-x-3/4">
+<nav class="flex flex-col items-center fixed inset-y-0 -right-64 h-screen w-64 gap-y-12 py-20 px-10 bg-white transition transform -translate-x-64 delay-0 duration-300 ease-in-out">
   <!--indicateurs - start -->
-  <div class="flex flex-row justify-evenly items-center">
+  <div class="flex flex-row gap-x-6">
     <!--indicateur box 1 -->
     <div class="flex flex-col justify-center items-center">
       <%= icon("fa-solid", "gift") %>
       <p><%= donations.count %> dons </p>
     </div>
     <!--indicateur box 2 -->
-    <div class="flex flex-col">
+    <div class="flex flex-col justify-center items-center">
       <%= icon("fa-solid", "users") %>
       <p><%= top_donators.count %> donateurs</p>
     </div>
