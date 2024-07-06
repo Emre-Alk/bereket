@@ -32,6 +32,7 @@ export default class extends Controller {
           pointHitRadius: 1,
           pointStyle: 'circle',
           fill: false,
+          tension: 0.2,
         }]
       },
       options: {
