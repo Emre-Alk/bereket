@@ -31,8 +31,9 @@ export default class extends Controller {
           borderWidth: 3,
           pointHitRadius: 1,
           pointStyle: 'circle',
+          pointRadius: 2,
           fill: false,
-          tension: 0.2,
+          tension: 0.1,
         }]
       },
       options: {
