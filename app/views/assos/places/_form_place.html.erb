@@ -1,25 +1,47 @@
 <h2>add a new place to your account</h2>
 <%= form_with(model: place, url: "/assos/places" )  do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
+  <div class="flex flex-col gap-y-5">
 
-  <%= f.label :address %>
-  <%= f.text_field :address %>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
 
-  <%= f.label :street_no %>
-  <%= f.text_field :street_no %>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :address %>
+      <%= f.text_field :address %>
+    </div>
 
-  <%= f.label :city %>
-  <%= f.text_field :city %>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :street_no %>
+      <%= f.text_field :street_no %>
+    </div>
 
-  <%= f.label :country %>
-  <%= f.text_field :country %>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :city %>
+      <%= f.text_field :city %>
+    </div>
 
-  <%= f.label :place_type_id, value: "select the type of place" %>
-  <%= f.collection_select :place_type_id, PlaceType.all, :id, :name, prompt: true %>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :country %>
+      <%= f.text_field :country %>
+    </div>
 
-  <%= f.label :place_image, value: "Ajouter une photo de votre lieu de culte" %>
-  <%= f.file_field :place_image %>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :place_type_id, value: "select the type of place" %>
+      <div class="overflow-x-auto">
+        <%= f.collection_select :place_type_id, PlaceType.all, :id, :name, prompt: true %>
+      </div>
+    </div>
 
-<%= f.submit "ajouter" %>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :place_image, value: "Ajouter une photo de votre lieu de culte" %>
+      <%= f.file_field :place_image %>
+    </div>
+
+    <div class="mt-4 px-1 py-3 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg">
+      <%= f.submit "ajouter" %>
+    </div>
+
+  </div>
 <% end %>
