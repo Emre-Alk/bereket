@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if resource.donator?
-      donator_root_path # Replace with the actual path or URL helper for donator page
+      donator_root_path
     elsif resource.asso?
-      asso_root_path # Replace with the actual path or URL helper for receiver page
+      asso_root_path
     else
       root_path # Fallback path if the user doesn't have a role or role is not recognized
     end
