@@ -15,6 +15,7 @@
 
     <!-- nav - end -->
 
+  <% if @my_asso && @my_place %>
     <!-- card - start -->
     <div class="flex flex-row justify-center items-center gap-x-16 py-2">
       <div class="hidden"> <!-- stimulus controller to toggle this -->
@@ -36,9 +37,11 @@
       </div>
     </div>
     <!-- card - end -->
+  <% end %>
   </div>
 </div> <!-- fixed top page end -->
 
+<% if @my_asso && @my_place %>
 <div class="flex flex-col pt-48 gap-y-4"> <!-- scrolled page start -->
   <!-- total - start -->
   <div class="bg-white flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
@@ -47,10 +50,13 @@
   <!-- total - end -->
 
   <!-- chart - start -->
-  <div class="bg-white py-2 px-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]" data-controller="line-chart" data-line-chart-revenue-value= "<%= @revenue_per_day_current_month.to_json %>" data-line-chart-timeframe-value="<%= @array_complete_days_current_month.to_json %>">
-    <div class="w-full">
-      <canvas data-line-chart-target="revenueChart" id="revenueChart" aria-label="courbe" role="revenu" >
-      </canvas>
+  <div>
+    <div class="roboto-thin text-slate-800 text-sm"><%= @start_month.strftime("%B") %></div>
+    <div class="bg-white py-2 px-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]" data-controller="line-chart" data-line-chart-revenue-value= "<%= @revenue_per_day_current_month.to_json %>" data-line-chart-timeframe-value="<%= @array_complete_days_current_month.to_json %>">
+      <div class="w-full">
+        <canvas data-line-chart-target="revenueChart" id="revenueChart" aria-label="courbe" role="revenu" >
+        </canvas>
+      </div>
     </div>
   </div>
   <!-- chart - end -->
@@ -79,7 +85,7 @@
   <div>
     <div class="roboto-thin text-slate-800 text-sm">Derniers dons</div>
     <!-- h-dvh or h-40 or h-screen. A voir... -->
-    <div class="bg-white flex flex-col gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
+    <div class="bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
       <!--start-->
       <% @sorted_donations.each do |don| %>
         <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
@@ -102,5 +108,14 @@
     </div>
   </div>
   <!-- last 10 donations - end -->
-
-</div><!-- scrolled page end -->
+</div>
+<!-- scrolled page end -->
+<% elsif @my_asso %>
+  <div class= "mt-48 w-full">
+    <%= render partial: "assos/places/form_place", locals: { place: @place } %>
+  </div>
+<% else %>
+  <div class= "mt-48 w-full">
+    <%= render partial: "form_asso", locals: { asso: @asso } %>
+  </div>
+<% end %>

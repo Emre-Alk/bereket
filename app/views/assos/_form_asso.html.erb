@@ -1,26 +1,30 @@
 <%= form_with model: [asso] do |f| %>
-  <div>
-    <%= f.label :name, "Nom d'enregistrement de votre association" %>
-    <%= f.text_field :name %>
-  </div>
+  <div class="flex flex-col gap-y-5">
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :name, "Nom d'enregistrement de votre association" %>
+      <%= f.text_field :name %>
+    </div>
 
-  <div>
-    <%= f.label :email, "Email d'enregistrement de votre association" %>
-    <%= f.text_field :email, placeholder: "ex.: xyz@xyz.com" %>
-  </div>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :email, "Email d'enregistrement de votre association" %>
+      <%= f.text_field :email, placeholder: "ex.: xyz@xyz.com" %>
+    </div>
 
-  <div>
-    <%= f.label :code_nra, "Numéro NRA de votre association" %>
-    <%= f.text_field :code_nra, placeholder: "ex.: W123456789" %>
-  </div>
+    <div class="flex flex-col gap-y-2">
+      <%= f.label :code_nra, "Numéro NRA de votre association" %>
+      <%= f.text_field :code_nra, placeholder: "ex.: W123456789" %>
+    </div>
 
-  <div>
-    <%= f.label :asso_type_id, value: "Indiquez le type d'associtation" %>
-    <%= f.collection_select :asso_type_id, AssoType.all, :id, :name, prompt: true %>
-  </div>
+    <div class="flex flex-col gap-y-2">
+        <%= f.label :asso_type_id, value: "Indiquez le type d'associtation" %>
+      <div class="overflow-x-auto">
+        <%= f.collection_select :asso_type_id, AssoType.all, :id, :name, prompt: true %>
+      </div>
+    </div>
 
-  <div>
-    <%= f.submit 'Enregistrer' %>
-  </div>
+    <div class="mt-4 px-1 py-3 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg">
+      <%= f.submit 'Enregistrer' %>
+    </div>
 
+  </div>
 <% end %>
