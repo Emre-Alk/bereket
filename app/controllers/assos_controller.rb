@@ -4,7 +4,11 @@ class AssosController < ApplicationController
 
   def dashboard
     @my_asso = current_user.asso
+    return @asso = Asso.new, @asso.email = current_user.email unless @my_asso
+
     @my_place = @my_asso.places.first # "first" afin de faire simple pour l'exemple mais reprendre pour carousselle
+    return @place = Place.new unless @my_place
+
     @donations = @my_place.donations # array of all donations instances
     table = @donations.map { |i| [i.donator, i.amount] }
     # ===== somme des dons à date ===== start
@@ -30,13 +34,13 @@ class AssosController < ApplicationController
     # ===== last donations (plus recent au plus ancien) ===== end
 
     # ===== revenue of the current month ===== start
-    start_month = Date.today.beginning_of_month
+    @start_month = Date.today.beginning_of_month
     # astuce car 'Date.today' seul ne comptera pas les dons du cours de la journée car occured_on etc.. de class Time
     end_month = Date.today.end_of_month
     # current_month sent to the view so can fetch it to the chart.js controller with stymulus for setting the time axis
-    @current_month = (start_month..end_month)
+    @current_month = (@start_month..end_month)
     # here I filter all donations occured this month
-    @donations_current_month = @donations.where(occured_on: start_month..end_month).order(occured_on: :asc)
+    @donations_current_month = @donations.where(occured_on: @start_month..end_month).order(occured_on: :asc)
     # creer un hash dont 'key' sera 1 jour du mois (ex: Thu, 27, Jun 2024), et la 'value' sera un array d'instances de dons qui auront la meme "occured_on"
     @donations_per_day_current_month = @donations_current_month.group_by { |don| don.occured_on.to_date }
     # creer un array avec jour du mois (key) en numéro de jour (ex 27) et la 'value' egale à la somme des 'ammout' des dons dans l'array de dons précédent

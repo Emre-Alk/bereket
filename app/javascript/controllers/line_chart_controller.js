@@ -38,10 +38,6 @@ export default class extends Controller {
       },
       options: {
         plugins: {
-          title: {
-            display: true,
-            text: 'Ce mois-ci'
-          },
           legend: {
             display: false
           }
