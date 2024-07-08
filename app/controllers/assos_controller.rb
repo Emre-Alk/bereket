@@ -52,7 +52,6 @@ class AssosController < ApplicationController
       revenue_complete_days_current_month = @array_complete_days_current_month.map { |day| [day, revenue_hash.fetch(day, 0)] }
       # revenue_complete_days_current_month = @array_complete_days_current_month.map { |day| [day, revenue_hash.fetch(day, 0)] unless day > Date.today.strftime('%d') }
       @revenue_per_day_current_month = revenue_complete_days_current_month.reject { |day| day[0] > Date.today.strftime('%d') }
-
     end
     # ===== revenue of the current month ===== end
   end
