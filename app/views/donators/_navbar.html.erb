@@ -4,12 +4,12 @@
     <!--indicateur box 1 -->
     <div class="flex flex-col justify-center items-center">
       <%= icon("fa-solid", "gift") %>
-      <p><%= donations.count if @my_asso && @my_place %> dons </p>
+      <p>dons </p>
     </div>
     <!--indicateur box 2 -->
     <div class="flex flex-col justify-center items-center">
-      <%= icon("fa-solid", "users") %>
-      <p><%= top_donators.count if @my_asso && @my_place %> donateurs</p>
+      <%= icon("fa-solid", "euro-sign") %>
+      <p>euros</p>
     </div>
 
   </div>
@@ -22,26 +22,8 @@
       <li>
         <%= link_to "#" do %>
           <div class="flex flex-row justify-center items-baseline gap-x-2">
-            <%= icon("fa-solid", "gift") %>
+            <%= icon("fa-solid", "clock-rotate-left") %>
             <p>Mes donations</p>
-          </div>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to "#" do %>
-          <div class="flex flex-row justify-center items-baseline gap-x-2">
-            <%= icon("fa-solid", "users") %>
-            <p>Mes donateurs</p>
-          </div>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to "#" do %>
-          <div class="flex flex-row justify-center items-baseline gap-x-2">
-            <%= icon("fa-solid", "qrcode") %>
-            <p>Mon QR code</p>
           </div>
         <% end %>
       </li>

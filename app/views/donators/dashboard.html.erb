@@ -1,11 +1,87 @@
-<div>
-  <h1 class="font-bold text-4xl">Donators#dashboard</h1>
-  <p>Find me in app/views/donators/dashboard.html.erb</p>
-
-  <p>Is asso ?<%= current_user.asso? %></p>
-  <p>Is donator ?<%= current_user.donator? %></p>
-
-  <%= link_to  "sign out",  destroy_user_session_path, data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"}%>
-  <%= link_to  "sign in",  new_user_session_path %>
-
+<!--header - start -->
+<div class="fixed top-0 inset-x-0 bg-pink-100">
+  <div class="flex flex-row justify-between items-center px-5 pt-6 pb-2">
+      <p>ici mon logo</p>
+      <!-- nav - start -->
+      <div data-controller="navbar"> <!-- stimulus ctrl to toggle button -->
+        <button data-action="click->navbar#toggle">
+          <%= icon("fa-solid", "bars")%>
+        </button>
+        <div>
+          <%= render partial: "donators/navbar"%>
+        </div>
+      </div>
+      <!-- nav - end -->
+  </div>
 </div>
+<!--header - end -->
+
+<!--section - start -->
+<div class="flex flex-col pt-10 gap-y-4">
+
+  <!--welcoming - start -->
+  <div class="flex justify-start">
+    <p class="roboto-regular tracking-wide text-4xl">Bonjour Emré,</p>
+  </div>
+  <!--welcoming - end -->
+
+  <!--indicateur - start -->
+  <div class="flex justify-center">
+    <div class="bg-white flex flex-col justify-center items-center size-44 rounded-full shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]"> <!--#1-->
+      <p>Mes dons:</p>
+      <p class="roboto-medium text-6xl">90€</p>
+    </div>
+  </div>
+  <!--indicateur - end -->
+
+  <!--favoris - start -->
+  <div>
+    <p class="roboto-thin text-slate-800 text-base">Mes Favoris</p>
+    <div class="bg-white flex flex-row justify-start items-center h-32 gap-x-2 p-1 rounded-lg overflow-x-auto text-center shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+      <!--start-->
+        <% 5.times do %>
+          <div class="bg-white flex flex-col justify-evenly items-center gap-y-1 min-w-24 min-h-24">
+            <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
+            <p class="w-full text-sm text-wrap">Mosquée de Gerland</p>
+          </div>
+        <% end %>
+        <!--end-->
+    </div>
+  </div>
+  <!--favoris - end -->
+
+  <!--derniers dons - start -->
+    <div>
+      <p class="roboto-thin text-slate-800 text-base">Derniers dons</p>
+      <div class="bg-white flex flex-col h-64 gap-2 divide-y divide-black/30 rounded-lg p-1 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
+        <!--start-->
+        <% 10.times do %>
+          <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
+            <div class="bg-white">
+              <%= image_tag("default_avatar", class:"size-14 rounded-full") %>
+            </div>
+
+            <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+              <p><%= Donator.first.first_name %> <%= Donator.first.last_name %></p>
+              <p>50 €</p>
+              <p class="roboto-regular text-sm">Le 01/01/2024</p>
+            </div>
+          </div>
+        <% end %>
+        <!--end-->
+      </div>
+    </div>
+  <!--derniers dons - end -->
+</div>
+<!--section - end -->
+
+<!--button scan - start -->
+<div class="fixed bottom-0 inset-x-0 pb-3 bg-neutral-100">
+  <%= link_to "#" do %>
+    <div class="flex flex-row justify-center items-center mx-5 py-3 gap-x-4 bg-black rounded-2xl">
+        <%= image_tag('scan.svg') %>
+        <p class="tracking-wider text-white text-xl">Faire un don</p>
+    </div>
+  <% end %>
+</div>
+<!--button scan - end -->

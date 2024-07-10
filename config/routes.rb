@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   # a before action to authenticate user is expected in the controler "donators"
   get "/donator", to: "donators#dashboard", as: :donator_root
 
+  resources :donators, only: %i[new create]
 
   # ----------------- donations ------------
 

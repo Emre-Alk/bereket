@@ -4,4 +4,8 @@ class DonatorsController < ApplicationController
 
   def dashboard
   end
+
+  def new
+    @donator = Donator.new
+  end
 end
