@@ -16,11 +16,10 @@ Rails.application.routes.draw do
   # this line is to create a portal dedicated to the asso users
 
   namespace :assos do
-    resources :places, only: %i[index show new create]
+    resources :places, only: %i[index show new create destroy]
   end
 
-  resources :assos, only: %i[new create] do
-  end
+  resources :assos, only: %i[new create]
 
   # -----------------donator------------
   # this line sends the user to the donator's dashboard view in views/assos/dashboard.html.erb

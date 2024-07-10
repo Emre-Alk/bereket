@@ -63,6 +63,7 @@ class Assos::PlacesController < AssosController
       standalone: true,
       use_path: true
     )
+
     # tune options to get right size see: https://github.com/whomwah/rqrcode#as-svg
 
     Tempfile.create(['qr_image', '.svg']) do |file|
