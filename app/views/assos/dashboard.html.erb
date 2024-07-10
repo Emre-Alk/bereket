@@ -87,7 +87,7 @@
     <!-- h-dvh or h-40 or h-screen. A voir... -->
     <div class="bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
       <!--start-->
-      <% @sorted_donations.each do |don| %>
+      <% @sorted_donations.first(10).each do |don| %>
         <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
           <div class="bg-white">
             <% if don.donator.profile_image.attached? %>
