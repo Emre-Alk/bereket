@@ -1,11 +1,11 @@
 <!--header - start -->
-<div class="fixed top-0 inset-x-0 bg-pink-100">
-  <div class="flex flex-row justify-between items-center px-5 pt-6 pb-2">
+<div class="fixed top-0 inset-x-0 bg-neutral-100">
+  <div class="flex flex-row justify-between items-center pl-5 pr-7 pt-6 pb-2">
       <p>ici mon logo</p>
       <!-- nav - start -->
       <div data-controller="navbar"> <!-- stimulus ctrl to toggle button -->
         <button data-action="click->navbar#toggle">
-          <%= icon("fa-solid", "bars")%>
+          <%= icon("fa-solid", "bars", class:"fa-lg")%>
         </button>
         <div>
           <%= render partial: "donators/navbar"%>
@@ -17,7 +17,7 @@
 <!--header - end -->
 
 <!--section - start -->
-<div class="flex flex-col pt-10 gap-y-4">
+<div class="flex flex-col pt-10 pb-4 gap-y-4">
 
   <!--welcoming - start -->
   <div class="flex justify-start">
@@ -76,12 +76,10 @@
 <!--section - end -->
 
 <!--button scan - start -->
-<div class="fixed bottom-0 inset-x-0 pb-3 bg-neutral-100">
-  <%= link_to "#" do %>
-    <div class="flex flex-row justify-center items-center mx-5 py-3 gap-x-4 bg-black rounded-2xl">
-        <%= image_tag('scan.svg') %>
-        <p class="tracking-wider text-white text-xl">Faire un don</p>
-    </div>
-  <% end %>
-</div>
+<%= link_to "#" do %>
+  <div class="flex flex-row justify-center items-center gap-x-4 py-2 bg-black rounded-2xl">
+    <%= image_tag("scan_icon.svg") %>
+    <p class="tracking-wider text-white text-xl">Faire un don</p>
+  </div>
+<% end %>
 <!--button scan - end -->

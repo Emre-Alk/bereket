@@ -5,7 +5,7 @@
       <!-- nav - start -->
       <div data-controller="navbar"> <!-- stimulus ctrl to toggle button -->
         <button data-action="click->navbar#toggle">
-          <%= icon("fa-solid", "bars")%>
+          <%= icon("fa-solid", "bars", class:"fa-lg")%>
         </button>
         <div>
           <%= render partial: "assos/navbar", locals: { donations: @donations, top_donators: @top_donators }%>
