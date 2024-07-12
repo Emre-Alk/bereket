@@ -21,15 +21,15 @@
 
   <!--welcoming - start -->
   <div class="flex justify-start">
-    <p class="roboto-regular tracking-wide text-4xl">Bonjour Emré,</p>
+    <p class="roboto-regular tracking-wide text-4xl">Bonjour <%= @donator.first_name %>,</p>
   </div>
   <!--welcoming - end -->
 
   <!--indicateur - start -->
   <div class="flex justify-center">
-    <div class="bg-white flex flex-col justify-center items-center size-44 rounded-full shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]"> <!--#1-->
-      <p>Mes dons:</p>
-      <p class="roboto-medium text-6xl">90€</p>
+    <div class="bg-white flex flex-col justify-center items-center gap-y-2 w-full px-10 py-7 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]"> <!--#1-->
+      <p>Total dons:</p>
+      <p class="roboto-medium text-5xl"><%= @sum_all_donations.to_f / 100 %> €</p>
     </div>
   </div>
   <!--indicateur - end -->
@@ -55,16 +55,20 @@
       <p class="roboto-thin text-slate-800 text-base">Derniers dons</p>
       <div class="bg-white flex flex-col h-64 gap-2 divide-y divide-black/30 rounded-lg p-1 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
         <!--start-->
-        <% 10.times do %>
+        <% @sorted_donations.first(10).each do |don|%>
           <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
             <div class="bg-white">
-              <%= image_tag("default_avatar", class:"size-14 rounded-full") %>
+              <% if don.place.place_image.attached? %>
+                <%= image_tag(don.asso.profile_image, class:'size-14 rounded-full') %>
+              <% else %>
+                <%= image_tag("default_avatar", class:"size-14 rounded-full") %>
+              <% end %>
             </div>
 
             <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
-              <p><%= Donator.first.first_name %> <%= Donator.first.last_name %></p>
-              <p>50 €</p>
-              <p class="roboto-regular text-sm">Le 01/01/2024</p>
+              <p><%= don.place.name %></p>
+              <p><%= don.amount / 100.00 %> €</p>
+              <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
             </div>
           </div>
         <% end %>
@@ -72,14 +76,13 @@
       </div>
     </div>
   <!--derniers dons - end -->
+  <!--button scan - start -->
+  <%= link_to "#" do %>
+    <div class="flex flex-row justify-center items-center gap-x-4 py-2 bg-black rounded-2xl">
+      <%= image_tag("scan_icon.svg") %>
+      <p class="tracking-wider text-white text-xl">Faire un don</p>
+    </div>
+  <% end %>
+  <!--button scan - end -->
 </div>
 <!--section - end -->
-
-<!--button scan - start -->
-<%= link_to "#" do %>
-  <div class="flex flex-row justify-center items-center gap-x-4 py-2 bg-black rounded-2xl">
-    <%= image_tag("scan_icon.svg") %>
-    <p class="tracking-wider text-white text-xl">Faire un don</p>
-  </div>
-<% end %>
-<!--button scan - end -->

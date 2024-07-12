@@ -5,10 +5,21 @@ class DonatorsController < ApplicationController
   before_action :is_donator?
 
   def dashboard
-  end
-
-  def new
-    redirect_to donators_path
+    # --- query initializers ----
+    # set the donator object
+    @donator = current_user.donator
+    # array de tous ses dons
+    donations = @donator.donations
+    # --- son total dons ----
+    # create an hash with 'key' being a place object and 'value' being all donations objects having this place association
+    # hash: { obj_placeA: [obj_don1, obj_don6,...], obj_placeB: [obj_don2, ...]...}
+    @donations_per_place = donations.group_by(&:place)
+    # array: [[obj_placeA, somme des dons à ce lieu], [x, y], ...]
+    @sum_per_place = @donations_per_place.map { |place, dons| [place, dons.sum(&:amount)] }
+    @sum_all_donations = @donations_per_place.sum { |_place, dons| dons.sum(&:amount) }
+    # --- ses 10 derniers dons ---
+    @sorted_donations = donations.order(occured_on: :desc)
+    # --- ses favoris ---
   end
 
   def create
