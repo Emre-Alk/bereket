@@ -39,7 +39,7 @@
     <p class="roboto-thin text-slate-800 text-base">Mes Favoris</p>
     <div class="bg-white flex flex-row justify-start items-center h-32 gap-x-2 p-1 rounded-lg overflow-x-auto text-center shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
       <!--start-->
-      <% if @favorites.nil? %>
+      <% if @favorites.empty? %>
         <div>Vous n'avez pas encore ajouter de favori</div>
       <% else %>
         <% @favorites.each do |favorite| %>

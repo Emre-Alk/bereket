@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   get "/donator", to: "donators#dashboard", as: :donator_root
 
   resources :donators, only: %i[new create] do
-    resources :favorites, only: %i[new create]
+    resources :favorites, only: %i[create destroy]
   end
 
 end

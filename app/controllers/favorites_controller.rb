@@ -1,7 +1,4 @@
 class FavoritesController < ApplicationController
-  def new
-    @favorite = Favorite.new
-  end
 
   def create
     @donator = Donator.find(params[:donator_id])
@@ -20,6 +17,17 @@ class FavoritesController < ApplicationController
           render json: { message: 'Unprocessable Entity' }, status: 422
         end
       end
+    end
+  end
+
+  def destroy
+    @favorite = Favorite.find(params[:id])
+    if @favorite.destroy
+      puts "✅✅✅✅✅✅✅"
+      render json: { message: 'destroyed'}, status: 200
+    else
+      puts "❌❌❌❌❌❌❌"
+      render json: { message: 'Unprocessable Entity'}, status: 422
     end
   end
 end
