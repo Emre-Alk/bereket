@@ -1,1 +1,5 @@
-    <%=  raw place.qr_image.download %>
+<% if !place.qr_image.attached? %>
+  <p>This place has no Qr code yet</p>
+<% else %>
+  <%=  raw place.qr_image.download %>
+<% end %>

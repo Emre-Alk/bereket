@@ -31,9 +31,9 @@
     </div>
   </div>
 
-  <div data-controller="favorite">
+  <div class="w-fit" data-controller="favorite" data-favorite-donator-id-value="<%= @donator.id %>" data-favorite-place-id-value="<%= @place.id %>">
     <%= link_to "#" do %>
-      <div data-action="click->favorite#actuate" data-favorite-target="heart">
+      <div class="w-fit" data-action="click->favorite#actuate" data-favorite-target="heart">
         <%= icon("fa-regular", "heart", class:"fa-xl", id:"heart") %>
       </div>
     <% end %>

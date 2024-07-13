@@ -20,6 +20,7 @@ class DonatorsController < ApplicationController
     # --- ses 10 derniers dons ---
     @sorted_donations = donations.order(occured_on: :desc)
     # --- ses favoris ---
+    @favorites = @donator.favorites
   end
 
   def create

@@ -39,12 +39,20 @@
     <p class="roboto-thin text-slate-800 text-base">Mes Favoris</p>
     <div class="bg-white flex flex-row justify-start items-center h-32 gap-x-2 p-1 rounded-lg overflow-x-auto text-center shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
       <!--start-->
-        <% 5.times do %>
+      <% if @favorites.nil? %>
+        <div>Vous n'avez pas encore ajouter de favori</div>
+      <% else %>
+        <% @favorites.each do |favorite| %>
           <div class="bg-white flex flex-col justify-evenly items-center gap-y-1 min-w-24 min-h-24">
-            <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
-            <p class="w-full text-sm text-wrap">Mosquée de Gerland</p>
+            <% if favorite.place.place_image.attached? %>
+              <%= image_tag(favorite.place.place_image, class:'size-14 rounded-full') %>
+            <% else %>
+              <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
+            <% end %>
+            <p class="w-full text-sm text-wrap"><%= favorite.place.name %></p>
           </div>
         <% end %>
+      <% end %>
         <!--end-->
     </div>
   </div>
