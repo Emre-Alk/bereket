@@ -3,6 +3,8 @@ class Place < ApplicationRecord
   belongs_to :place_type
   has_many :donations
   has_many :donators, through: :donations
+  has_many :favorites
+  # if needed later 'has many donators through favorites' it can be use to list for a place who has added it to its favorites
   has_one_attached :qr_image
   has_one_attached :place_image
 

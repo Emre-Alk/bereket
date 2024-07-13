@@ -1,3 +1,5 @@
+<h1>this is show page of a place for donators</h1>
+
 <div>
   <p><strong>name:</strong> <%= @place.name %></p> <br>
 
@@ -5,14 +7,8 @@
   <p><strong>street_no:</strong> <%= @place.street_no %></p> <br>
   <p><strong>city:</strong> <%= @place.city %></p><br>
   <p><strong>country:</strong> <%= @place.country %></p><br>
-
-  <p><strong>asso name:</strong> <%= @place.asso.name %></p>
-  <p><strong>asso NRA:</strong> <%= @place.asso.code_nra %></p>
-  <p><strong>asso created by user:</strong> <%= @place.asso.user.email %></p>
-
   <p><strong>place type:</strong> <%= @place.place_type.name %></p>
   <div>
-  <p><strong>votre photo de couverture</strong></p>
     <% if @place.place_image.attached? %>
       <%= image_tag @place.place_image %>
     <% else %>
@@ -31,7 +27,15 @@
   <div>
     <p><strong>place Qrcode:</strong></p>
     <div class="bg-red-300 size-fit scale-50">
-      <%= render partial: "qr_code", locals: { place: @place } %>
+      <%= render partial: "assos/places/qr_code", locals: { place: @place } %>
     </div>
+  </div>
+
+  <div data-controller="favorite">
+    <%= link_to "#" do %>
+      <div data-action="click->favorite#actuate" data-favorite-target="heart">
+        <%= icon("fa-solid", "heart", class:"fa-xl", id:"heart") %>
+      </div>
+    <% end %>
   </div>
 </div>
