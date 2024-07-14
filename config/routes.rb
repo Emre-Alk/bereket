@@ -18,13 +18,16 @@ Rails.application.routes.draw do
   # this line is to create a portal dedicated to the asso users
   namespace :assos do
     resources :places, only: %i[index show new create destroy]
+    # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
 
   # ======== places ========
 
   # we need a show page of the places for the donators to reach (create fav, see place etc...)
   # this route don't interfer with the one in the asso namespace since it is nested inside asso namespace
-  resources :places, only: %i[show]
+  resources :places, only: %i[show] do
+    resources :donations, only: %i[new create]
+  end
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
   # ======== donator ========
@@ -36,6 +39,9 @@ Rails.application.routes.draw do
 
   resources :donators, only: %i[new create] do
     resources :favorites, only: %i[create destroy]
+    resources :donations, only: %i[index]
   end
 
+  # ======== donations ========
+  # create a donation between a donator and a place
 end

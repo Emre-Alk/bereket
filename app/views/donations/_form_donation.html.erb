@@ -1,0 +1,10 @@
+<%= form_with model: [place, donation] do |f|%>
+  <div>
+    <%= f.label :amount %>
+    <%= f.input :amount, placeholder: 'Autre montant' %>
+  </div>
+
+  <div>
+    <%= f.submit 'Donner' %>
+  </div>
+<% end %>
