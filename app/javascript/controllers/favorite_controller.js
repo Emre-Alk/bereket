@@ -73,10 +73,15 @@ export default class extends Controller {
         }
       }
     }
+    const favContainer = this.heartTarget
     fetch(url, details)
     .then(response => response.json())
-    .then((data) =>
-      console.log(data)
+    .then((data) => {
+      console.log(data.message);
+      if (data.message === 'created') {
+        favContainer.outerHTML = data.html_favorite_icon
+      }
+    }
     )
   }
 

@@ -12,7 +12,10 @@ class FavoritesController < ApplicationController
           place: @place
         )
         if @favorite.save
-          render json: { message: 'created' }, status: 201
+          render json: {
+            message: 'created',
+            html_favorite_icon: render_to_string(partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite }, formats: :html)
+          }
         else
           render json: { message: 'Unprocessable Entity' }, status: 422
         end
@@ -23,11 +26,9 @@ class FavoritesController < ApplicationController
   def destroy
     @favorite = Favorite.find(params[:id])
     if @favorite.destroy
-      puts "✅✅✅✅✅✅✅"
-      render json: { message: 'destroyed'}, status: 200
+      render json: { message: 'destroyed' }, status: 200
     else
-      puts "❌❌❌❌❌❌❌"
-      render json: { message: 'Unprocessable Entity'}, status: 422
+      render json: { message: 'Unprocessable Entity' }, status: 422
     end
   end
 end

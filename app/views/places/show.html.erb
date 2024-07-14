@@ -31,15 +31,7 @@
     </div>
   </div>
 
-  <div class="w-fit" data-controller="favorite" data-favorite-donator-id-value="<%= @donator.id %>" data-favorite-place-id-value="<%= @place.id %>" data-favorite-fav-value="<%= @favorite.to_json %>" >
-    <%= link_to "#" do %>
-      <div class="w-fit" data-action="click->favorite#actuate" data-favorite-target="heart" >
-        <% if @place.is_favorite_of?(@donator) %>
-          <%= icon("fa-solid", "heart", style:"color: red", class:"fa-xl", id:"heart") %>
-        <% else %>
-          <%= icon("fa-regular", "heart", class:"fa-xl", id:"heart") %>
-        <% end %>
-      </div>
-    <% end %>
+  <div class="w-fit" >
+    <%= render partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite } %>
   </div>
 </div>
