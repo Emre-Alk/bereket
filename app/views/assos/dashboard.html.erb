@@ -1,115 +1,114 @@
 <div class="fixed top-0 inset-x-0 bg-neutral-100"> <!-- fixed top page start -->
-  <!-- nav - start -->
   <div class="pt-4">
     <div class="flex flex-row justify-between items-center px-5 py-2">
       <p>ici mon logo</p>
-      <div data-controller="navbar-asso"> <!-- stimulus ctrl to toggle button -->
-        <button data-action="click->navbar-asso#toggle">
-          <%= icon("fa-solid", "bars")%>
+      <!-- nav - start -->
+      <div data-controller="navbar"> <!-- stimulus ctrl to toggle button -->
+        <button data-action="click->navbar#toggle">
+          <%= icon("fa-solid", "bars", class:"fa-lg")%>
         </button>
         <div>
           <%= render partial: "assos/navbar", locals: { donations: @donations, top_donators: @top_donators }%>
         </div>
       </div>
+      <!-- nav - end -->
     </div>
 
-    <!-- nav - end -->
+    <% if @my_asso && @my_place %>
+      <!-- card - start -->
+      <div class="flex flex-row justify-center items-center gap-x-16 py-2">
+        <div class="hidden"> <!-- stimulus controller to toggle this -->
+          <%= icon("fa-solid", "chevron-left")%> <!-- add "unless @my_place.length == 1 -->
+        </div>
+        <div class="flex flex-col items-center text-sm">
 
-  <% if @my_asso && @my_place %>
-    <!-- card - start -->
-    <div class="flex flex-row justify-center items-center gap-x-16 py-2">
-      <div class="hidden"> <!-- stimulus controller to toggle this -->
-        <%= icon("fa-solid", "chevron-left")%> <!-- add "unless @my_place.length == 1 -->
-      </div>
-      <div class="flex flex-col items-center text-sm">
+          <% if @my_place.place_image.attached? %>
+            <%= image_tag(@my_place.place_image, alt:"picture", class:"rounded-full size-20 mb-1") %>
+          <% else %>
+            <%= image_tag("default_avatar.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
+          <% end %>
 
-        <% if @my_place.place_image.attached? %>
-          <%= image_tag(@my_place.place_image, alt:"picture", class:"rounded-full size-20 mb-1") %>
-        <% else %>
-          <%= image_tag("default_avatar.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
-        <% end %>
-
-        <p class="roboto-thin text-sm"><%= @my_place.name %></p>
-        <p class="roboto-thin text-sm"><%= @my_place.street_no %> <%= @my_place.address %>, <%= @my_place.city %>, <%= @my_place.country %></p>
+          <p class="roboto-thin text-sm"><%= @my_place.name %></p>
+          <p class="roboto-thin text-sm"><%= @my_place.street_no %> <%= @my_place.address %>, <%= @my_place.city %>, <%= @my_place.country %></p>
+        </div>
+        <div class="hidden">
+          <%= icon("fa-solid", "chevron-right") %>
+        </div>
       </div>
-      <div class="hidden">
-        <%= icon("fa-solid", "chevron-right") %>
-      </div>
-    </div>
-    <!-- card - end -->
-  <% end %>
+      <!-- card - end -->
+    <% end %>
   </div>
 </div> <!-- fixed top page end -->
 
 <% if @my_asso && @my_place %>
-<div class="flex flex-col pt-48 gap-y-4"> <!-- scrolled page start -->
-  <!-- total - start -->
-  <div class="bg-white flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
-    <%= @sum.to_f / 100 %> €
-  </div>
-  <!-- total - end -->
+  <div class="flex flex-col pt-48 gap-y-4"> <!-- scrolled page start -->
+    <!-- total - start -->
+    <div class="bg-white flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+      <%= @sum.to_f / 100 %> €
+    </div>
+    <!-- total - end -->
 
-  <!-- chart - start -->
-  <div>
-    <div class="roboto-thin text-slate-800 text-sm"><%= @start_month.strftime("%B") %></div>
-    <div class="bg-white py-2 px-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]" data-controller="line-chart" data-line-chart-revenue-value= "<%= @revenue_per_day_current_month.to_json %>" data-line-chart-timeframe-value="<%= @array_complete_days_current_month.to_json %>">
-      <div class="w-full">
-        <canvas data-line-chart-target="revenueChart" id="revenueChart" aria-label="courbe" role="revenu" >
-        </canvas>
+    <!-- chart - start -->
+    <div>
+      <div class="roboto-thin text-slate-800 text-sm"><%= @start_month.strftime("%B") %></div>
+      <div class="bg-white py-2 px-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]" data-controller="line-chart" data-line-chart-revenue-value= "<%= @revenue_per_day_current_month.to_json %>" data-line-chart-timeframe-value="<%= @array_complete_days_current_month.to_json %>">
+        <div class="w-full">
+          <canvas data-line-chart-target="revenueChart" id="revenueChart" aria-label="courbe" role="revenu" >
+          </canvas>
+        </div>
       </div>
     </div>
-  </div>
-  <!-- chart - end -->
+    <!-- chart - end -->
 
-  <!-- top 10 donateur - start -->
-  <div>
-    <div class="roboto-thin text-slate-800 text-sm">Top donateurs</div>
-    <div class="bg-white flex flex-row justify-start items-center h-24 gap-x-2 p-1 rounded-lg overflow-x-auto text-center shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
-      <!--start-->
-      <% @top_donators.first(10).each do |don| %>
-        <div class="bg-white flex flex-col justify-evenly items-center gap-y-1 w-20 h-20 text-sm">
-          <% if don[0].profile_image.attached? %>
-          <%= image_tag(don[0].profile_image, class:"size-14 rounded-full") %>
-          <% else %>
-          <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
-          <% end %>
-          <p class="w-full truncate"><%= don[0].first_name %></p>
-        </div>
-      <% end %>
-      <!--end-->
-    </div>
-  </div>
-  <!-- top 10 donateur - end -->
-
-  <!-- last 10 donations - start -->
-  <div>
-    <div class="roboto-thin text-slate-800 text-sm">Derniers dons</div>
-    <!-- h-dvh or h-40 or h-screen. A voir... -->
-    <div class="bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
-      <!--start-->
-      <% @sorted_donations.first(10).each do |don| %>
-        <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
-          <div class="bg-white">
-            <% if don.donator.profile_image.attached? %>
-              <%= image_tag(don.donator.profile_image, class:"size-14 rounded-full") %>
+    <!-- top 10 donateur - start -->
+    <div>
+      <div class="roboto-thin text-slate-800 text-base">Top donateurs</div>
+      <div class="bg-white flex flex-row justify-start items-center h-32 gap-x-2 p-1 rounded-lg overflow-x-auto text-center shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+        <!--start-->
+        <% @top_donators.first(10).each do |don| %>
+          <div class="bg-white flex flex-col justify-evenly items-center gap-y-1 min-w-24 min-h-24">
+            <% if don[0].profile_image.attached? %>
+            <%= image_tag(don[0].profile_image, class:"size-14 rounded-full") %>
             <% else %>
-              <%= image_tag("default_avatar", class:"size-14 rounded-full") %>
+            <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
             <% end %>
+            <p class="w-full text-sm text-wrap"><%= don[0].first_name %> <%= don[0].last_name %></p>
           </div>
-
-          <div class="bg-white flex flex-col justify-evenly ">
-            <p class="roboto-medium"><%= don.donator.first_name %> <%= don.donator.last_name %></p>
-            <p class="roboto-medium"><%= don.amount.to_f / 100 %> €</p>
-            <p>Le <%= don.occured_on.strftime("%d/%m/%Y")  %></p>
-          </div>
-        </div>
-      <% end %>
-      <!--end-->
+        <% end %>
+        <!--end-->
+      </div>
     </div>
+    <!-- top 10 donateur - end -->
+
+    <!-- last 10 donations - start -->
+    <div>
+      <div class="roboto-thin text-slate-800 text-base">Derniers dons</div>
+      <!-- h-dvh or h-40 or h-screen. A voir... -->
+      <div class="bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
+        <!--start-->
+        <% @sorted_donations.first(10).each do |don| %>
+          <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
+            <div class="bg-white">
+              <% if don.donator.profile_image.attached? %>
+                <%= image_tag(don.donator.profile_image, class:"size-14 rounded-full") %>
+              <% else %>
+                <%= image_tag("default_avatar", class:"size-14 rounded-full") %>
+              <% end %>
+            </div>
+
+            <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+              <p><%= don.donator.first_name %> <%= don.donator.last_name %></p>
+              <p><%= don.amount.to_f / 100 %> €</p>
+              <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y")  %></p>
+            </div>
+          </div>
+        <% end %>
+        <!--end-->
+      </div>
+    </div>
+    <!-- last 10 donations - end -->
   </div>
-  <!-- last 10 donations - end -->
-</div>
-<!-- scrolled page end -->
+  <!-- scrolled page end -->
 <% elsif @my_asso %>
   <div class= "mt-48 w-full">
     <%= render partial: "assos/places/form_place", locals: { place: @place } %>

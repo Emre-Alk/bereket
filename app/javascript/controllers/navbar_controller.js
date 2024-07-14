@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="navbar-asso"
+// Connects to data-controller="navbar"
 export default class extends Controller {
   static targets = ["menu"]
 
@@ -19,7 +19,7 @@ export default class extends Controller {
     // here as require that "this" of touched should refers to 'this' of here (connect).
     // 'this' of 'connect' refers to everything in the controller where am i (ie, in the context of this controller namely, everything inside of it)=> data-controller="navbar-asso"
     // because 'connect' is define in the scope of the controller. connect exits when controller exists in the DOM
-    // ex. 'this.element' will give the html of the controller: <div> data-controller="navbar-asso" </div>
+    // ex. 'this.element' will give the html of the controller: <div> data-controller="navbar" </div>
     // ex. 'this.
 
     this.touched = this.touched.bind(this)

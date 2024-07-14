@@ -1,11 +1,96 @@
-<div>
-  <h1 class="font-bold text-4xl">Donators#dashboard</h1>
-  <p>Find me in app/views/donators/dashboard.html.erb</p>
-
-  <p>Is asso ?<%= current_user.asso? %></p>
-  <p>Is donator ?<%= current_user.donator? %></p>
-
-  <%= link_to  "sign out",  destroy_user_session_path, data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"}%>
-  <%= link_to  "sign in",  new_user_session_path %>
-
+<!--header - start -->
+<div class="fixed top-0 inset-x-0 bg-neutral-100">
+  <div class="flex flex-row justify-between items-center pl-5 pr-7 pt-6 pb-2">
+      <p>ici mon logo</p>
+      <!-- nav - start -->
+      <div data-controller="navbar"> <!-- stimulus ctrl to toggle button -->
+        <button data-action="click->navbar#toggle">
+          <%= icon("fa-solid", "bars", class:"fa-lg")%>
+        </button>
+        <div>
+          <%= render partial: "donators/navbar"%>
+        </div>
+      </div>
+      <!-- nav - end -->
+  </div>
 </div>
+<!--header - end -->
+
+<!--section - start -->
+<div class="flex flex-col pt-10 pb-4 gap-y-4">
+
+  <!--welcoming - start -->
+  <div class="flex justify-start">
+    <p class="roboto-regular tracking-wide text-4xl">Bonjour <%= @donator.first_name %>,</p>
+  </div>
+  <!--welcoming - end -->
+
+  <!--indicateur - start -->
+  <div class="flex justify-center">
+    <div class="bg-white flex flex-col justify-center items-center gap-y-2 w-full px-10 py-7 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]"> <!--#1-->
+      <p>Total dons:</p>
+      <p class="roboto-medium text-5xl"><%= @sum_all_donations.to_f / 100 %> €</p>
+    </div>
+  </div>
+  <!--indicateur - end -->
+
+  <!--favoris - start -->
+  <div>
+    <p class="roboto-thin text-slate-800 text-base">Mes Favoris</p>
+    <div class="bg-white flex flex-row justify-start items-center h-32 gap-x-2 p-1 rounded-lg overflow-x-auto text-center shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+      <!--start-->
+      <% if @favorites.empty? %>
+        <div>Vous n'avez pas encore ajouter de favori</div>
+      <% else %>
+        <% @favorites.each do |favorite| %>
+          <div class="bg-white flex flex-col justify-evenly items-center gap-y-1 min-w-24 min-h-24">
+            <% if favorite.place.place_image.attached? %>
+              <%= image_tag(favorite.place.place_image, class:'size-14 rounded-full') %>
+            <% else %>
+              <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
+            <% end %>
+            <p class="w-full text-sm text-wrap"><%= favorite.place.name %></p>
+          </div>
+        <% end %>
+      <% end %>
+        <!--end-->
+    </div>
+  </div>
+  <!--favoris - end -->
+
+  <!--derniers dons - start -->
+    <div>
+      <p class="roboto-thin text-slate-800 text-base">Derniers dons</p>
+      <div class="bg-white flex flex-col h-64 gap-2 divide-y divide-black/30 rounded-lg p-1 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
+        <!--start-->
+        <% @sorted_donations.first(10).each do |don|%>
+          <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
+            <div class="bg-white">
+              <% if don.place.place_image.attached? %>
+                <%= image_tag(don.asso.profile_image, class:'size-14 rounded-full') %>
+              <% else %>
+                <%= image_tag("default_avatar", class:"size-14 rounded-full") %>
+              <% end %>
+            </div>
+
+            <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+              <p><%= don.place.name %></p>
+              <p><%= don.amount / 100.00 %> €</p>
+              <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
+            </div>
+          </div>
+        <% end %>
+        <!--end-->
+      </div>
+    </div>
+  <!--derniers dons - end -->
+  <!--button scan - start -->
+  <%= link_to "#" do %>
+    <div class="flex flex-row justify-center items-center gap-x-4 py-2 bg-black rounded-2xl">
+      <%= image_tag("scan_icon.svg") %>
+      <p class="tracking-wider text-white text-xl">Faire un don</p>
+    </div>
+  <% end %>
+  <!--button scan - end -->
+</div>
+<!--section - end -->

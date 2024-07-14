@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_22_184309) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_12_201106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -83,6 +83,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_184309) do
     t.index ["user_id"], name: "index_donators_on_user_id"
   end
 
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "donator_id", null: false
+    t.bigint "place_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["donator_id"], name: "index_favorites_on_donator_id"
+    t.index ["place_id"], name: "index_favorites_on_place_id"
+  end
+
   create_table "place_types", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -113,6 +122,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_184309) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "role", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -124,6 +135,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_184309) do
   add_foreign_key "donations", "donators"
   add_foreign_key "donations", "places"
   add_foreign_key "donators", "users"
+  add_foreign_key "favorites", "donators"
+  add_foreign_key "favorites", "places"
   add_foreign_key "places", "assos"
   add_foreign_key "places", "place_types"
 end
