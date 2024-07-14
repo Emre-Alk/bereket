@@ -10,7 +10,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log("hello fav")
   }
 
   actuate(event) {
