@@ -16,11 +16,10 @@ export default class extends Controller {
     // console.log(test.func());
     // Expected output: 42. This goes back to 'test'. It says go take the 'prop' value from 'test' (self) and not from elsewhere
 
-    // here as require that "this" of touched should refers to 'this' of here (connect).
+    // here I require that "this" of touched should refers to 'this' of here (connect).
     // 'this' of 'connect' refers to everything in the controller where am i (ie, in the context of this controller namely, everything inside of it)=> data-controller="navbar-asso"
     // because 'connect' is define in the scope of the controller. connect exits when controller exists in the DOM
     // ex. 'this.element' will give the html of the controller: <div> data-controller="navbar" </div>
-    // ex. 'this.
 
     this.touched = this.touched.bind(this)
   }
@@ -29,7 +28,6 @@ export default class extends Controller {
     this.menuTarget.classList.toggle("-translate-x-full")
     let navOpen = this.menuTarget.classList.contains("-translate-x-full")
     if (navOpen) {
-      const nav = this.menuTarget
       // touch events
       document.addEventListener('touchstart', this.touched)
       this.element.addEventListener('touchstart', this.noPageScrollOnNav)

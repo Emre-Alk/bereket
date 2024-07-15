@@ -5,6 +5,16 @@ class DonationsController < ApplicationController
   def new
     @donation = Donation.new
     @place = Place.find(params[:place_id])
+    # create an array of all the amounts donated
+    array_all_amounts = current_user.donator.donations&.map(&:amount)
+    # array to  hash such as 'key' is amount and 'value' its occurence (tally) { 10: 2, 20: 1, ... }
+    # then, filter the [key, value] for which value (ie, occurence) is max
+    # finally, extract the corresponding key
+    @frequent_amount = array_all_amounts.tally.max_by { |_key, value| value }[0] / 100
+    @frequent_amount = @frequent_amount.ceil ||= 10
+    @amount_option = [50, 20, 30]
+    @amount_option.push(@frequent_amount)
+    @amount_option.sort!
   end
 
   def create
