@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   resources :donators, only: %i[new create] do
     resources :favorites, only: %i[create destroy]
     resources :donations, only: %i[index]
+    resources :checkouts, only: %i[create]
   end
 
   # ======== donations ========
