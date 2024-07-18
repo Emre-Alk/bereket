@@ -16,11 +16,12 @@
       <div class="flex flex-col gap-y-5 justify-center items-center">
 
         <div class="w-full">
-            <input data-action="click->donation#showSubmit" data-donation-target="inputfield" placeholder="Autre montant" class="rounded-full w-full" type="Number">
+            <input data-action="input->donation#onInput blur->donation#onBlur" data-donation-target="inputfield" placeholder="Autre montant" class="rounded-full w-full" type="Number" min="2.3">
+            <p data-donation-target="message" class="hidden text-slate-500 italic"></p>
         </div>
 
         <div class="w-full">
-          <button disabled data-action="click->donation#customValue" data-donation-target="submit" class="px-3 py-2 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg disabled:bg-black/50" >
+          <button disabled data-action="click->donation#customValue" data-donation-target="submitBtn" class="px-3 py-2 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg disabled:bg-black/50" >
           Donner
           </button>
         </div>

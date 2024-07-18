@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="donation"
 export default class extends Controller {
-  static targets = [ 'inputfield', 'confirmBox', 'monDon', 'submit']
+  static targets = [ 'inputfield', 'confirmBox', 'monDon', 'submitBtn', 'message']
   static values = {
     donatorId: String,
     placeId: String
@@ -17,6 +17,7 @@ export default class extends Controller {
 
   showConfirm(event) {
     if (event) {
+      console.log('w/ event');
       event.preventDefault()
       confirmBox.classList.add("-translate-y-full")
       this.inputfieldTarget.value = event.target.value
@@ -26,6 +27,9 @@ export default class extends Controller {
       event.stopPropagation()
 
     } else {
+      console.log('w/o event');
+      console.log(this.inputfieldTarget.value);
+
       confirmBox.classList.add("-translate-y-full")
       this.monDonTarget.innerText = `${this.inputfieldTarget.value} €`
       this.monDonTarget.setAttribute("value", `${this.inputfieldTarget.value}`)
@@ -34,7 +38,7 @@ export default class extends Controller {
   }
 
   hideConfirmation(event) {
-    if (confirmBox.contains(event.target) || event.target === this.submitTarget ) return
+    if (confirmBox.contains(event.target) || event.target === this.submitBtnTarget ) return
       console.log('hide');
       confirmBox.classList.remove("-translate-y-full")
       // document.getElementById("formDon").reset()
@@ -43,10 +47,36 @@ export default class extends Controller {
   }
 
   showSubmit() {
-    this.submitTarget.removeAttribute('disabled', '')
+
+    const inputValue = parseFloat(this.inputfieldTarget.value)
+    const inputMin = parseFloat(this.inputfieldTarget.min)
+    this.messageTarget.innerText = `Don minimum : ${this.inputfieldTarget.min}`
+
+    if (this.inputfieldTarget.value.trim() === '' || inputValue < inputMin) {
+      console.log('nul ou inf')
+      this.submitBtnTarget.setAttribute('disabled', 'true')
+      this.messageTarget.classList.toggle('hidden')
+
+    } else {
+      console.log('sup')
+      this.submitBtnTarget.removeAttribute('disabled')
+      this.messageTarget.classList.add('hidden')
+    }
   }
 
+  onBlur() {
+    console.log('blur');
+    this.showSubmit()
+  }
+
+  onInput() {
+    console.log('hit')
+    this.showSubmit()
+  }
+
+
   customValue() {
+    console.log('donner hit');
     this.showConfirm()
   }
 
