@@ -13,19 +13,19 @@
       <% end %>
     </div>
 
-    <%= form_with model: [@place, @donation], id:"formDon", data: { action:"submit->donation#customValue" } do |f|%>
       <div class="flex flex-col gap-y-5 justify-center items-center">
+
         <div class="w-full">
-          <%= f.number_field :amount, placeholder:"Autre montant",
-                                      class:"rounded-full w-full",
-                                      data: { donation_target:"inputfield" } %>
+            <input data-action="click->donation#showSubmit" data-donation-target="inputfield" placeholder="Autre montant" class="rounded-full w-full" type="Number">
         </div>
 
-        <div class="px-3 py-2 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg">
-          <%= f.submit 'Donner' %>
+        <div class="w-full">
+          <button disabled data-action="click->donation#customValue" data-donation-target="submit" class="px-3 py-2 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg disabled:bg-black/50" >
+          Donner
+          </button>
         </div>
+
       </div>
-    <% end %>
 
   </div>
 

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="donation"
 export default class extends Controller {
-  static targets = [ 'inputfield', 'confirmBox', 'monDon', 'inputfield2']
+  static targets = [ 'inputfield', 'confirmBox', 'monDon', 'submit']
   static values = {
     donatorId: String,
     placeId: String
@@ -10,46 +10,44 @@ export default class extends Controller {
   connect() {
     console.log('hello donation');
     const confirmBox = this.confirmBoxTarget
-    this.donationForm = document.getElementById("formDon")
+    // this.donationForm = document.getElementById("formDon")
     this.overlay = document.getElementById('overlay')
     this.customValue = this.customValue.bind(this)
   }
 
   showConfirm(event) {
+    if (event) {
       event.preventDefault()
-      confirmBox.classList.toggle("-translate-y-full")
-      let boxOpen = confirmBox.classList.contains("-translate-y-full")
-      if (boxOpen) {
-        this.inputfieldTarget.value = event.target.value
-        this.monDonTarget.innerText = `${event.target.value} €`
-        this.monDonTarget.setAttribute("value", `${event.target.value}`)
-        this.overlay.classList.remove('hidden')
-      } else {
-        document.getElementById("formDon").reset()
-        this.overlay.classList.add('hidden')
-      }
+      confirmBox.classList.add("-translate-y-full")
+      this.inputfieldTarget.value = event.target.value
+      this.monDonTarget.innerText = `${event.target.value} €`
+      this.monDonTarget.setAttribute("value", `${event.target.value}`)
+      this.overlay.classList.remove('hidden')
       event.stopPropagation()
 
+    } else {
+      confirmBox.classList.add("-translate-y-full")
+      this.monDonTarget.innerText = `${this.inputfieldTarget.value} €`
+      this.monDonTarget.setAttribute("value", `${this.inputfieldTarget.value}`)
+      this.overlay.classList.remove('hidden')
+    }
   }
 
   hideConfirmation(event) {
-    if (confirmBox.contains(event.target)) return
+    if (confirmBox.contains(event.target) || event.target === this.submitTarget ) return
+      console.log('hide');
       confirmBox.classList.remove("-translate-y-full")
-      document.getElementById("formDon").reset()
+      // document.getElementById("formDon").reset()
+      this.inputfieldTarget.value = ''
       this.overlay.classList.add('hidden')
   }
 
-  customValue(event) {
-    // event.preventDefault()
+  showSubmit() {
+    this.submitTarget.removeAttribute('disabled', '')
+  }
 
-    // i cant get the input field value whatever my approach
-    // next thing to try is ask GPT or ajax the form to backend def custom and render the field value back as response
-    // const form = new FormData(this.donationForm)
-    // // for (const [key, value] of form) {
-    // //   console.log(key, value);
-    // // }
-    // console.log(form.getAll('value'));
-
+  customValue() {
+    this.showConfirm()
   }
 
   confirmTip() {
