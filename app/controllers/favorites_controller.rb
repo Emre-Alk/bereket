@@ -14,7 +14,10 @@ class FavoritesController < ApplicationController
         if @favorite.save
           render json: {
             message: 'created',
-            html_favorite_icon: render_to_string(partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite }, formats: :html)
+            html_favorite_icon: render_to_string(
+              partial: "favorites/favorite_icon",
+              locals: { place: @place, donator: @donator, favorite: @favorite },
+              formats: :html)
           }
         else
           render json: { message: 'Unprocessable Entity' }, status: 422

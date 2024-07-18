@@ -1,0 +1,39 @@
+<div data-controller="donation" data-donation-donator-id-value="<%= @donator.id %>" data-donation-place-id-value="<%= @place.id %>" class="flex flex-col h-screen items-center justify-start gap-y-5">
+
+  <div class="flex flex-row gap-3 justify-center items-baseline">
+    <%= icon("fa-solid", "gift", class:"fa-xl")%>
+    <p class="roboto-medium">Sélectionner votre donation</p>
+  </div>
+
+  <div class="flex flex-col items-center justify-center gap-y-10">
+
+    <div class="flex flex-row justify-center items-center gap-x-2" >
+      <% @amount_option.each_with_index do |amount, i| %>
+        <button data-action="click->donation#showConfirm" class="px-3 py-3 border-black border rounded-lg bg-white text-2xl roboto-medium active:bg-black active:text-white" id="<%= i %>" data-donation-target="btn" name="don" value="<%= amount %>"><%= amount %> €</button>
+      <% end %>
+    </div>
+
+      <div class="flex flex-col gap-y-5 justify-center items-center">
+
+        <div class="w-full">
+            <input data-action="input->donation#onInput blur->donation#onBlur" data-donation-target="inputfield" placeholder="Autre montant" class="rounded-full w-full" type="Number" min="2.3">
+            <p data-donation-target="message" class="hidden text-slate-500 italic"></p>
+        </div>
+
+        <div class="w-full">
+          <button disabled data-action="click->donation#submitInput" data-donation-target="submitBtn" class="px-3 py-2 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg disabled:bg-black/50" >
+          Donner
+          </button>
+        </div>
+
+      </div>
+
+  </div>
+
+  <div>
+    <%= render partial: "confirmbox", locals: { place: @place } %>
+  </div>
+</div>
+
+<div id="overlay" class="hidden fixed inset-x-0 inset-y-0 bg-black/50">
+</div>

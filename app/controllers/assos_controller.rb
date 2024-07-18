@@ -28,7 +28,7 @@ class AssosController < ApplicationController
         hash[e[0]] = e[1]
       end
     end
-    @top_donators = hash.sort_by { |donateur, total| -total }.to_h
+    @top_donators = hash.sort_by { |_donateur, total| -total }.to_h
     # ===== top donateurs ===== end
 
     # ===== last donations (plus recent au plus ancien) ===== start

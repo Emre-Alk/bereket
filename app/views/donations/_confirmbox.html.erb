@@ -1,0 +1,38 @@
+<div data-donation-target="confirmBox" id="confirmBox" data-action="click@window->donation#hideConfirmation" class="flex flex-col fixed z-50 inset-x-0 h-56 justify-start items-center pt-2 gap-y-2 bg-white border-t rounded-t-3xl -bottom-56 transition transform delay-0 duration-500 ease-in-out">
+
+  <div class="flex flex-col justify-center items-center gap-y-2">
+    <div>
+      <% if place.place_image.attached? %>
+        <%= image_tag(place.place_image, class:"size-14 rounded-full") %>
+      <% else %>
+        <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
+      <% end %>
+    </div>
+
+    <div class="flex flex-col justify-center items-center">
+      <div>
+        <%= place.name %>
+      </div>
+
+      <div class="flex flex-row justify-center items-center">
+        <%= place.street_no %>,
+        <%= place.address %>
+        <%= place.city %>,
+        <%= place.country %>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flex flex-row gap-10 justify-center items-center">
+    <button class="h-16 w-36 bg-black rounded-lg flex flow-row justify-evenly items-center" data-action="click->donation#confirmTip">
+      <%= image_tag("gift_icon", class:"scale-125") %>
+      <div data-donation-target="monDon" class="roboto-medium text-xl text-white"></div>
+    </button>
+
+    <button class="h-16 w-36 bg-zinc-300 rounded-lg flex justify-center items-center" data-action="click->donation#cancelTip">
+      <%= image_tag("cross_icon", class:"scale-125") %>
+    </button>
+  </div>
+
+</div>
