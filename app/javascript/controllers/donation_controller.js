@@ -129,25 +129,30 @@ export default class extends Controller {
 
 
   checkout() {
+    // donation value is retrived. its type is string and unit is not converted to 1000s (ex: 21 or 20,5 and not 2100)
     const donationValue = this.monDonTarget.getAttribute('value')
+    // defining an object to store all informations about the donation to send to backend
     const donation = {
-      amount: donationValue,
-      place_id: this.placeIdValue
+      donator_id: this.donatorIdValue,
+      place_id: this.placeIdValue,
+      amount: donationValue
     }
+    // defining a object 'payload' for the AJAX to works properly
+    // the auth token will be filled by rails
     const payload = {
       authenticity_token: "",
       donation: donation
     }
 
-    const url = `/donators/${this.donatorIdValue}/checkouts`
+    const url = `/checkout`
     const details = {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "X-CSRF-Token": document
-        .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content")
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content")
       },
       body: JSON.stringify(payload)
     }
@@ -157,13 +162,13 @@ export default class extends Controller {
       if (response.ok) {
         response.json()
         .then((data) => {
-          // success logic
+          // success logic : redirect the user to stripe embedded form with the url returned from checkout:session.create()
+          window.location.href = data.url
         })
       } else {
         response.json()
         .then((data) => {
-
-          // failure logic
+          // failure logic: render cancel template with msg 'smthg went wrong. ur donation couldnt be processed'
         })
       }
     })
