@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   # we need a show page of the places for the donators to reach (create fav, see place etc...)
   # this route don't interfer with the one in the asso namespace since it is nested inside asso namespace
   resources :places, only: %i[show] do
-    resources :donations, only: %i[new create]
+    resources :donations, only: %i[new]
   end
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
@@ -40,9 +40,9 @@ Rails.application.routes.draw do
   resources :donators, only: %i[new create] do
     resources :favorites, only: %i[create destroy]
     resources :donations, only: %i[index]
-    resources :checkouts, only: %i[create]
   end
 
   # ======== donations ========
   # create a donation between a donator and a place
+  resource :checkout, only: %i[create]
 end
