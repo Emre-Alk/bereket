@@ -10,8 +10,6 @@ class CheckoutsController < ApplicationController
 
     # if no error, render json session.url (this is the response of the API 'Stripe::Checkout::Session.create()')
 
-
-
     # donator = params[:donator_id]
     # donation = params[:donation]
     # donation_amount = donation[:amount]
