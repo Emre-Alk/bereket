@@ -84,13 +84,12 @@
       </div>
     </div>
   <!--derniers dons - end -->
+
+
   <!--button scan - start -->
-  <%= link_to "#" do %>
-    <div class="flex flex-row justify-center items-center gap-x-4 py-2 bg-black rounded-2xl">
-      <%= image_tag("scan_icon.svg") %>
-      <p class="tracking-wider text-white text-xl">Faire un don</p>
-    </div>
-  <% end %>
+  <%= render partial: "donators/scan"%>
   <!--button scan - end -->
+
+
 </div>
 <!--section - end -->
