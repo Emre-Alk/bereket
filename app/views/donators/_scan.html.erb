@@ -1,22 +1,33 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 
-<div data-controller="qr-scan" class="flex flex-col justify-center h-full w-full bg-green-300">
+<div data-controller="qr-scan" class="flex flex-col justify-center h-full w-full">
 
-  <button data-action="click->qr-scan#scan" data-qr-scan-target="scanBtn" class="flex flex-row justify-center items-center gap-x-4 px-2 py-2 bg-black rounded-2xl">
+  <button data-action="click->qr-scan#toggleScanWindow" data-qr-scan-target="scanBtn" class="flex flex-row justify-center items-center gap-x-4 px-2 py-2 bg-black rounded-2xl">
     <%= image_tag("scan_icon.svg") %>
     <p class="tracking-wider text-white text-xl">Faire un don</p>
   </button>
 
-<!--
-put bbox in hidden.
-in JS, un-hidden it when action btn is hit
-add link to 'back path' (rails helper to find) or to root-path with icon cross or icon back-arrow
-In JS, close scan window when action hit icon
--->
+  <div id="bbox" class="fixed hidden flex flex-col justify-center items-center gap-y-12 bg-black transition transform delay-0 duration-500 ease-in-out">
 
-  <div id="bbox" class="fixed transition transform delay-0 duration-500 ease-in-out">
-    <div id="scanBox" data-qr-scan-target="scanBox" class="w-full">
+    <div class="absolute top-7 left-7">
+      <button data-action="click->qr-scan#toggleScanWindow">
+        <%= image_tag("cross_icon_white", class:"scale-125") %>
+      </button>
     </div>
+
+    <div id="scanBox" data-qr-scan-target="scanBox" class="w-60"></div>
+
+    <div class="flex flex-row w-60 justify-between items-center px-5">
+
+      <div class="flex justify-center items-center size-14 rounded-full p-2 bg-white">
+        <%= icon("fa-regular", "keyboard", class:"fa-2xl", style:"color: black") %>
+      </div>
+
+      <div class="flex justify-center items-center size-14 rounded-full p-2 bg-white">
+        <%= image_tag("flashlight.svg")%>
+      </div>
+    </div>
+
   </div>
 
 </div>

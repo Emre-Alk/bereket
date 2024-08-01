@@ -13,16 +13,15 @@ export default class extends Controller {
     const camera = { facingMode: "user" } // choose a camera by applying a constrain
     const config = {
       fps: 10, // frames per second
-      qrbox: { width: 250, height: 250 } // scanning box size
+      qrbox: { width: 150, height: 150 } // scanning box size
     }
     const qrCodeSuccessCallback = (decodedText, decodedResult) => {
       /* handle success */
       // TODO: redirect to url of qrcode
       console.log('decodedText', decodedText);
       console.log('decodedResult', decodedResult);
-      this.qrReader.stop()
-
-      this.openScanWindow()
+      this.qrReader.stop() // stop scanning
+      this.toggleScanWindow() // close scan window
     }
 
     // start scanning..
@@ -35,7 +34,6 @@ export default class extends Controller {
       // TODO: insert div with err displayed
       // with 'back' btn enabled
     })
-    this.openScanWindow() // how to lauch animation as same time as start() promise succeeds ? ( start().then( this.openScanWindow() ) don't do it )
   }
 
 
@@ -43,15 +41,20 @@ export default class extends Controller {
     this.scanBtnTarget.classList.toggle('hidden')
   }
 
-  openScanWindow() {
+  toggleScanWindow() {
     console.log('open window now')
-    // hide scan btn
+    // toggle scan btn
     this.toggleScanBtn()
     const parentBox = document.getElementById("bbox")
-    if (parentBox.classList.contains('inset-y-0')) {
-      parentBox.classList.remove('inset-y-0', 'inset-x-0','bg-blue-300')
+    if (!parentBox.classList.contains('hidden')) {
+      parentBox.classList.remove('inset-0')
+      parentBox.classList.add('hidden')
+      this.qrReader.stop() // stop scanning
     } else {
-      parentBox.classList.add('inset-y-0', 'inset-x-0','bg-blue-300')
+      parentBox.classList.remove('hidden')
+      parentBox.classList.add('inset-0')
+      this.scan()
+       // how to lauch animation as same time as start() promise succeeds ? ( start().then( this.toggleScanWindow() ) don't do it )
     }
   }
 
