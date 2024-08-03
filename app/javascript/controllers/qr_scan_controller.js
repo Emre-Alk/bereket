@@ -6,10 +6,10 @@ export default class extends Controller {
 
   connect() {
     console.log("hello scan")
-    this.qrReader = new Html5Qrcode("scanBox")
   }
 
   scan() {
+    this.qrReader = new Html5Qrcode("scanBox")
     const camera = { facingMode: "user" } // choose a camera by applying a constrain
     const config = {
       fps: 10, // frames per second
@@ -21,6 +21,9 @@ export default class extends Controller {
       console.log('decodedText', decodedText);
       console.log('decodedResult', decodedResult);
       this.qrReader.stop() // stop scanning
+      const url = decodedText.split('http://192.168.1.168:3000/')
+      const newUrl = `http://localhost:3000${url[1]}`
+      window.location.href = newUrl
       this.toggleScanWindow() // close scan window
     }
 

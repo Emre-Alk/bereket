@@ -1,10 +1,18 @@
 class DonationsController < ApplicationController
+  skip_before_action :authenticate_user!
+
   def index
   end
 
   def new
     @donation = Donation.new
     @place = Place.find(params[:place_id])
+
+    # this line is executed instead of everything else following only if condition is true
+    return @amount_option = [50, 20, 30, 10].sort! unless user_signed_in?
+
+    # else, these lines are executed instead
+    @amount_option = [50, 20, 30]
     @donator = current_user.donator
     # create an array of all the amounts donated
     array_all_amounts = @donator.donations&.map(&:amount)
@@ -12,8 +20,7 @@ class DonationsController < ApplicationController
     # then, filter the [key, value] for which value (ie, occurence) is max
     # finally, extract the corresponding key
     @frequent_amount = array_all_amounts.tally.max_by { |_key, value| value }[0] / 100
-    @frequent_amount = @frequent_amount.ceil ||= 10
-    @amount_option = [50, 20, 30]
+    @frequent_amount = @frequent_amount&.ceil ||= 10
     @amount_option.push(@frequent_amount)
     @amount_option.sort!
   end

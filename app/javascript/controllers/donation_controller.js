@@ -123,8 +123,13 @@ export default class extends Controller {
     // this.hideConfirmation()
     confirmBox.classList.remove("-translate-y-full")
     this.overlay.classList.add('hidden')
+    if (this.donatorIdValue) {
+      // logic when donator exists
+    } else {
+      // logic when donator do not exists
+    }
 
-    this.checkout()
+    // this.checkout()
   }
 
 

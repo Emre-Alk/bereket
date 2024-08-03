@@ -1,5 +1,4 @@
 class Assos::PlacesController < AssosController
-
   def index
     # list all the current asso's places
     @places = current_user.asso.places
@@ -27,11 +26,16 @@ class Assos::PlacesController < AssosController
     @place = Place.new(set_place_params)
     @place.asso = current_user.asso
 
-    # next change url to right location once donation path are coded
-    url = "url to place's donation page"
-    @place.qr_code = url
-
     if @place.save
+      # next change url to right location once donation path are coded
+      if Rails.env.production?
+        url = new_place_donation_url(@place) # to be checked if DNS manu mano required
+        @place.update!(qr_code: url.to_s)
+      else
+        url = "http://192.168.1.168:3000#{new_place_donation_path(@place)}"
+        @place.update!(qr_code: url)
+      end
+
       # ----------if want Qr code in SVG--------------------
       attach_qr_code_svg(@place, @place.qr_code)
       # ----------if want Qr code in PNG--------------------

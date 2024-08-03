@@ -1,4 +1,11 @@
-<div data-controller="donation" data-donation-donator-id-value="<%= @donator.id %>" data-donation-place-id-value="<%= @place.id %>" class="flex flex-col h-screen items-center justify-start gap-y-5">
+
+<div class="flex justify-start mt-7 ml-7">
+  <%= link_to :back do %>
+    <%= icon('fa-solid', 'arrow-left', class:'fa-2xl') %>
+  <% end %>
+</div>
+
+<div data-controller="donation" data-donation-donator-id-value="<%= @donator ? @donator.id : nil %>" data-donation-place-id-value="<%= @place.id %>" class="flex flex-col items-center justify-start gap-y-5">
 
   <div class="flex flex-row gap-3 justify-center items-baseline">
     <%= icon("fa-solid", "gift", class:"fa-xl")%>

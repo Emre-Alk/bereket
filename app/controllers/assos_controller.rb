@@ -1,7 +1,6 @@
 class AssosController < ApplicationController
   # authenticate user is devise callback helper for authentication
   # is donator is my custom callback helper for authorization
-  before_action :authenticate_user!
   before_action :is_asso?
 
   def dashboard
