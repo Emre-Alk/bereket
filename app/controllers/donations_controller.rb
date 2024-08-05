@@ -1,5 +1,6 @@
 class DonationsController < ApplicationController
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:new]
+  # skip auth (only new), apply auth by redirection inside new
 
   def index
   end
@@ -8,7 +9,7 @@ class DonationsController < ApplicationController
     @donation = Donation.new
     @place = Place.find(params[:place_id])
 
-    # this line is executed instead of everything else following only if condition is true
+    # this line is executed instead of everything else following unless condition is true
     return @amount_option = [50, 20, 30, 10].sort! unless user_signed_in?
 
     # else, these lines are executed instead
@@ -23,6 +24,23 @@ class DonationsController < ApplicationController
     @frequent_amount = @frequent_amount&.ceil ||= 10
     @amount_option.push(@frequent_amount)
     @amount_option.sort!
+
+    respond_to do |format|
+      format.html
+      format.json do
+        if @place
+          # if motivated, put new.html.erb into a partial and send it as json with partial: render_to_string()
+          render json: {
+            message: 'resource found',
+            url: new_place_donation_url(@place)
+          }
+          # else
+          # render json: { message: 'resource does not exists' } # or change by a partial for non existing resource.
+          # then modify JS how data is handled
+        end
+      end
+    end
+
   end
 
   # def create

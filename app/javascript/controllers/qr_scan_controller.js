@@ -8,6 +8,37 @@ export default class extends Controller {
     console.log("hello scan")
   }
 
+  fetchPlaceDonationNew(path, qrText) {
+    const details = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content"),
+      }
+    }
+    fetch(path, details)
+    .then(response => {
+      if (response.ok) {
+        response.json()
+        .then((data) => {
+          console.log(data.message)
+          window.location.href = data.url
+        })
+      } else {
+        console.log('resource does not exists')
+        alert("Qr code non valide ou la page n'existe plus") // this might not work once go PWA
+        // change by a partial from server or insert div for error
+        // or insert div
+        // const errorDiv = document.createElement('div')
+        // errorDiv.innerText = `QR code non valide ou la page n'existe plus. QR code: ${qrText}`
+        // or import gem sweetalert
+      }
+    })
+  }
+
   scan() {
     this.qrReader = new Html5Qrcode("scanBox")
     const camera = { facingMode: "user" } // choose a camera by applying a constrain
@@ -21,9 +52,12 @@ export default class extends Controller {
       console.log('decodedText', decodedText);
       console.log('decodedResult', decodedResult);
       this.qrReader.stop() // stop scanning
-      const url = decodedText.split('http://192.168.1.168:3000/')
-      const newUrl = `http://localhost:3000${url[1]}`
-      window.location.href = newUrl
+      // start ajax
+      const url = decodedText.split('http://192.168.1.168:3000/') // these lines are to be changed once domain name available
+      const newUrl = `http://localhost:3000${url[1]}` // these lines are to be changed once domain name available
+      this.fetchPlaceDonationNew(newUrl, decodedText)
+
+      // end ajax
       this.toggleScanWindow() // close scan window
     }
 
