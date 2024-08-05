@@ -1,10 +1,19 @@
 class DonationsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:new]
+  # skip auth (only new), apply auth by redirection inside new
+
   def index
   end
 
   def new
     @donation = Donation.new
     @place = Place.find(params[:place_id])
+
+    # this line is executed instead of everything else following unless condition is true
+    return @amount_option = [50, 20, 30, 10].sort! unless user_signed_in?
+
+    # else, these lines are executed instead
+    @amount_option = [50, 20, 30]
     @donator = current_user.donator
     # create an array of all the amounts donated
     array_all_amounts = @donator.donations&.map(&:amount)
@@ -12,10 +21,26 @@ class DonationsController < ApplicationController
     # then, filter the [key, value] for which value (ie, occurence) is max
     # finally, extract the corresponding key
     @frequent_amount = array_all_amounts.tally.max_by { |_key, value| value }[0] / 100
-    @frequent_amount = @frequent_amount.ceil ||= 10
-    @amount_option = [50, 20, 30]
+    @frequent_amount = @frequent_amount&.ceil ||= 10
     @amount_option.push(@frequent_amount)
     @amount_option.sort!
+
+    respond_to do |format|
+      format.html
+      format.json do
+        if @place
+          # if motivated, put new.html.erb into a partial and send it as json with partial: render_to_string()
+          render json: {
+            message: 'resource found',
+            url: new_place_donation_url(@place)
+          }
+          # else
+          # render json: { message: 'resource does not exists' } # or change by a partial for non existing resource.
+          # then modify JS how data is handled
+        end
+      end
+    end
+
   end
 
   # def create

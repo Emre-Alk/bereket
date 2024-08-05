@@ -1,6 +1,6 @@
 <!--header - start -->
 <div class="fixed top-0 inset-x-0 bg-neutral-100">
-  <div class="flex flex-row justify-between items-center pl-5 pr-7 pt-6 pb-2">
+  <div class="flex flex-row justify-between items-center pl-7 pr-7 pt-6 pb-2">
       <p>ici mon logo</p>
       <!-- nav - start -->
       <div data-controller="navbar"> <!-- stimulus ctrl to toggle button -->
@@ -84,13 +84,12 @@
       </div>
     </div>
   <!--derniers dons - end -->
+
+
   <!--button scan - start -->
-  <%= link_to "#" do %>
-    <div class="flex flex-row justify-center items-center gap-x-4 py-2 bg-black rounded-2xl">
-      <%= image_tag("scan_icon.svg") %>
-      <p class="tracking-wider text-white text-xl">Faire un don</p>
-    </div>
-  <% end %>
+  <%= render partial: "donators/scan"%>
   <!--button scan - end -->
+
+
 </div>
 <!--section - end -->
