@@ -26,10 +26,10 @@ class DonationsController < ApplicationController
     @amount_option.sort!
 
     respond_to do |format|
-      format.html
+      format.html # this means for all HTTP request with 'accept type html' header, just respond with the usual html view.
       format.json do
         if @place
-          # if motivated, put new.html.erb into a partial and send it as json with partial: render_to_string()
+          # if motivated, put donations>new.html.erb into a partial and send it as json with partial: render_to_string()
           render json: {
             message: 'resource found',
             url: new_place_donation_url(@place)
@@ -40,7 +40,6 @@ class DonationsController < ApplicationController
         end
       end
     end
-
   end
 
   # def create

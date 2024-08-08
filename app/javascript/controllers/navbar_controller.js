@@ -30,14 +30,14 @@ export default class extends Controller {
     if (navOpen) {
       // touch events
       document.addEventListener('touchstart', this.touched)
-      this.element.addEventListener('touchstart', this.noPageScrollOnNav)
+      this.element.addEventListener('touchmove', this.noPageScrollOnNav)
 
       //mouse events
       document.addEventListener('click', this.touched)
     } else {
       // touch events
       document.removeEventListener('touchstart', this.touched)
-      this.element.removeEventListener('touchstart', this.noPageScrollOnNav)
+      this.element.removeEventListener('touchmove', this.noPageScrollOnNav)
 
       // mouse events
       document.removeEventListener('click', this.touched)
@@ -49,6 +49,7 @@ export default class extends Controller {
   }
 
   touched(event) {
+    console.log(event.target);
     const touchOut = !this.element.contains(event.target)
     if (touchOut) {
       this.toggle()

@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get 'qr_codes/new' # is this still useful ?
   get 'qr_codes/create' # is this still useful ?
 
+
+
   devise_for :users
 
   # ======== Pages ========
@@ -42,6 +44,8 @@ Rails.application.routes.draw do
     resources :donations, only: %i[index]
   end
 
+  # this is the route for the donator to generate his cerfa completed
+  get 'pdf', to: 'pdfs#generate', as: :pdf_preview
   # ======== donations ========
   # create a donation between a donator and a place
   resource :checkout, only: %i[create]
