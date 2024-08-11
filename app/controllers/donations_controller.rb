@@ -3,6 +3,33 @@ class DonationsController < ApplicationController
   # skip auth (only new), apply auth by redirection inside new
 
   def index
+    # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])
+    # @donations = user.donations
+    if current_user.donator?
+      donator = Donator.find(params[:donator_id])
+      @donations = donator.donations
+    elsif current_user.asso?
+      asso = Asso.find(params[:asso_id])
+      # we need to retrieve all donations for an asso collected via all its places
+      # associations: from 'donations table' join to 'place table', then join to 'asso table', then filter asso by id
+      # use of includes to prevent N+1 query and preload joined tables
+      # Here's why both place and asso are specified:
+      # Donation Belongs to Place:
+      # The donations table has a place_id Fkey, so you can join the donations table with the places table via this key.
+      # Place Belongs to Asso:
+      # The places table has an asso_id Fkey, so you can join the places table with the assos table using this key.
+      # To Filter by Asso:
+      # If you want to filter donations by an attribute in asso (like asso_id),
+      # you need to traverse both associations (Donation -> Place -> Asso).
+      # That's why you need to include both place and asso in the joins
+
+      # writing .includes(:place, :asso) like that, results in two separate joins (which is a solution):
+      # join 'donation' to 'place'
+      # join 'donation' to 'asso' (which give error because it requires a direct association)
+      @donations = Donation.includes(place: :asso).where(places: { asso_id: asso.id })
+    else
+      render plain: "role not identified"
+    end
   end
 
   def new
@@ -26,10 +53,10 @@ class DonationsController < ApplicationController
     @amount_option.sort!
 
     respond_to do |format|
-      format.html
+      format.html # this means for all HTTP request with 'accept type html' header, just respond with the usual html view.
       format.json do
         if @place
-          # if motivated, put new.html.erb into a partial and send it as json with partial: render_to_string()
+          # if motivated, put donations>new.html.erb into a partial and send it as json with partial: render_to_string()
           render json: {
             message: 'resource found',
             url: new_place_donation_url(@place)
@@ -40,7 +67,6 @@ class DonationsController < ApplicationController
         end
       end
     end
-
   end
 
   # def create

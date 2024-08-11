@@ -2,7 +2,7 @@ class AssoType < ApplicationRecord
   VALUES = [
     "organismes d'intérêt général ou reconnu d'utilité publique établis en France",
     "organismes d'aide aux personnes en difficulté",
-    "Fondation du Patrimoine pour la conservation du patrimoine immobilier religieux"
+    "Fondation du patrimoine pour la conservation du patrimoine immobilier religieux"
   ].freeze
 
   validates :name, presence: true, inclusion: { in: VALUES }

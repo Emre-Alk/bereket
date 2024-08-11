@@ -79,3 +79,7 @@ gem "font-awesome-sass", "~> 6.1"
 gem "stripe", "~> 12.3"
 
 gem "dotenv-rails", "~> 3.1", groups: %i[development test]
+
+gem "prawn", "~> 2.5"
+
+gem "combine_pdf", "~> 1.0"
