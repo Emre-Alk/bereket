@@ -1,0 +1,50 @@
+<!-- TODO: review the design maybe use a table element. see if can DRY with a partial withing a table (a pdf btn is needed)-->
+
+<div class="bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
+  <% @donations.each do |don| %>
+    <% if current_user.donator? %>
+      <div class="bg-white flex flex-row px-2 items-center">
+
+        <div class="flex flex-row items-center pt-2 gap-4 w-full">
+          <div class="bg-white">
+            <%= image_tag( don.place.place_image.attached? ? don.asso.profile_image : "default_avatar" , class:'size-14 rounded-full')  %>
+          </div>
+
+          <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+              <p><%= don.place.name %></p>
+              <p><%= don.amount / 100.00 %> €</p>
+              <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
+          </div>
+        </div>
+
+
+        <div class="justify-self-end">
+          <%= link_to "Justificatif", pdf_preview_path, class: "bg-black text-white" %>
+        </div>
+
+      </div>
+
+    <% else %>
+      <div class="bg-white flex flex-row px-2 items-center">
+
+        <div class="flex flex-row items-center pt-2 gap-4 w-full">
+          <div class="bg-white">
+              <%= image_tag( don.donator.profile_image.attached? ? don.donator.profile_image : "default_avatar" , class:'size-14 rounded-full')  %>
+          </div>
+
+          <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+            <p><%= don.donator.first_name %> <%= don.donator.last_name %></p>
+            <p><%= don.amount / 100.00 %> €</p>
+            <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
+          </div>
+        </div>
+
+      </div>
+    <% end %>
+
+
+  <% end %>
+
+
+
+</div>

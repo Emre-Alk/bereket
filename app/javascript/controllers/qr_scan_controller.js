@@ -6,6 +6,7 @@ export default class extends Controller {
 
   connect() {
     console.log("hello scan")
+    // this.qrReader = new Html5Qrcode("scanBox") pas nessaire d'instancier dès l'ouverture de la page dashboard
   }
 
   fetchPlaceDonationNew(path, qrText) {
@@ -96,6 +97,6 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.qrReader.stop().catch(console.error)
+    // this.qrReader.stop().catch(console.error)
   }
 }

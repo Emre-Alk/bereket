@@ -8,7 +8,7 @@
           <%= icon("fa-solid", "bars", class:"fa-lg")%>
         </button>
         <div>
-          <%= render partial: "donators/navbar"%>
+          <%= render partial: "donators/navbar", locals: {donator: @donator} %>
         </div>
       </div>
       <!-- nav - end -->
@@ -63,23 +63,7 @@
       <p class="roboto-thin text-slate-800 text-base">Derniers dons</p>
       <div class="bg-white flex flex-col h-64 gap-2 divide-y divide-black/30 rounded-lg p-1 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
         <!--start-->
-        <% @sorted_donations.first(10).each do |don|%>
-          <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
-            <div class="bg-white">
-              <% if don.place.place_image.attached? %>
-                <%= image_tag(don.asso.profile_image, class:'size-14 rounded-full') %>
-              <% else %>
-                <%= image_tag("default_avatar", class:"size-14 rounded-full") %>
-              <% end %>
-            </div>
-
-            <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
-              <p><%= don.place.name %></p>
-              <p><%= don.amount / 100.00 %> €</p>
-              <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
-            </div>
-          </div>
-        <% end %>
+        <%= render partial: "shared/donations", locals: {donations: @sorted_donations, size: 10} %>
         <!--end-->
       </div>
     </div>

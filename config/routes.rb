@@ -15,7 +15,9 @@ Rails.application.routes.draw do
 
   # this line sends the user to the asso's dashboard view in views/assos/dashboard.html.erb
   get "/assos", to: "assos#dashboard", as: :asso_root
-  resources :assos, only: %i[new create]
+  resources :assos, only: %i[new create] do
+    resources :donations, only: %i[index]
+  end
 
   # this line is to create a portal dedicated to the asso users
   namespace :assos do

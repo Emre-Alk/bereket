@@ -22,9 +22,12 @@ export default class extends Controller {
     // ex. 'this.element' will give the html of the controller: <div> data-controller="navbar" </div>
 
     this.touched = this.touched.bind(this)
+    console.log('a');
   }
 
   toggle() {
+    console.log('c');
+
     this.menuTarget.classList.toggle("-translate-x-full")
     let navOpen = this.menuTarget.classList.contains("-translate-x-full")
     if (navOpen) {
@@ -55,5 +58,8 @@ export default class extends Controller {
       this.toggle()
       this.element.removeEventListener('touchstart', (e) => e.preventDefault())
     }
+    console.log('b')
+    // debug: qd clique sur lien navbar, et fait précédent, la navbar reste ouverte et event s'est barré
+
   }
 }
