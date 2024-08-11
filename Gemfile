@@ -2,6 +2,10 @@ source "https://rubygems.org"
 
 ruby "3.1.2"
 
+# fixing from web since couldn't push on heroku
+# ffi-1.17.0-x86_64-linux requires rubygems version >= 3.3.22, which is incompatible with the current version, 3.3.7
+gem "ffi", "< 1.17.0"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.2"
 
