@@ -36,7 +36,7 @@ user_donator = User.create!(
 )
 
 puts "creating asso_type..."
-AssoType.create!(name: "organismes d'intérêt général ou reconnu d'utilité publique établis en France")
+asso_type = AssoType.create!(name: "organismes d'intérêt général ou reconnu d'utilité publique établis en France")
 
 puts "creating asso and donator..."
 asso = Asso.create!(
@@ -44,7 +44,7 @@ asso = Asso.create!(
   code_nra: 'W123456789',
   email: user_asso.email,
   user: user_asso,
-  asso_type_id: 1
+  asso_type_id: asso_type
 )
 # donator is auto created if at registration user chose role as donator
 # donator = Donator.create!(
@@ -55,11 +55,11 @@ asso = Asso.create!(
 # )
 
 puts "creating place_type..."
-PlaceType.create!(name: 'Mosquée')
-PlaceType.create!(name: 'Eglise')
+mosque = PlaceType.create!(name: 'Mosquée')
+eglise = PlaceType.create!(name: 'Eglise')
 
 puts "creating place..."
-place = Place.create!(name: 'test', address: 'test', street_no: 'test', city: 'test', country: 'test', asso: , place_type_id: 2)
+place = Place.create!(name: 'test', address: 'test', street_no: 'test', city: 'test', country: 'test', asso: , place_type_id: eglise)
 
 puts "creating donations ..."
 date = [1.day.from_now, 2.days.from_now, 3.days.from_now, 4.days.from_now, Date.today]
