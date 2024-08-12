@@ -1,13 +1,22 @@
 
 puts "destroying..."
 
+# User.destroy_all
+# AssoType.destroy_all
+# Asso.destroy_all
+# Donator.destroy_all
+# PlaceType.destroy_all
+# Place.destroy_all
+# Donation.destroy_all
 Donation.destroy_all
-User.destroy_all
-AssoType.destroy_all
-Asso.destroy_all
-Donator.destroy_all
-PlaceType.destroy_all
 Place.destroy_all
+PlaceType.destroy_all
+Asso.destroy_all
+AssoType.destroy_all
+Donator.destroy_all
+User.destroy_all
+
+
 
 puts "start seeding..."
 puts "creating users..."
