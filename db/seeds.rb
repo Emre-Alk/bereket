@@ -11,8 +11,20 @@ Donation.destroy_all
 
 puts "start seeding..."
 puts "creating users..."
-user_asso = User.create!(email: "asso@asso.com", password: '123456', role: 'asso')
-user_donator = User.create!(email: "donator@donator.com", password: '123456', role: 'donator')
+user_asso = User.create!(
+  email: "asso@asso.com",
+  password: '123456',
+  first_name: 'MonAsso',
+  last_name: 'MonAsso',
+  role: 'asso'
+)
+user_donator = User.create!(
+  email: "donator@donator.com",
+  password: '123456',
+  first_name: 'FNtest',
+  last_name: 'LNtest',
+  role: 'donator'
+)
 
 puts "creating asso_type..."
 AssoType.create!(name: "organismes d'intérêt général ou reconnu d'utilité publique établis en France")
@@ -23,9 +35,10 @@ donator = Donator.create!(first_name: 'FNtest', last_name: 'LNtest', email: user
 
 puts "creating place_type..."
 PlaceType.create!(name: 'Mosquée')
+PlaceType.create!(name: 'Eglise')
 
 puts "creating place..."
-place = Place.create!(name: 'malik', address: 'test', street_no: 'test', city: 'test', country: 'test', asso: , place_type_id: 1)
+place = Place.create!(name: 'test', address: 'test', street_no: 'test', city: 'test', country: 'test', asso: , place_type_id: 2)
 
 puts "creating donations ..."
 date = [1.day.from_now, 2.days.from_now, 3.days.from_now, 4.days.from_now, Date.today]
