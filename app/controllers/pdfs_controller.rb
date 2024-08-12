@@ -3,7 +3,7 @@ class PdfsController < ApplicationController
     # get all the associations the donator donated to
     # per association, sum the donations
     # pack all cerfa per association into one pdf
-
+    raise
     donator = current_user.donator
 
     # for an individual donation
@@ -19,7 +19,6 @@ class PdfsController < ApplicationController
     donations = donator.donations
     donations_per_place = donations.group_by(&:place)
     donations_per_asso = donations_per_place.map { |place, dons| [place.asso, dons.sum(&:amount)] }
-    raise
 
     # creating a data hash object that gathers all data that will fill the placeholders in the cerfa template.
     # allow receipt:
