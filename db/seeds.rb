@@ -76,7 +76,7 @@ date = [1.day.from_now, 2.days.from_now, 3.days.from_now, 4.days.from_now, Date.
   datepicker = date.sample
   index = date.index(datepicker)
   Donation.create!(
-    donator:,
+    donator: user_donator,
     place:,
     amount: money,
     occured_on: datepicker
