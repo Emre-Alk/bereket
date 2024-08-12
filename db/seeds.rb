@@ -30,8 +30,20 @@ puts "creating asso_type..."
 AssoType.create!(name: "organismes d'intérêt général ou reconnu d'utilité publique établis en France")
 
 puts "creating asso and donator..."
-asso = Asso.create!(name: 'assotest', code_nra: 'W123456789', email: user_asso.email, user: user_asso, asso_type_id: 1)
-donator = Donator.create!(first_name: 'FNtest', last_name: 'LNtest', email: user_donator.email, user: user_donator)
+asso = Asso.create!(
+  name: 'assotest',
+  code_nra: 'W123456789',
+  email: user_asso.email,
+  user: user_asso,
+  asso_type_id: 1
+)
+# donator is auto created if at registration user chose role as donator
+# donator = Donator.create!(
+#   first_name: 'FNtest',
+#   last_name: 'LNtest',
+#   email: user_donator.email,
+#   user: user_donator
+# )
 
 puts "creating place_type..."
 PlaceType.create!(name: 'Mosquée')
@@ -46,7 +58,7 @@ date = [1.day.from_now, 2.days.from_now, 3.days.from_now, 4.days.from_now, Date.
   money = rand(10..30) * 100
   datepicker = date.sample
   index = date.index(datepicker)
-  Donation.create!(donator: , place: , amount: money, occured_on: datepicker)
+  Donation.create!(donator:, place:, amount: money, occured_on: datepicker)
   date.delete_at(index)
 end
 
