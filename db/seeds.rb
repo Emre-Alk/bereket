@@ -72,7 +72,7 @@ place = Place.create!(
 )
 
 puts "creating donations ..."
-date = [1.day.from_now, 2.days.from_now, 3.days.from_now, 4.days.from_now, Date.today]
+date = [1.day.ago, 2.days.ago, 3.days.ago, 4.days.ago, Date.today]
 5.times do
   money = rand(10..30) * 100
   datepicker = date.sample
