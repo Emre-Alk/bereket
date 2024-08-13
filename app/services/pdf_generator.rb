@@ -39,10 +39,22 @@ class PdfGenerator
   private
 
   def generate_dynamic_pdf
-    # margin: [37, 37, 42, 42]
-    # x_corr = -30
-    # y_corr = 483
-    # [383 + 40, 695 - 5]
+    # how to locate placeholder on template and convert it here for dynamic to match template
+    # template:
+    # origin top left corner
+    # x to left
+    # y towards bottom. total distance 842 pts
+    # dynamic prawn pdf:
+    # origin bottom left corner
+    # x to left (same as template) but shilfted towards left by 36 pts. total distance to paper edge 528 pts
+    # y towards top (inverted compare to template) + shifted towards top by 38 pts. total distance to paper edge 804pts
+    # how to - steps in order:
+    # 1 => measure on template the coordinates (left and top) (ie, x and y of template)
+    # 2 get x for dynamic => x(d) = x(t) - 36
+    # 3 get y for dynamic => y(d) = 804 - y(t) + 9 (9 is the height of the police)
+    # 4 => finally make adjustments
+
+
     # Prawn to generate (library method) a pdf that will be used as a 'calque'
     Prawn::Document.generate("temporary.pdf") do |pdf|
       # for each data entry, the coordinates of the corresponding placeholder to be filled is passed.

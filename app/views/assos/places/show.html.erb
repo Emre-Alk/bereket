@@ -30,8 +30,8 @@
   <!-- display qr code if logic is svg w/ method "attach_qr_code_svg" -->
   <div>
     <p><strong>place Qrcode:</strong></p>
-    <div class="bg-red-300 size-fit scale-50">
-      <%= render partial: "qr_code", locals: { place: @place } %>
+    <div class="size-fit scale-50">
+      <%= render partial: "qr_code", locals: { qr_svg: @qr_svg} %>
     </div>
   </div>
 </div>

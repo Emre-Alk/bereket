@@ -11,7 +11,8 @@ class Assos::PlacesController < AssosController
     # qr code start
     # -----------SVG with active storage attach to model instance -> works ---------------
     # -----------to be removed if use Qr code PNG instead + modify view also
-    @qr_dwl = @place.qr_image.download
+    # @qr_dwl = @place.qr_image.download # instead, generate on the fly (to de-comment otherwise + see create)
+    @qr_svg = qr_generate(@place, @place.qr_code)
     # qr code finish
   end
 
@@ -37,7 +38,7 @@ class Assos::PlacesController < AssosController
       end
 
       # ----------if want Qr code in SVG--------------------
-      attach_qr_code_svg(@place, @place.qr_code)
+      # attach_qr_code_svg(@place, @place.qr_code) # instead generate on the fly (to de-comment otherwise + see show )
       # ----------if want Qr code in PNG--------------------
       # attach_qr_code_png(@place, @place.qr_code)
 
@@ -58,7 +59,8 @@ class Assos::PlacesController < AssosController
     params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_type_id, :qr_code, :place_image)
   end
 
-  def attach_qr_code_svg(place, url)
+  # if don't generate qr on the fly (comment method and un comment attach_qr_code_svg)
+  def qr_generate(place,url)
     qrcode = RQRCode::QRCode.new(url)
     svg = qrcode.as_svg(
       color: "000",
@@ -67,19 +69,30 @@ class Assos::PlacesController < AssosController
       standalone: true,
       use_path: true
     )
-
-    # tune options to get right size see: https://github.com/whomwah/rqrcode#as-svg
-
-    Tempfile.create(['qr_image', '.svg']) do |file|
-      file.write(svg)
-      file.rewind
-      place.qr_image.attach(
-        io: file,
-        filename: 'qr_image.svg',
-        content_type: 'image/svg+xml'
-      )
-    end
   end
+
+  # def attach_qr_code_svg(place, url)
+  #   qrcode = RQRCode::QRCode.new(url)
+  #   svg = qrcode.as_svg(
+  #     color: "000",
+  #     shape_rendering: "crispEdges",
+  #     module_size: 11,
+  #     standalone: true,
+  #     use_path: true
+  #   )
+
+  #   # tune options to get right size see: https://github.com/whomwah/rqrcode#as-svg
+
+  #   Tempfile.create(['qr_image', '.svg']) do |file|
+  #     file.write(svg)
+  #     file.rewind
+  #     place.qr_image.attach(
+  #       io: file,
+  #       filename: 'qr_image.svg',
+  #       content_type: 'image/svg+xml'
+  #     )
+  #   end
+  # end
 
   def attach_qr_code_png(place, url)
     qrcode = RQRCode::QRCode.new(url)
