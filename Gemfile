@@ -87,3 +87,5 @@ gem "dotenv-rails", "~> 3.1", groups: %i[development test]
 gem "prawn", "~> 2.5"
 
 gem "combine_pdf", "~> 1.0"
+
+gem "humanize", "~> 3.1"

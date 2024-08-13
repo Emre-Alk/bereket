@@ -64,6 +64,7 @@ place = Place.create!(
   name: 'test',
   address: 'test',
   street_no: 'test',
+  zip_code: '69000',
   city: 'test',
   country: 'test',
   asso:,

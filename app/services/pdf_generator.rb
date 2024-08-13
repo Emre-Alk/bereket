@@ -9,7 +9,6 @@ class PdfGenerator
   end
 
   def generate
-
     # Step 1: Generate a new PDF with dynamic content
     generate_dynamic_pdf
 
@@ -17,7 +16,7 @@ class PdfGenerator
     template_pdf = CombinePDF.load(TEMPLATE_PATH)
 
     # Step 3: Load the newly generated dynamic PDF
-    dynamic_pdf = CombinePDF.load("temp.pdf")
+    dynamic_pdf = CombinePDF.load("temporary.pdf")
 
     # some checking that objects exist
     puts "Template PDF pages: #{template_pdf.pages.count}"
@@ -35,20 +34,43 @@ class PdfGenerator
 
     # Step 5: Save the combined PDF.
     template_pdf.to_pdf
-
-
   end
 
   private
 
   def generate_dynamic_pdf
-
+    # margin: [37, 37, 42, 42]
+    # x_corr = -30
+    # y_corr = 483
+    # [383 + 40, 695 - 5]
     # Prawn to generate (library method) a pdf that will be used as a 'calque'
-    Prawn::Document.generate("temp.pdf") do |pdf|
+    Prawn::Document.generate("temporary.pdf") do |pdf|
       # for each data entry, the coordinates of the corresponding placeholder to be filled is passed.
-      pdf.draw_text "user name: #{@data[:user_name]}", at: [419, 112]
-      pdf.draw_text "user mail: #{@data[:user_email]}", at: [0, 0]
-      # Add more text or images as needed
+      pdf.text_box @data[:receipt], at: [423, 692]
+      pdf.text_box @data[:asso][:identity][:name], at: [130, 645]
+      pdf.text_box @data[:asso][:identity][:nra], at: [159, 625]
+      pdf.text_box @data[:asso][:place][:street_no], at: [14, 598]
+      pdf.text_box @data[:asso][:place][:address], at: [98, 598]
+      pdf.text_box @data[:asso][:place][:zip_code], at: [71, 584]
+      pdf.text_box @data[:asso][:place][:city], at: [204, 584]
+      pdf.text_box @data[:asso][:place][:country], at: [38, 572]
+      pdf.text_box @data[:asso][:identity][:object], at: [34, 560]
+      # tick some boxes
+      pdf.fill_rectangle [-1, 413], 6, 6.2 # table select row
+      pdf.fill_circle [31.5, 460.7], 3 # 1st row, 'Association loi 1901'
+      # new page
+      pdf.start_new_page
+      pdf.text_box @data[:donator][:first_name], at: [37, 565]
+      pdf.text_box @data[:donator][:last_name], at: [323, 565]
+      pdf.text_box @data[:donation][:amount].to_s, at: [31, 452] # error of text_box when integer/float type
+      pdf.text_box "#{@data[:donation][:amount_human]} euros", at: [322, 452]
+      pdf.text_box @data[:donation][:occured_on], at: [150, 432]
+      pdf.text_box @data[:today], at: [274, 176]
+      # tick some boxes
+      pdf.fill_rectangle [64.2, 364], 6, 6.2 # '200 du CGI'
+      pdf.fill_rectangle [-1, 327], 6, 6.2 # 'Acte authentique'
+      pdf.fill_rectangle [-1, 290], 6, 6.2 # 'Numéraire'
+      pdf.fill_rectangle [255.2, 222], 6, 6.2 # 'Virement, prélèvement, carte bancaire'
       # To do: add all data required as well as a 'cachet' and 'scaned signature' of the asso
     end
   end
