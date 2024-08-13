@@ -31,7 +31,9 @@
     </div>
   </div>
 
-  <div class="w-fit" >
-    <%= render partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite } unless current_user.asso? %>
-  </div>
+  <% if current_user && current_user.donator? %>
+    <div class="w-fit" >
+      <%= render partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite } %>
+    </div>
+  <% end %>
 </div>
