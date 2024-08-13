@@ -19,7 +19,8 @@
 
 
         <div class="justify-self-end">
-          <%= link_to "Justificatif", pdf_preview_path(don.id), class: "bg-black text-white" %>
+          <p><%= don.id %></p>
+          <%= link_to "Justificatif", pdf_preview_path(don_id: don.id), class: "bg-black text-white" %>
         </div>
 
       </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_12_201106) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_13_135501) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -109,6 +109,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_12_201106) do
     t.datetime "updated_at", null: false
     t.bigint "place_type_id", null: false
     t.string "qr_code"
+    t.string "zip_code"
     t.index ["asso_id"], name: "index_places_on_asso_id"
     t.index ["place_type_id"], name: "index_places_on_place_type_id"
   end
