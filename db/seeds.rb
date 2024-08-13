@@ -60,6 +60,7 @@ mosque = PlaceType.create!(name: 'Mosquée')
 eglise = PlaceType.create!(name: 'Eglise')
 
 puts "creating place..."
+
 place = Place.create!(
   name: 'test',
   address: 'test',
@@ -70,6 +71,12 @@ place = Place.create!(
   asso:,
   place_type_id: eglise.id
 )
+if Rails.env.production?
+  qr_code = new_place_donation_url(place)
+else
+  qr_code = "http://192.168.1.168:3000#{new_place_donation_path(@place)}"
+end
+place.update!(qr_code:)
 
 puts "creating donations ..."
 date = [1.day.ago, 2.days.ago, 3.days.ago, 4.days.ago, Date.today]
