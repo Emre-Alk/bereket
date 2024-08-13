@@ -72,9 +72,9 @@ place = Place.create!(
   place_type_id: eglise.id
 )
 if Rails.env.production?
-  qr_code = new_place_donation_url(place)
+  qr_code = "https://appmynewproject-8b21a82c26ce.herokuapp.com/places/#{place.id}/donations/new"
 else
-  qr_code = "http://192.168.1.168:3000#{new_place_donation_path(@place)}"
+  qr_code = "http://192.168.1.168:3000/places/#{place.id}/donations/new"
 end
 place.update!(qr_code:)
 
