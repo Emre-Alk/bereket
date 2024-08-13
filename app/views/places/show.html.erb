@@ -26,12 +26,12 @@
   <!-- display qr code if logic is svg w/ method "attach_qr_code_svg" -->
   <div>
     <p><strong>place Qrcode:</strong></p>
-    <div class="bg-red-300 size-fit scale-50">
+    <div class="size-fit scale-50">
       <%= render partial: "assos/places/qr_code", locals: { place: @place } %>
     </div>
   </div>
 
   <div class="w-fit" >
-    <%= render partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite } %>
+    <%= render partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite } unless current_user.asso? %>
   </div>
 </div>
