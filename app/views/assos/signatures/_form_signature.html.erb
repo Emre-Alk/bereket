@@ -1,0 +1,31 @@
+
+
+<div data-controller="signature" class="flex flex-col">
+
+  <p>Nous avons besoin de votre signature afin que vos donateurs recevoient automatiquement un reçu de don signé.</p>
+  <p>Veuillez signez dans le cadre ci-dessous.</p>
+
+  <div class="flex flex-col mt-5 gap-y-5 w-full">
+
+    <canvas data-signature-target="signaturePad" id="signature-pad" class="signature_pad bg-white border-1 rounded-lg border border-solid border-black" width=400 height=200></canvas>
+
+    <div class="flex flex-row justify-around">
+
+      <button data-action="click->signature#clear" id="clear-signature" class="bg-black text-white px-2 py-1 rounded-lg">
+        Effacer
+      </button>
+
+      <button data-action="click->signature#save" id="save-signature" class="bg-black text-white px-2 py-1 rounded-lg">
+        Enregistrer
+      </button>
+
+    </div>
+  </div>
+
+  <%= form_with(model: asso, url: "/assos/signature") do |form| %>
+    <%= form.hidden_field :signature_data,
+                          data: { signature_target: "signatureData" },
+                          id: 'signature-data' %>
+    <%= form.submit 'Submit' %>
+  <% end %>
+</div>
