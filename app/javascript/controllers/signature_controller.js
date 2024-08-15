@@ -3,50 +3,60 @@ import SignaturePad from "signature_pad"
 
 // Connects to data-controller="signature"
 export default class extends Controller {
-  static targets = ["signaturePad", "signatureData"]
+  static targets = ["canvas", "signatureData", "submitBtn"]
 
   connect() {
     console.log('hello signature');
-    // const canvas = document.getElementById("signature-pad")
-    // const signature = new SignaturePad(canvas)
-    // console.log(signature);
+    this.signaturePad = new SignaturePad(this.canvasTarget)
 
-    // const clearBtn = document.getElementById("clear-signature")
-    // clearBtn.addEventListener(click, (e) => {
-    //   e.preventDefault()
-    //   signature.clear()
-    // })
+    // at page load (t0), resize to handle DPI screens (otherwise pen is shifted)
+    this.resizeCanvas()
+    // add event listener for any resize of the screen from user that could occur later
+    window.addEventListener("resize", this.resizeCanvas.bind(this))
+  }
 
-    // const saveBtn = document.getElementById("save-signature")
-    // saveBtn.addEventListener(click, (e) => {
-    //   e.preventDefault()
-    //   if (signature.isEmpty()) {
-    //     alert("Please provide a signature first.")
-    //   } else {
-    //     const dataURL = signature.toDataURL()
-    //     this.signatureDataTarget.value = dataURL
-    //   }
-    // })
+  disconnect() {
+    window.removeEventListener("resize", this.resizeCanvas.bind(this));
+  }
 
-    if (this.signaturePadTarget) {
-      const canvas = this.signaturePadTarget
-      // canvas.height = canvas.offsetHeight
-      // canvas.width = canvas.offsetWidth
-      window.onresize = this.resizeCanvas(canvas)
-      // this.resizeCanvas(canvas)
-      this.signaturePad = new SignaturePad(canvas)
-      this.signaturePad.clear()
+  resizeCanvas() {
+    // action to handle mobile orientation change
+    // save signature before the resize
+    // draw signature after resize
+    if (this.signaturePad.isEmpty()) {
+      this.resizeSafely()
+    } else {
+      const dataURL = this.signaturePad.toDataURL()
+      this.resizeSafely()
+      this.signaturePad.fromDataURL(dataURL)
     }
   }
 
-  resizeCanvas(canvas) {
-    const ratio =  Math.max(window.devicePixelRatio || 1, 1)
-    console.log(window.devicePixelRatio);
-    console.log('ratio', ratio);
-    canvas.width = canvas.offsetWidth * ratio
-    canvas.height = canvas.offsetHeight * ratio
-    canvas.getContext("2d").scale(ratio, ratio)
-    // this.signaturePad.clear() // otherwise isEmpty() might return incorrect value
+  resizeSafely() {
+    // This is usualy 1 for low DPI and 2 for high DPI screens (or retina)
+    const ratio = Math.max(window.devicePixelRatio || 1, 1)
+
+    // Use the container's width to maintain aspect ratio
+    const containerWidth = this.canvasTarget.parentElement.offsetWidth
+
+    // Set a desired aspect ratio, e.g., 3:1 (width:height)
+    // check mobile orientation to set ratio. large if portrait small if landscape
+    let aspectRatio = 2
+    if (screen.orientation.type === 'landscape-primary') {
+      aspectRatio = 4
+    }
+
+    console.log(aspectRatio);
+    this.canvasTarget.width = containerWidth * ratio
+    this.canvasTarget.height = (containerWidth / aspectRatio) * ratio
+
+    this.canvasTarget.style.width = `${containerWidth}px` // width to 100% of parent container
+    this.canvasTarget.style.height = `${containerWidth / aspectRatio}px`
+
+    // Scale the context to account for high-DPI displays
+    this.canvasTarget.getContext('2d').scale(ratio, ratio)
+    // this.signaturePad.clear() // to avoid isempty return value to be incorrect (see repo). still necessary ?
+
   }
 
   clear(event) {
@@ -63,8 +73,8 @@ export default class extends Controller {
     } else {
       const dataURL = this.signaturePad.toDataURL()
       this.signatureDataTarget.value = dataURL
-      console.log(dataURL);
-      console.log(this.signatureDataTarget.value);
+      console.log('data url', dataURL)
+      console.log('submited value', this.signatureDataTarget.value)
     }
   }
 }

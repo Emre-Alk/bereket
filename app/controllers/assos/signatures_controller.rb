@@ -4,6 +4,8 @@ class Assos::SignaturesController < AssosController
   end
 
   def create
+    raise
+    puts '✅✅✅✅✅✅'
   end
 
   def update
