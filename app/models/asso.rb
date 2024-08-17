@@ -3,6 +3,7 @@ class Asso < ApplicationRecord
   has_many :places, dependent: :destroy
   has_one :asso_type
   has_one_attached :profile_image
+  has_one_attached :signature # feature_signature
 
   # validation presence pour asso_type_id ?
   # validations sur siret et siren à faire si necessaire sinon voir si peut supprimer ces deux attributs

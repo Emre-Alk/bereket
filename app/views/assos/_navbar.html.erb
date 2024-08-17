@@ -4,12 +4,12 @@
     <!--indicateur box 1 -->
     <div class="flex flex-col justify-center items-center">
       <%= icon("fa-solid", "gift") %>
-      <p><%= donations.count if @my_asso && @my_place %> dons </p>
+      <p><%= donations.count if asso && place %> dons </p>
     </div>
     <!--indicateur box 2 -->
     <div class="flex flex-col justify-center items-center">
       <%= icon("fa-solid", "users") %>
-      <p><%= top_donators.count if @my_asso && @my_place %> donateurs</p>
+      <p><%= top_donators.count if asso && place %> donateurs</p>
     </div>
 
   </div>
@@ -52,6 +52,12 @@
             <%= icon("fa-solid", "gear") %>
             <p>Mon compte</p>
           </div>
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to "#" do %>
+          <%= render partial: "assos/signatures/signature", locals: { asso: asso } %>
         <% end %>
       </li>
 

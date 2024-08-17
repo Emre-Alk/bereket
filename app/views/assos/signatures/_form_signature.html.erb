@@ -1,0 +1,34 @@
+
+
+<div data-controller="signature" class="flex justify-start flex-col h-dvh pb-5 touch-none ">
+
+  <div class="flex-col w-full ">
+    <p>Nous avons besoin de votre signature afin que vos donateurs recevoient automatiquement un reçu de don signé.</p>
+    <p>Veuillez signez dans le cadre ci-dessous.</p>
+  </div>
+
+  <div class=" flex-col gap-y-5 flex items-center mt-5 w-full">
+
+    <canvas data-signature-target="canvas" class=" bg-white border border-black"></canvas>
+
+    <div class="flex flex-col items-center justify-center gap-y-2 w-full">
+
+      <button data-action="click->signature#clear" class="w-full bg-black text-white roboto-medium tracking-widest px-4 py-2 rounded">
+        Effacer
+      </button>
+
+      <%= form_with( url: "/assos/signature", method: 'POST', class:"w-full") do |form| %>
+        <%= form.hidden_field :signature_data,
+                              data: { signature_target: "signatureData" } %>
+        <%= form.submit class: "w-full flex justify-center bg-black text-white roboto-medium tracking-widest px-4 py-2 rounded ",
+                        value: 'Enregistrer',
+                        data: { action:"click->signature#save", signature_target:"submitBtn" } %>
+      <% end %>
+
+    </div>
+  </div>
+
+
+
+
+</div>

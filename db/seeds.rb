@@ -1,4 +1,3 @@
-
 puts "destroying..."
 
 # User.destroy_all
@@ -16,8 +15,6 @@ AssoType.destroy_all
 Donator.destroy_all
 User.destroy_all
 
-
-
 puts "start seeding..."
 puts "creating users..."
 user_asso = User.create!(
@@ -27,7 +24,7 @@ user_asso = User.create!(
   last_name: 'MonAsso',
   role: 'asso'
 )
-user_donator = User.create!(
+User.create!(
   email: "donator@donator.com",
   password: '123456',
   first_name: 'FNtest',
@@ -69,7 +66,7 @@ place = Place.create!(
   city: 'test',
   country: 'test',
   asso:,
-  place_type_id: eglise.id
+  place_type_id: [mosque.id, eglise.id].sample
 )
 if Rails.env.production?
   qr_code = "https://appmynewproject-8b21a82c26ce.herokuapp.com/places/#{place.id}/donations/new"

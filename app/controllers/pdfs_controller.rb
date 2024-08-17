@@ -1,10 +1,6 @@
 class PdfsController < ApplicationController
   def generate
-    # get all the associations the donator donated to
-    # per association, sum the donations
-    # pack all cerfa per association into one pdf
-
-    # for an individual donation
+    # cerfa for 1 donation
     # 'donator = current_user.donator" no need of this line because donator can be retrieve from donation
     donation = Donation.find(params[:don_id])
     donator = donation.donator
@@ -15,7 +11,8 @@ class PdfsController < ApplicationController
           name: donation.place.asso.name,
           nra: donation.place.asso.code_nra,
           object: 'association a but non lucratif', # to be added in the asso table 'donation.place.asso.objet'
-          regime: AssoType.find(donation.place.asso.asso_type_id).name
+          regime: AssoType.find(donation.place.asso.asso_type_id).name,
+          signature: donation.place.asso.signature
         },
         place: {
           street_no: donation.place.street_no,
@@ -38,7 +35,11 @@ class PdfsController < ApplicationController
       receipt: '1234567890' # create a table to store receipt id and donation id. Legaly following order during the year (to be checked)
     }
 
-    # for donations over a time interval - works but not finished
+    # for donations over a time interval (works but not finished):
+    # get all the associations the donator donated to
+    # per association, sum the donations
+    # pack all cerfa per association into one pdf
+
     # donations = donator.donations
     # donations_per_place = donations.group_by(&:place)
     # donations_per_asso = donations_per_place.map { |place, dons| [place.asso, dons.sum(&:amount)] }

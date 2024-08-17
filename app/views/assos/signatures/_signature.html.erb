@@ -1,0 +1,5 @@
+<% if asso.signature.attached? %>
+  <%= cl_image_tag(asso.signature.key) %>
+<% else %>
+  <p>No signature available</p>
+<% end %>

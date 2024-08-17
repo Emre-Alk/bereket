@@ -2,8 +2,6 @@ Rails.application.routes.draw do
   get 'qr_codes/new' # is this still useful ?
   get 'qr_codes/create' # is this still useful ?
 
-
-
   devise_for :users
 
   # ======== Pages ========
@@ -22,6 +20,7 @@ Rails.application.routes.draw do
   # this line is to create a portal dedicated to the asso users
   namespace :assos do
     resources :places, only: %i[index show new create destroy]
+    resource :signature, only: %i[new create]
     # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
 
