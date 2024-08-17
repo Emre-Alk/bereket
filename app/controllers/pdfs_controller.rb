@@ -2,38 +2,10 @@ class PdfsController < ApplicationController
   def generate
     # cerfa for 1 donation
     # 'donator = current_user.donator" no need of this line because donator can be retrieve from donation
-    donation = Donation.find(params[:don_id])
-    donator = donation.donator
-    amount = donation.amount.to_f / 100
-    data = {
-      asso: {
-        identity: {
-          name: donation.place.asso.name,
-          nra: donation.place.asso.code_nra,
-          object: 'association a but non lucratif', # to be added in the asso table 'donation.place.asso.objet'
-          regime: AssoType.find(donation.place.asso.asso_type_id).name,
-          signature: donation.place.asso.signature
-        },
-        place: {
-          street_no: donation.place.street_no,
-          address: donation.place.address,
-          zip_code: donation.place.zip_code || '69000',
-          city: donation.place.city,
-          country: donation.place.country
-        }
-      },
-      donator: {
-        first_name: donator.first_name,
-        last_name: donator.last_name
-      },
-      donation: {
-        amount: ,
-        amount_human: amount.humanize(locale: :fr),
-        occured_on: donation.occured_on.to_date.strftime('%d     %m     %Y') # whitespace to fit template
-      },
-      today: Date.today.strftime('%d  %m  %Y'), # whitespace to fit template
-      receipt: '1234567890' # create a table to store receipt id and donation id. Legaly following order during the year (to be checked)
-    }
+    # donation = Donation.find(params[:don_id]) # before Job
+    # donator = donation.donator # before Job
+    # amount = donation.amount.to_f / 100 # before Job
+    # data = {...} # before Job
 
     # for donations over a time interval (works but not finished):
     # get all the associations the donator donated to
@@ -77,24 +49,53 @@ class PdfsController < ApplicationController
 
     # creating an instance of PdfGenerator model (method coded as service worker)
     # pass in the data hash
-    pdf_generator = PdfGenerator.new(data)
+    # pdf_generator = PdfGenerator.new(data) # before Job
+    donation = Donation.find(params[:don_id])
+    cerfa = donation.donator.cerfa
+    # cerfa_old.purge if cerfa_old.attached?
+
+    PdfGenerationJob.perform_later(params[:don_id])
 
     # calling the generate method coded in the model instance
     # this will overlay a 'calque' pdf containing our data at the right location to superpose onto the template
     # the output is a completed pdf as binary string
-    cerfa_completed = pdf_generator.generate
+    # cerfa_completed = pdf_generator.generate # before Job
 
     # as the pdf is in binary string, we need to use "send_data"
     # we don't use send_file because the file is not saved in our filesystem.
     # :type enables to convert binary to pdf,
     # :disposition 'inline', stream pdf into the browser directly (can also do as attachment)
     # :filename to name the streamed file for the user
-    # raise
+    # render file: ActiveStorage::Blob.url(cerfa.blob.key, disposition: :inline)
+    # render file: Rails.application.routes.url_helpers.url_for(cerfa, only_path: true)
+    # render pdf: cerfa, location: ActiveStorage::Blob.service.path_for(cerfa.blob.key)
+    # ############ this send data is working
+    # send_data(
+    #   cerfa.download,
+    #   filename: "#{cerfa.filename}",
+    #   type: cerfa.content_type,
+    #   disposition: 'inline'
+    # )
+    # ###########
+    # redirect_to place_path(id: 1, don_id: 2)
+    redirect_to cerfa_path
+  end
+
+  def view_pdf
+    donator = current_user.donator.reload
+    cerfa = donator.cerfa
     send_data(
-      cerfa_completed,
-      filename: "cerfa_11580_05_#{donation.place.asso.id}_#{donation.occured_on.to_date.strftime('%d%m%Y')}",
-      type: 'application/pdf',
-      disposition: 'inline'
-    )
+        cerfa.download,
+        filename: "#{cerfa.filename}",
+        type: cerfa.content_type,
+        disposition: 'inline'
+      )
+
+    # send_data(
+    #   cerfa.download,
+    #   filename: "#{cerfa.filename}_#{donation.place.asso.id}_#{donation.occured_on.to_date.strftime('%d%m%Y')}",
+    #   type: cerfa.content_type,
+    #   disposition: 'inline'
+    # )
   end
 end

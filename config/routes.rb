@@ -4,6 +4,12 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  # Sidekiq Web UI, only for admins.
+  require "sidekiq/web"
+  authenticate :user, ->(user) { user.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   # ======== Pages ========
   # this line sends any user to the landing page
   root to: "pages#landing"
@@ -47,6 +53,7 @@ Rails.application.routes.draw do
 
   # this is the route for the donator to generate his cerfa completed
   get 'pdf', to: 'pdfs#generate', as: :pdf_preview
+  get 'cerfa', to: 'pdfs#view_pdf'
   # ======== donations ========
   # create a donation between a donator and a place
   resource :checkout, only: %i[create]

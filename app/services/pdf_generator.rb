@@ -54,7 +54,6 @@ class PdfGenerator
     # 3 get y for dynamic => y(d) = 804 - y(t) + 9 (9 is the height of the police)
     # 4 => finally make adjustments
 
-
     # Prawn to generate (library method) a pdf that will be used as a 'calque'
     Prawn::Document.generate("temporary.pdf") do |pdf|
       # for each data entry, the coordinates of the corresponding placeholder to be filled is passed.
@@ -88,18 +87,6 @@ class PdfGenerator
       # signature_blob = @data[:asso][:identity][:signature].blob
       # signature_path = ActiveStorage::Blob.service.path_for(signature_blob.key)
       # if store signature :cloudinary
-      # transformation: [
-      #   {
-      #     quality: 'auto',
-      #     fetch_format: 'auto'
-      #   },
-      #   {
-      #     width: 140,
-      #     height: 48,
-      #     gravity: 'auto',
-      #     crop: 'fill'
-      #   }
-      # ]
       signature = @data[:asso][:identity][:signature]
       signature_path = Cloudinary::Utils.cloudinary_url(signature.url)
       # signature is used only if it is attached to the model (ie, it exists)
