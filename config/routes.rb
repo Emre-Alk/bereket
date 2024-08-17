@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   # this line is to create a portal dedicated to the asso users
   namespace :assos do
     resources :places, only: %i[index show new create destroy]
-    resource :signature, only: %i[new create update]
+    resource :signature, only: %i[new create]
     # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
 

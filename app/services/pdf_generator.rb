@@ -26,8 +26,6 @@ class PdfGenerator
     # Step 4: Overlay dynamic PDF onto template PDF
 
     template_pdf.pages.each_with_index do |page, index|
-      # puts "🔅🔅🔅#{index}🔅🔅🔅"
-      # puts "🔅🔅🔅#{dynamic_pdf.pages[index].class}🔅🔅🔅"
       page_stamp = dynamic_pdf.pages[index]
       page << page_stamp if page_stamp
     end
@@ -84,7 +82,9 @@ class PdfGenerator
       pdf.fill_rectangle [-1, 290], 6, 6.2 # 'Numéraire'
       pdf.fill_rectangle [255.2, 222], 6, 6.2 # 'Virement, prélèvement, carte bancaire'
       # To do: add all data required as well as a 'cachet' and 'scaned signature' of the asso
+      signature_blob = @data[:asso][:identity][:signature].blob
+      signature_path = ActiveStorage::Blob.service.path_for(signature_blob.key)
+      pdf.image signature_path, position: 330, vposition: 525, height: 50
     end
   end
-
 end

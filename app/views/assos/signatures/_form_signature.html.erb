@@ -17,7 +17,7 @@
         Effacer
       </button>
 
-      <%= form_with(model: asso, url: "/assos/signature", method: 'POST', class:"w-full") do |form| %>
+      <%= form_with( url: "/assos/signature", method: 'POST', class:"w-full") do |form| %>
         <%= form.hidden_field :signature_data,
                               data: { signature_target: "signatureData" } %>
         <%= form.submit class: "w-full flex justify-center bg-black text-white roboto-medium tracking-widest px-4 py-2 rounded ",

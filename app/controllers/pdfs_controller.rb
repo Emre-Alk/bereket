@@ -15,7 +15,8 @@ class PdfsController < ApplicationController
           name: donation.place.asso.name,
           nra: donation.place.asso.code_nra,
           object: 'association a but non lucratif', # to be added in the asso table 'donation.place.asso.objet'
-          regime: AssoType.find(donation.place.asso.asso_type_id).name
+          regime: AssoType.find(donation.place.asso.asso_type_id).name,
+          signature: donation.place.asso.signature
         },
         place: {
           street_no: donation.place.street_no,

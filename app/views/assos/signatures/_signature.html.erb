@@ -1,0 +1,5 @@
+<% if asso.signature.attached? %>
+  <%= image_tag(asso.signature, resize_to_limit: [100, 100]) %>
+<% else %>
+  <p>No signature available</p>
+<% end %>
