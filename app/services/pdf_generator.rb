@@ -1,4 +1,5 @@
 require 'open-uri'
+
 class PdfGenerator
 
   # location where the template is in the filesystem.
