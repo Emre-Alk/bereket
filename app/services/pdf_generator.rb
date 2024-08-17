@@ -1,3 +1,4 @@
+require 'open-uri'
 class PdfGenerator
 
   # location where the template is in the filesystem.
@@ -82,9 +83,26 @@ class PdfGenerator
       pdf.fill_rectangle [-1, 290], 6, 6.2 # 'Numéraire'
       pdf.fill_rectangle [255.2, 222], 6, 6.2 # 'Virement, prélèvement, carte bancaire'
       # To do: add all data required as well as a 'cachet' and 'scaned signature' of the asso
-      signature_blob = @data[:asso][:identity][:signature].blob
-      signature_path = ActiveStorage::Blob.service.path_for(signature_blob.key)
-      pdf.image signature_path, position: 330, vposition: 525, height: 50
+      # if store signature :local
+      # signature_blob = @data[:asso][:identity][:signature].blob
+      # signature_path = ActiveStorage::Blob.service.path_for(signature_blob.key)
+      # if store signature :cloudinary
+      # transformation: [
+      #   {
+      #     quality: 'auto',
+      #     fetch_format: 'auto'
+      #   },
+      #   {
+      #     width: 140,
+      #     height: 48,
+      #     gravity: 'auto',
+      #     crop: 'fill'
+      #   }
+      # ]
+      signature = @data[:asso][:identity][:signature]
+      signature_path = Cloudinary::Utils.cloudinary_url(signature.url)
+      # signature is used only if it is attached to the model (ie, it exists)
+      pdf.image URI.parse(signature_path).open, position: 330, vposition: 525, height: 50 if signature.attached?
     end
   end
 end
