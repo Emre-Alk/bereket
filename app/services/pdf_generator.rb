@@ -33,7 +33,7 @@ class PdfGenerator
     end
 
     # Step 5: Save the combined PDF.
-    template_pdf.to_pdf
+    template_pdf.to_pdf # string data to pdf
   end
 
   private

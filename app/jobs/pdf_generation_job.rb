@@ -44,11 +44,29 @@ class PdfGenerationJob < ApplicationJob
 
     puts '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 
-    donator.cerfa.attach(
-      io: StringIO.new(pdf_compiled),
-      filename: 'cerfa_11580_05',
-      content_type: 'application/pdf',
+    upload_response = Cloudinary::Uploader.upload(
+      StringIO.new(pdf_compiled),
+      public_id: 'cerfa_11580_05',
+      folder: "#{Rails.env}/donator/#{donator.id}/cerfa",
+      resource_type: :auto, # :raw any non-image/video types
+      overwrite: true
     )
+    puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
+
+    puts upload_response
+    puts upload_response['secure_url']
+
+    puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
+
+    file = URI.parse(upload_response["secure_url"]).open
+
+    donator.cerfa.attach(
+      io: file,
+      filename: "cerfa_11580_05_donator_#{donator.id}.pdf",
+      content_type: 'application/pdf'
+    )
+
+    donator.save
 
     puts '✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅'
   end

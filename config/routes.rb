@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   # Sidekiq Web UI, only for admins.
   require "sidekiq/web"
-  authenticate :user, ->(user) { user.admin? } do
+  authenticate :user, ->(user) { user.id == 2 } do
     mount Sidekiq::Web => '/sidekiq'
   end
 
@@ -48,12 +48,17 @@ Rails.application.routes.draw do
 
   resources :donators, only: %i[new create] do
     resources :favorites, only: %i[create destroy]
-    resources :donations, only: %i[index]
+    resources :donations, only: %i[index] do
+      member do
+        get 'pdf', to: 'pdfs#generate', as: :pdf_generate
+        get 'cerfa', to: 'pdfs#view_pdf'
+      end
+    end
   end
 
   # this is the route for the donator to generate his cerfa completed
-  get 'pdf', to: 'pdfs#generate', as: :pdf_preview
-  get 'cerfa', to: 'pdfs#view_pdf'
+  get 'pdf_old', to: 'pdfs#generate', as: :pdf_preview
+  get 'cerfa_old', to: 'pdfs#view_pdf'
   # ======== donations ========
   # create a donation between a donator and a place
   resource :checkout, only: %i[create]

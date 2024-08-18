@@ -3,9 +3,9 @@
 <div class="bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
   <% @donations.each do |don| %>
     <% if current_user.donator? %>
-      <div class="bg-white flex flex-row px-2 items-center">
+      <div class="bg-white flex flex-row px-2 pt-2 items-center gap-x-5">
 
-        <div class="flex flex-row items-center pt-2 gap-4 w-full">
+        <div class="flex flex-auto flex-row items-center gap-4 w-3/4">
           <div class="bg-white">
             <%= image_tag( don.place.place_image.attached? ? don.asso.profile_image : "default_avatar.png" , class:'size-14 rounded-full')  %>
           </div>
@@ -18,16 +18,21 @@
         </div>
 
 
-        <div class="justify-self-end">
-          <%= link_to "Justificatif", pdf_preview_path(don_id: don.id), class: "bg-black text-white" %>
+        <div data-controller="pdf-generate" data-pdf-generate-don-id-value="<%= don.id %>" data-pdf-generate-donator-id-value="<%= @donator.id %>" class="flex-none">
+          <button data-action="click->pdf-generate#generate" data-pdf-generate-target="btn" class="bg-neutral-100 text-black px-3 py-2 rounded-lg">
+            Reçu Fiscal
+          </button>
+          <!--
+            <%= link_to "Reçu Fiscal", pdf_preview_path(id: don.id), class: "bg-neutral-100 text-black px-3 py-2 rounded-lg" %>
+          -->
         </div>
 
       </div>
 
     <% else %>
-      <div class="bg-white flex flex-row px-2 items-center">
+      <div class="bg-white flex flex-row px-2 pt-2 items-center">
 
-        <div class="flex flex-row items-center pt-2 gap-4 w-full">
+        <div class="flex flex-row items-center gap-4 w-full">
           <div class="bg-white">
               <%= image_tag( don.donator.profile_image.attached? ? don.donator.profile_image : "default_avatar.png" , class:'size-14 rounded-full')  %>
           </div>

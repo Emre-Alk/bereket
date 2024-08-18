@@ -46,16 +46,21 @@ class PdfsController < ApplicationController
     #     #end_date:
     #   }
     # }
-
     # creating an instance of PdfGenerator model (method coded as service worker)
     # pass in the data hash
     # pdf_generator = PdfGenerator.new(data) # before Job
-    donation = Donation.find(params[:don_id])
-    cerfa = donation.donator.cerfa
+    # donation = Donation.find(params[:id])
+    # cerfa = donation.donator.cerfa
     # cerfa_old.purge if cerfa_old.attached?
 
-    PdfGenerationJob.perform_later(params[:don_id])
-
+    pdf_job = PdfGenerationJob.perform_later(params[:id])
+    jid = pdf_job.provider_job_id
+    puts "🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪"
+    puts "#{jid}"
+    puts "#{current_user.donator.id}"
+    # while Sidekiq::Queue.new.find_job(jid)
+    # end
+    puts "🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪"
     # calling the generate method coded in the model instance
     # this will overlay a 'calque' pdf containing our data at the right location to superpose onto the template
     # the output is a completed pdf as binary string
@@ -69,7 +74,16 @@ class PdfsController < ApplicationController
     # render file: ActiveStorage::Blob.url(cerfa.blob.key, disposition: :inline)
     # render file: Rails.application.routes.url_helpers.url_for(cerfa, only_path: true)
     # render pdf: cerfa, location: ActiveStorage::Blob.service.path_for(cerfa.blob.key)
-    # ############ this send data is working
+
+    # ############ this send data is working but resfresh is required to display current pdf and not previous one
+
+    # send_data(
+    #   cerfa.download,
+    #   filename: cerfa.filename.to_s,
+    #   type: cerfa.content_type.to_s,
+    #   disposition: 'inline'
+    # )
+
     # send_data(
     #   cerfa.download,
     #   filename: "#{cerfa.filename}",
@@ -78,18 +92,35 @@ class PdfsController < ApplicationController
     # )
     # ###########
     # redirect_to place_path(id: 1, don_id: 2)
-    redirect_to cerfa_path
+    # redirect_to cerfa_path
+    donation = Donation.find(params[:id])
+    donator_id = donation.donator.id
+
+    render json: { message: 'job enqueued', donator_id:, donation_id: params[:id] }
   end
 
   def view_pdf
-    donator = current_user.donator.reload
+    donator = current_user.donator unless params[:donator_id]
+    donator = Donator.find(params[:donator_id]) if params[:donator_id]
     cerfa = donator.cerfa
+
+    # redirect_to cerfa.download
+    # cerfa_path = Cloudinary::Utils.cloudinary_url(cerfa.url)
+    # pdf_data = Cloudinary::Downloader.download(cerfa.url)
+
     send_data(
-        cerfa.download,
-        filename: "#{cerfa.filename}",
-        type: cerfa.content_type,
-        disposition: 'inline'
-      )
+      cerfa.download,
+      filename: "#{cerfa.filename}",
+      type: cerfa.content_type.to_s,
+      disposition: 'inline'
+    )
+
+    # send_data(
+    #     cerfa.download,
+    #     filename: "#{cerfa.filename}",
+    #     type: cerfa.content_type,
+    #     disposition: 'inline'
+    #   )
 
     # send_data(
     #   cerfa.download,

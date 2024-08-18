@@ -6,8 +6,8 @@ class DonationsController < ApplicationController
     # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])
     # @donations = user.donations
     if current_user.donator?
-      donator = Donator.find(params[:donator_id])
-      @donations = donator.donations
+      @donator = Donator.find(params[:donator_id])
+      @donations = @donator.donations
     elsif current_user.asso?
       asso = Asso.find(params[:asso_id])
       # we need to retrieve all donations for an asso collected via all its places
