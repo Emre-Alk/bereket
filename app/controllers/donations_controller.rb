@@ -88,15 +88,4 @@ class DonationsController < ApplicationController
   # def set_params_donation
   #   params.require(:donation).permit(:amount, :occured_on)
   # end
-
-  def view_pdf
-    donation = Donation.find(params[:id])
-    cerfa = donation.donator.cerfa
-    send_data(
-      cerfa.download,
-      filename: "#{cerfa.filename}",
-      type: cerfa.content_type,
-      disposition: 'inline'
-    )
-  end
 end
