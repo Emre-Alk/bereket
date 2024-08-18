@@ -19,9 +19,14 @@
 
 
         <div data-controller="pdf-generate" data-pdf-generate-don-id-value="<%= don.id %>" data-pdf-generate-donator-id-value="<%= @donator.id %>" class="flex-none">
-          <button data-action="click->pdf-generate#generate" data-pdf-generate-target="btn" class="bg-neutral-100 text-black px-3 py-2 rounded-lg">
+
+          <button data-action="click->pdf-generate#generate" data-pdf-generate-target="btn" class="bg-neutral-100 text-black text-center min-w-28 min-h-8 rounded-lg ">
             Reçu Fiscal
           </button>
+
+          <div class="hidden flex items-center justify-center min-w-28 min-h-8 rounded-lg bg-black spinner-<%= don.id %>">
+            <%= icon("fa-solid", "circle-notch", class: "animate-spin", style:"color: white") %>
+          </div>
           <!--
             <%= link_to "Reçu Fiscal", pdf_preview_path(id: don.id), class: "bg-neutral-100 text-black px-3 py-2 rounded-lg" %>
           -->

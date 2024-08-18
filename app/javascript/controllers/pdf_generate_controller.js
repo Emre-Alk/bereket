@@ -9,6 +9,7 @@ export default class extends Controller {
   }
 
   connect() {
+    this.loadAnimation = this.loadAnimation.bind(this)
   }
   // on click:
   // play loading animation
@@ -37,14 +38,31 @@ export default class extends Controller {
       .then(response => {
         console.log(response)
         if (response.ok) {
+          let status = 'loading'
+          this.loadAnimation(status)
 
           setTimeout(() => {
             window.location.href = response.url
-          }, 4000)
+            status = 'reset'
+            this.loadAnimation(status)
 
+          }, 4000)
         }
       })
+  }
 
+  loadAnimation(status) {
+    const spin = document.querySelector(`.spinner-${this.donIdValue}`)
 
+    if (status === 'loading') {
+      this.btnTarget.classList.toggle('hidden')
+      spin.classList.toggle('hidden')
+    } else {
+      setTimeout(() => {
+        // code executes sec before pfd opening
+        spin.classList.toggle('hidden')
+        this.btnTarget.classList.toggle('hidden')
+      }, 1000)
+    }
   }
 }
