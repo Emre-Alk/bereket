@@ -11,10 +11,6 @@ export default class extends Controller {
   connect() {
     this.loadAnimation = this.loadAnimation.bind(this)
   }
-  // on click:
-  // play loading animation
-  // then, fetch get generate pdf action
-  // then, response if ok : receive pdf data, stop animation, send data to user
   generate() {
     const url = `/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`
 
@@ -59,7 +55,7 @@ export default class extends Controller {
       spin.classList.toggle('hidden')
     } else {
       setTimeout(() => {
-        // code executes sec before pfd opening
+        // code executes sec before pfd opening so i set a timeout to cope with it
         spin.classList.toggle('hidden')
         this.btnTarget.classList.toggle('hidden')
       }, 1000)

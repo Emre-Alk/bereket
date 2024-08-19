@@ -21,9 +21,9 @@ class PdfGenerator
     dynamic_pdf = CombinePDF.load("temporary.pdf")
 
     # some checking that objects exist
-    puts "Template PDF pages: #{template_pdf.pages.count}"
-    puts "Dynamic PDF pages: #{dynamic_pdf.pages.count}"
-    puts "#{@data}"
+    # puts "Template PDF pages: #{template_pdf.pages.count}"
+    # puts "Dynamic PDF pages: #{dynamic_pdf.pages.count}"
+    # puts "#{@data}"
 
     # Step 4: Overlay dynamic PDF onto template PDF
 
@@ -83,14 +83,15 @@ class PdfGenerator
       pdf.fill_rectangle [-1, 290], 6, 6.2 # 'Numéraire'
       pdf.fill_rectangle [255.2, 222], 6, 6.2 # 'Virement, prélèvement, carte bancaire'
       # To do: add all data required as well as a 'cachet' and 'scaned signature' of the asso
-      # if store signature :local
-      # signature_blob = @data[:asso][:identity][:signature].blob
-      # signature_path = ActiveStorage::Blob.service.path_for(signature_blob.key)
-      # if store signature :cloudinary
       signature = @data[:asso][:identity][:signature]
-      signature_path = Cloudinary::Utils.cloudinary_url(signature.url)
-      # signature is used only if it is attached to the model (ie, it exists)
-      pdf.image URI.parse(signature_path).open, position: 330, vposition: 525, height: 50 if signature.attached?
+      if signature.attached? # signature is used only if it is attached to the model (ie, it exists)
+        # -----------  if store signature service is :local
+        # signature_blob = signature.blob
+        # signature_path = ActiveStorage::Blob.service.path_for(signature_blob.key)
+        # ----------- if store signature service is :cloudinary
+        signature_path = Cloudinary::Utils.cloudinary_url(signature.url)
+        pdf.image URI.parse(signature_path).open, position: 330, vposition: 525, height: 50
+      end
     end
   end
 end

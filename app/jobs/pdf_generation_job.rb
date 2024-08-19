@@ -42,7 +42,7 @@ class PdfGenerationJob < ApplicationJob
     pdf_compiled = PdfGenerator.new(data).generate
     return unless pdf_compiled
 
-    puts '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
+    # puts '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 
     upload_response = Cloudinary::Uploader.upload(
       StringIO.new(pdf_compiled),
@@ -51,14 +51,14 @@ class PdfGenerationJob < ApplicationJob
       resource_type: :auto, # :raw any non-image/video types
       overwrite: true
     )
-    puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
+    # puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
 
-    puts upload_response
-    puts upload_response['secure_url']
+    # puts upload_response
+    # puts upload_response['secure_url']
 
-    puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
+    # puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
 
-    file = URI.parse(upload_response["secure_url"]).open
+    file = URI.parse(upload_response['secure_url']).open
 
     donator.cerfa.attach(
       io: file,

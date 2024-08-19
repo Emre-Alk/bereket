@@ -56,9 +56,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # this is the route for the donator to generate his cerfa completed
-  get 'pdf_old', to: 'pdfs#generate', as: :pdf_preview
-  get 'cerfa_old', to: 'pdfs#view_pdf'
   # ======== donations ========
   # create a donation between a donator and a place
   resource :checkout, only: %i[create]
