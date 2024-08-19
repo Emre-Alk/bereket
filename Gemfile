@@ -91,3 +91,6 @@ gem "combine_pdf", "~> 1.0"
 gem "humanize", "~> 3.1"
 
 gem "cloudinary", "~> 2.1"
+
+gem "sidekiq", "~> 7.3"
+gem "sidekiq-failures"
