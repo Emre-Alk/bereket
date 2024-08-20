@@ -15,4 +15,15 @@ class CheckoutsController < ApplicationController
     # donation_amount = donation[:amount]
     # place = Place.find(donation[:place_id])
   end
+
+  def test
+    @donator = current_user.donator
+    puts 'you are in test'
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: { url: checkout_test_path }
+      end
+    end
+  end
 end

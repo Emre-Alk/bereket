@@ -54,7 +54,7 @@ class DonationsController < ApplicationController
 
     respond_to do |format|
       format.html # this means for all HTTP request with 'accept type html' header, just respond with the usual html view.
-      format.json do
+      format.json do # from scan JS Ajax call to get resource
         if @place
           # if motivated, put donations>new.html.erb into a partial and send it as json with partial: render_to_string()
           render json: {
