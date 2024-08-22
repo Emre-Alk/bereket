@@ -137,6 +137,7 @@ export default class extends Controller {
       // if credential exit => log in user
       // if don't exist => create user donator
       // then, get back on track
+      this.checkoutTest()
 
     }
   }
@@ -150,8 +151,18 @@ export default class extends Controller {
     })
     .then(response => response.json())
     .then((data) => {
-      console.log(data);
-      window.location.href = data.url
+      console.log('data', data);
+      if (data.url) {
+        // user is sign in
+        // go to stripe checkout (user needs to be signed in before landing in stripe)
+        window.location.href = data.url
+      } else if (data.error === 'You need to sign in or sign up before continuing.') {
+        // user not logged in or not registered
+        // go to authenticate by signing in or signing up (connection ou inscription)
+        console.log('authentication needed');
+      } else {
+        console.log('error case not handled');
+      }
     })
   }
 

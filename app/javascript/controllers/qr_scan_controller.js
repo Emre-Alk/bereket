@@ -54,10 +54,15 @@ export default class extends Controller {
       console.log('decodedResult', decodedResult);
       this.qrReader.stop() // stop scanning
       // start ajax
-      const url = decodedText.split('http://192.168.1.168:3000/') // these lines are to be changed once domain name available
-      const newUrl = `http://localhost:3000${url[1]}` // these lines are to be changed once domain name available
+      let newUrl
+      if (decodedText.startsWith('http:')) {
+        const urlChunked = decodedText.split('http://192.168.1.168:3000/') // these lines are to be changed once domain name available
+        newUrl = `http://localhost:3000/${urlChunked[1]}` // these lines are to be changed once domain name available
+      }
+      else {
+        newUrl = decodedText // in production
+      }
       this.fetchPlaceDonationNew(newUrl, decodedText)
-
       // end ajax
       this.toggleScanWindow() // close scan window
     }
@@ -83,14 +88,14 @@ export default class extends Controller {
     console.log('open window now')
     // toggle scan btn
     this.toggleScanBtn()
-    const parentBox = document.getElementById("bbox")
-    if (!parentBox.classList.contains('hidden')) {
-      parentBox.classList.remove('inset-0')
-      parentBox.classList.add('hidden')
+    const scanWindow = document.getElementById("bbox")
+    if (!scanWindow.classList.contains('hidden')) {
+      scanWindow.classList.remove('inset-0')
+      scanWindow.classList.add('hidden')
       this.qrReader.stop() // stop scanning
     } else {
-      parentBox.classList.remove('hidden')
-      parentBox.classList.add('inset-0')
+      scanWindow.classList.remove('hidden')
+      scanWindow.classList.add('inset-0')
       this.scan()
        // how to lauch animation as same time as start() promise succeeds ? ( start().then( this.toggleScanWindow() ) don't do it )
     }
