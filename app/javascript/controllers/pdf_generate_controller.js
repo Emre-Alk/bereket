@@ -19,7 +19,9 @@ export default class extends Controller {
     .then((data) => {
         if (data.message === "job enqueued") {
           this.fetchCerfa(data)
-          console.log(data.message);
+          console.log('data message', data.message);
+          console.log('don id', data.donation_id);
+          console.log('donator id', data.donator_id);
         }
       })
   }
@@ -32,7 +34,7 @@ export default class extends Controller {
     }
     fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`, details)
       .then(response => {
-        console.log(response)
+        console.log('response cerfa', response)
         if (response.ok) {
           let status = 'loading'
           this.loadAnimation(status)
