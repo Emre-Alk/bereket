@@ -143,7 +143,7 @@ export default class extends Controller {
   }
 
   checkoutTest() {
-    console.log('you are being redirected to stripe payment');
+    console.log('you are being redirected to stripe payment test');
     fetch('/checkout_test', {
       headers: {
         'Accept' : 'application/json'
