@@ -119,19 +119,52 @@ export default class extends Controller {
 
   confirmTip() {
     // Implement your confirmation logic here
-    console.log('go stripe')
+
     // this.hideConfirmation()
     confirmBox.classList.remove("-translate-y-full")
     this.overlay.classList.add('hidden')
+
     if (this.donatorIdValue) {
       // logic when donator exists
+      // continue to checkout stripe
+      this.checkoutTest()
     } else {
       // logic when donator do not exists
-    }
+      // you go on stripe but in the form add input fields for email and mdp
+      // other attribute to create user and donator record can be completed by myself
+      // Or redirect to sign_in / registration
+      // Or custom form to insert in dom to fill email and mdp
+      // if credential exit => log in user
+      // if don't exist => create user donator
+      // then, get back on track
+      this.checkoutTest()
 
-    // this.checkout()
+    }
   }
 
+  checkoutTest() {
+    console.log('you are being redirected to stripe payment test');
+    fetch('/checkout_test', {
+      headers: {
+        'Accept' : 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then((data) => {
+      console.log('data', data);
+      if (data.url) {
+        // user is sign in
+        // go to stripe checkout (user needs to be signed in before landing in stripe)
+        window.location.href = data.url
+      } else if (data.error === 'You need to sign in or sign up before continuing.') {
+        // user not logged in or not registered
+        // go to authenticate by signing in or signing up (connection ou inscription)
+        console.log('authentication needed');
+      } else {
+        console.log('error case not handled');
+      }
+    })
+  }
 
   checkout() {
     // donation value is retrived. its type is string and unit is not converted to 1000s (ex: 21 or 20,5 and not 2100)

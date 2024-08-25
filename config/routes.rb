@@ -59,4 +59,5 @@ Rails.application.routes.draw do
   # ======== donations ========
   # create a donation between a donator and a place
   resource :checkout, only: %i[create]
+  get 'checkout_test', to: 'checkouts#test'
 end
