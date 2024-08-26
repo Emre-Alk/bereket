@@ -10,9 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_17_152756) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_26_094841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "status", ["pending", "processing", "processed", "failed"]
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -81,6 +85,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_17_152756) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_donators_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.json "data"
+    t.string "source"
+    t.text "processing_errors"
+    t.enum "status", default: "pending", null: false, enum_type: "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "favorites", force: :cascade do |t|
