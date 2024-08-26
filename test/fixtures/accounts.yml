@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stripe_id: MyString
+  payouts_enabled: false
+  charges_enabled: false
+  user: one
+
+two:
+  stripe_id: MyString
+  payouts_enabled: false
+  charges_enabled: false
+  user: two
