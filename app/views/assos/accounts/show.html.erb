@@ -1,7 +1,7 @@
 <h2>Mon Compte</h2>
 
 
-
-<%= form_with(model: @account, url: "/assos/account" ) do |f| %>
+<%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
+  <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
   <%= f.submit 'Créer mon compte Stripe', class: "px-3 py-2 bg-black rounded-lg text-white mt-4" %>
 <% end %>

@@ -7,7 +7,7 @@ class Assos::AccountsController < AssosController
     # not Index because asso will have only one account to display
     # text = 'Compte incomplet. Vous devez finir la création de votre compte pour commencer à recevoir des paiements.'
     # @account = current_user.asso.account.nil? ? text : current_user.asso.account.stripe_id
-    @account = current_user.asso.account&.stripe_id
+    @account = current_user.asso.account
   end
 
   def create
@@ -26,6 +26,6 @@ class Assos::AccountsController < AssosController
     service.create_account
 
     # then, to generate an onboarding flow for this connected account (necessary to enable payouts)
-    redirect_to service.onboarding_url
+    redirect_to service.onboarding_url, allow_other_host: true
   end
 end
