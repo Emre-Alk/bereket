@@ -18,8 +18,8 @@ class HandleEventJob < ApplicationJob
       handle_customer_created(stripe_event)
     when 'account.updated' # capabilities.updated
       handle_account_updated(stripe_event)
-    when 'capability.updated'
-      handle_capability_updated(stripe_event)
+      # when 'capability.updated' # Useful if goal is to create/check financial account as external account
+      # handle_capability_updated(stripe_event)
     end
   end
 
@@ -38,8 +38,8 @@ class HandleEventJob < ApplicationJob
     account.update!(
       charges_enabled: stripe_account.charges_enabled,
       payouts_enabled: stripe_account.payouts_enabled,
-      external_bank_account_id: stripe_account.external_accounts.data.id,
-      last_four: stripe_account.external_accounts.data.last4
+      external_bank_account_id: stripe_account.external_accounts.data.first.id,
+      last_four: stripe_account.external_accounts.data.first.last4
     )
   end
 

@@ -33,23 +33,30 @@ class StripeAccount
       },
       business_type: 'non_profit',
       business_profile: {
-        industry: 'membership_organizations__religious_organizations',
+        # industry: 'membership_organizations__religious_organizations', # not in here
+        name: account.asso.name,
         mcc: '8661',
         support_email: account.asso.email,
-        url: place_url(account.asso.places.first),
-        product_description: 'activités religieuses, spirituelles ou philosophiques'
+        url: "https://appmynewproject-8b21a82c26ce.herokuapp.com" + place_path(account.asso.places.first).to_s,
+        product_description: 'activités religieuses, spirituelles ou philosophiques',
+        support_address: {
+          line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
+          city: account.asso.places.first.city,
+          country: 'FR',
+          postal_code: '69001' # account.asso.places.first.zip_code => need to be valid type
+        }
       },
       company: {
-        structure: 'incorporated_non_profit'
-        # address: {
-        #   line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
-        #   city: account.asso.places.first.city,
-        #   country: 'FR', # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
-        #   postal_code: '69001' # account.asso.places.first.zip_code => need to be valid type
-        # },
-        # name: account.asso.name
+        structure: 'incorporated_non_profit',
+        address: {
+          line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
+          city: account.asso.places.first.city,
+          country: 'FR', # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
+          postal_code: '69001' # account.asso.places.first.zip_code => need to be valid type
+        },
+        name: account.asso.name
       }
-      # default_currency: "usd",
+      # default_currency: "eur",
     )
 
     account.update(stripe_id: stripe_account.id)
@@ -59,8 +66,8 @@ class StripeAccount
     Stripe::AccountLink.create(
       {
         account: account.stripe_id,
-        refresh_url: asso_root_url, # url for asso to go if refresh (not path because stripe will use it)
-        return_url: asso_root_url, # url for asso to return to (not path because stripe will use it)
+        refresh_url: 'https://appmynewproject-8b21a82c26ce.herokuapp.com/assos/account', # url for asso to go if refresh (not path because stripe will use it)
+        return_url: assos_account_url, # 'http://192.168.1.168:3000/assos/account', # # url for asso to return to (not path because stripe will use it)
         type: 'account_onboarding',
         collection_options: { # collect is deprecated (obsolète. must use this now)
           fields: 'eventually_due'
@@ -68,11 +75,5 @@ class StripeAccount
         }
       }
     ).url
-  end
-
-  def ensure_external_account
-    return if !account.external_bank_account_id.nil?
-    # send user to the onboarding again to collect external bank account details by stripe
-    # surely need to pass the stripe account id that is concerned
   end
 end

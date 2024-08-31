@@ -1,44 +1,87 @@
-<h2>Mon Compte</h2>
+<div class="px-5 sm:pr-10 sm:pl-5 py-4 flex flex-col divide-y border rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] ">
 
-<div>
-  <%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
-    <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
-    <%= f.submit 'Créer mon compte Stripe', class: "px-3 py-2 bg-black rounded-lg text-white mt-4" %>
+  <div class="flex flex-row items-center justify-between pb-4">
+    <p class="text-lg roboto-medium">Mon portefeuil monétaire</p>
+  </div>
+
+  <% if !@account %>
+
+    <div class="flex flex-col justify-center items-start gap-y-4 sm:flex-row sm:items-center sm:justify-between py-4">
+      <p>
+        Votre portefeuil monétaire n'est pas actif.
+      </p>
+      <div>
+        <%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
+          <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
+          <%= f.submit 'Activer mon Portefeuil', class: "px-3 py-2 bg-black rounded-lg text-white" %>
+        <% end %>
+      </div>
+    </div>
+
+  <% else %>
+
+    <div class="flex flex-row  py-4 w-full gap-x-4">
+
+      <p class="flex-none w-fit roboto-medium text-neutral-500">Mon identifiant</p>
+      <p class="flex-auto w-fit text-right"><%= @account.stripe_id %></p>
+
+    </div>
+
+    <div class="flex flex-row  py-4 w-full gap-x-4">
+
+      <p class="flex-none w-fit roboto-medium text-neutral-500">Paiement</p>
+      <p class="flex-auto w-fit text-right"><%= @account.charges_enabled? ? "Actif" : "Non Actif" %></p>
+
+    </div>
+
+    <div class="flex flex-row  py-4 w-full gap-x-4">
+
+      <p class="flex-none w-fit roboto-medium text-neutral-500">Transfert</p>
+      <p class="flex-auto w-fit text-right"><%= @account.payouts_enabled? ? "Actif" : "Non Actif"%></p>
+
+    </div>
+
+    <div class="flex flex-row py-4 w-full gap-x-4">
+
+      <p class="flex-auto w-fit roboto-medium text-neutral-500">Compte bancaire de destination pour vos transferts (IBAN 4 derniers chiffres) </p>
+      <p class="flex-auto w-fit text-right"><%= @account.external_bank_account_id.nil? ? "Compte bancaire non renseigné" : @account.last_four %></p>
+
+    </div>
+
+    <% if @account.stripe_id.nil? || !@account.charges_enabled? || !@account.payouts_enabled? || @account.external_bank_account_id.nil? %>
+      <div class="flex flex-col justify-center items-start gap-y-4 sm:flex-row sm:items-center sm:justify-between pt-6">
+        <p>
+          Votre portefeuil monétaire est incomplet.
+        </p>
+        <div>
+          <%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
+            <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
+            <%= f.submit 'Finaliser mon portefeuil', class: "px-3 py-2 bg-black rounded-lg text-white" %>
+          <% end %>
+        </div>
+      </div>
+
+    <% elsif @account && @account.charges_enabled? && @account.payouts_enabled? && !@account.external_bank_account_id.nil? %>
+
+      <div class="flex flex-row items-center justify-center pt-6">
+        <%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
+          <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
+          <%= f.submit 'Editer mon portefeuil', class: "px-3 py-2 bg-black rounded-lg text-white" %>
+        <% end %>
+
+        <!--form to have a loading svg while submitting form -->
+
+        <form action="/assos/account" method="POST" data-turbo="false">
+          <input type="hidden" name="authenticity_token" value="<%= orm_authenticity_token %>">
+          <button type="submit" class="px-3 py-2 bg-black rounded-lg text-white">
+            <%= icon("fa-solid", "circle-notch", class: "animate-spin", style:"color: white") %>
+          </button>
+        </form>
+
+      </div>
+    <% end %>
+
   <% end %>
-</div>
 
-<div class="sm:pr-10 sm:pl-5 flex flex-col mt-4 divide-y border rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] ">
-
-  <div class=" py-4 text-lg roboto-medium">
-    <h1>Mon portefeuil monetaire</h1>
-  </div>
-
-  <div class="flex flex-row  py-4 w-full gap-x-4">
-
-    <p class="flex-none w-fit roboto-medium text-neutral-500">Mon identifiant</p>
-    <p class="flex-auto w-fit text-right"><%= @account.stripe_id %></p>
-
-  </div>
-
-  <div class="flex flex-row  py-4 w-full gap-x-4">
-
-    <p class="flex-none w-fit roboto-medium text-neutral-500">Paiement</p>
-    <p class="flex-auto w-fit text-right"><%= @account.charges_enabled? ? "Actif" : "Non Actif" %></p>
-
-  </div>
-
-  <div class="flex flex-row  py-4 w-full gap-x-4">
-
-    <p class="flex-none w-fit roboto-medium text-neutral-500">Transfert</p>
-    <p class="flex-auto w-fit text-right"><%= @account.payouts_enabled? ? "Actif" : "Non Actif"%></p>
-
-  </div>
-
-  <div class="flex flex-row  py-4 w-full gap-x-4">
-
-    <p class="flex-none w-fit roboto-medium text-neutral-500">Compte bancaire pour transfert</p>
-    <p class="flex-auto w-fit text-right"><%= @account.external_bank_account_id.nil? ? "Compte bancaire non renseigné" : @account.last_four %></p>
-
-  </div>
 
 </div>
