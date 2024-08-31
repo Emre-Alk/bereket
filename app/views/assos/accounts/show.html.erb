@@ -1,7 +1,44 @@
 <h2>Mon Compte</h2>
 
+<div>
+  <%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
+    <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
+    <%= f.submit 'Créer mon compte Stripe', class: "px-3 py-2 bg-black rounded-lg text-white mt-4" %>
+  <% end %>
+</div>
 
-<%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
-  <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
-  <%= f.submit 'Créer mon compte Stripe', class: "px-3 py-2 bg-black rounded-lg text-white mt-4" %>
-<% end %>
+<div class="sm:pr-10 sm:pl-5 flex flex-col mt-4 divide-y border rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] ">
+
+  <div class=" py-4 text-lg roboto-medium">
+    <h1>Mon portefeuil monetaire</h1>
+  </div>
+
+  <div class="flex flex-row  py-4 w-full gap-x-4">
+
+    <p class="flex-none w-fit roboto-medium text-neutral-500">Mon identifiant</p>
+    <p class="flex-auto w-fit text-right"><%= @account.stripe_id %></p>
+
+  </div>
+
+  <div class="flex flex-row  py-4 w-full gap-x-4">
+
+    <p class="flex-none w-fit roboto-medium text-neutral-500">Paiement</p>
+    <p class="flex-auto w-fit text-right"><%= @account.charges_enabled? ? "Actif" : "Non Actif" %></p>
+
+  </div>
+
+  <div class="flex flex-row  py-4 w-full gap-x-4">
+
+    <p class="flex-none w-fit roboto-medium text-neutral-500">Transfert</p>
+    <p class="flex-auto w-fit text-right"><%= @account.payouts_enabled? ? "Actif" : "Non Actif"%></p>
+
+  </div>
+
+  <div class="flex flex-row  py-4 w-full gap-x-4">
+
+    <p class="flex-none w-fit roboto-medium text-neutral-500">Compte bancaire pour transfert</p>
+    <p class="flex-auto w-fit text-right"><%= @account.external_bank_account_id.nil? ? "Compte bancaire non renseigné" : @account.last_four %></p>
+
+  </div>
+
+</div>

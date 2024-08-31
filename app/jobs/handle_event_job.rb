@@ -12,12 +12,35 @@ class HandleEventJob < ApplicationJob
 
   def handle_stripe_event(event)
     stripe_event = Stripe::Event.construct_from(event.data)
-    puts "🟣🟣🟣🟣🟣🟣🟣🟣🟣#{stripe_event.type}🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣"
 
     case stripe_event.type
-    when 'customer.created'
+    when 'customer.created' # test with stripe CLI
       handle_customer_created(stripe_event)
+    when 'account.updated' # capabilities.updated
+      handle_account_updated(stripe_event)
+    when 'capability.updated'
+      handle_capability_updated(stripe_event)
     end
+  end
+
+  def handle_capability_updated(stripe_event)
+    capability = stripe_event.data.object
+    if capability.id == 'transfers' && capability.status == 'active'
+      account = Account.find_by(stripe_id: capability.account)
+      service = StripeAccount.new(account)
+      service.ensure_external_account
+    end
+  end
+
+  def handle_account_updated(stripe_event)
+    stripe_account = stripe_event.data.object
+    account = Account.find_by(stripe_id: stripe_account.id)
+    account.update!(
+      charges_enabled: stripe_account.charges_enabled,
+      payouts_enabled: stripe_account.payouts_enabled,
+      external_bank_account_id: stripe_account.external_accounts.data.id,
+      last_four: stripe_account.external_accounts.data.last4
+    )
   end
 
   def handle_customer_created(stripe_event)

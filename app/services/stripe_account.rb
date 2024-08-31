@@ -18,28 +18,36 @@ class StripeAccount
 
     stripe_account = Stripe::Account.create(
       # type: 'custom',
+      # create account either by 'controller' or by 'type'. They are mutually exclusive.
+      controller: {
+        stripe_dashboard: { type: 'none' },
+        fees: { payer: 'account' },
+        losses: { payments: 'stripe' },
+        requirement_collection: 'stripe'
+      },
       country: 'FR',
       email: account.asso.email,
       capabilities: {
         card_payments: { requested: true },
         transfers: { requested: true }
       },
-      # business_type: 'non_profit',
-      # company: {
-      #   address: {
-      #     line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
-      #     city: account.asso.places.first.city,
-      #     country: 'FR', # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
-      #     postal_code: '69001' # account.asso.places.first.zip_code => need to be valid type
-      #   },
-      #   name: account.asso.name
-      # },
-      # gives error: "You may not provide the `type` parameter and `controller` parameters simultaneously. They are mutually exclusive."
-      controller: {
-        stripe_dashboard: { type: 'none' },
-        fees: { payer: 'account' },
-        losses: { payments: 'stripe' },
-        requirement_collection: 'stripe'
+      business_type: 'non_profit',
+      business_profile: {
+        industry: 'membership_organizations__religious_organizations',
+        mcc: '8661',
+        support_email: account.asso.email,
+        url: place_url(account.asso.places.first),
+        product_description: 'activités religieuses, spirituelles ou philosophiques'
+      },
+      company: {
+        structure: 'incorporated_non_profit'
+        # address: {
+        #   line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
+        #   city: account.asso.places.first.city,
+        #   country: 'FR', # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
+        #   postal_code: '69001' # account.asso.places.first.zip_code => need to be valid type
+        # },
+        # name: account.asso.name
       }
       # default_currency: "usd",
     )
@@ -60,5 +68,11 @@ class StripeAccount
         }
       }
     ).url
+  end
+
+  def ensure_external_account
+    return if !account.external_bank_account_id.nil?
+    # send user to the onboarding again to collect external bank account details by stripe
+    # surely need to pass the stripe account id that is concerned
   end
 end
