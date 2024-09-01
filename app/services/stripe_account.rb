@@ -76,4 +76,19 @@ class StripeAccount
       }
     ).url
   end
+
+  def account_balance
+    @account_balance ||= Stripe::Balance.retrieve(stripe_account: account.stripe_id)
+  end
+
+  def payout
+    amount = account_balance.available.first.amount
+    @payout ||= Stripe::Payout.create(
+      {
+        amount:,
+        currency: 'eur'
+      },
+      stripe_account: account.stripe_id
+    )
+  end
 end

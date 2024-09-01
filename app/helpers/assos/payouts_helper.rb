@@ -1,0 +1,2 @@
+module Assos::PayoutsHelper
+end

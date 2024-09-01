@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :places, only: %i[index show new create destroy]
     resource :signature, only: %i[new create]
     resource :account, only: %i[create show]
+    resource :payout, only: %i[new create]
     # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
 

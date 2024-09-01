@@ -43,8 +43,26 @@
 <% if @my_asso && @my_place %>
   <div class="flex flex-col pt-48 gap-y-4"> <!-- scrolled page start -->
     <!-- total - start -->
-    <div class="bg-white flex justify-center items-center roboto-medium text-4xl py-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
-      <%= @sum.to_f / 100 %> €
+    <div class="bg-white flex flex-col gap-y-2 divide-y justify-center items-center roboto-medium text-4xl py-2 pr-4 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+    <!--
+      <div>
+        <%= number_to_currency(@sum.to_f / 100, unit: "€", format: "%n %u") %>
+      </div>
+    -->
+      <div class="flex flex-row w-11/12 gap-x-4">
+        <p class="text-base text-neutral-500 flex-auto w-fit flex items-end"> Solde disponible </p>
+        <div class="flex-none w-fit self-end">
+          <%= number_to_currency(@account_balance.available.first.amount / 100, unit: '€', format: '%n %u') %>
+        </div>
+      </div>
+
+      <div class="flex flex-row w-11/12 gap-x-4 pt-2">
+        <p class="text-sm text-neutral-500 flex-auto w-fit flex items-end">Solde à venir </p>
+        <div class="flex-none w-fit self-end text-lg">
+          <%= number_to_currency(@account_balance.pending.first.amount / 100, unit: '€', format: '%n %u') %>
+        </div>
+      </div>
+
     </div>
     <!-- total - end -->
 

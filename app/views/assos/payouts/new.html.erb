@@ -1,0 +1,51 @@
+<div class="flex flex-col gap-y-8 justify-start items-center h-dvh mt-16">
+
+  <h1 class="roboto-medium text-2xl mb-12">Transferer mes fonds</h1>
+
+  <div class="flex flex-row w-full gap-x-4 px-5 sm:pr-10 sm:pl-5 py-4 border rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+
+    <p class="text-lg text-black flex-auto w-fit flex items-end"> Solde disponible </p>
+    <div class="flex-none w-fit self-end text-2xl roboto-medium">
+      <%= number_to_currency(@account_balance.available.first.amount / 100, unit: '€', format: '%n %u') %>
+    </div>
+
+  </div>
+
+  <div>
+    <%= icon('fa-solid', 'angles-down', class:'fa-2xl', style:'color: black') %>
+  </div>
+
+  <div class="flex flex-col w-full justify-center items-center gap-y-2 px-5 sm:pr-10 sm:pl-5 py-4 border rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+
+    <div class="">
+      <%= icon('fa-solid', 'building-columns', class:'fa-2xl', style:'color: black') %>
+    </div>
+
+    <div class="flex flex-row w-full justify-between items-center text-lg">
+
+      <p>IBAN</p>
+      <div class="roboto-medium">
+        <%= @account.last_four %>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="w-full">
+  <% if @account_balance.available.first.amount > 0 %>
+    <%= form_with(url: assos_payout_path) do |form| %>
+      <%= form.submit 'Confirmer', class: "px-3 py-2 w-full bg-black rounded-lg text-white text-xl tracking-wider" %>
+    <% end %>
+  <% else %>
+    <div class="flex flex-col justify-center items-start gap-y-2">
+      <button class= "disabled px-3 py-2 w-full bg-black/50 rounded-lg text-white text-xl tracking-wider">
+      Confirmer
+      </button>
+      <p class="roboto-light-italic text-red-500">Solde insuffisant.</p>
+    </div>
+
+  <% end %>
+  </div>
+
+</div>
