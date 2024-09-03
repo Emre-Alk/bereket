@@ -43,22 +43,35 @@
 <% if @my_asso && @my_place %>
   <div class="flex flex-col pt-48 gap-y-4"> <!-- scrolled page start -->
     <!-- total - start -->
-    <div class="bg-white flex flex-col gap-y-2 divide-y justify-center items-center roboto-medium text-4xl py-2 pr-4 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
-    <!--
-      <div>
-        <%= number_to_currency(@sum.to_f / 100, unit: "€", format: "%n %u") %>
-      </div>
-    -->
-      <div class="flex flex-row w-11/12 gap-x-4">
-        <p class="text-base text-neutral-500 flex-auto w-fit flex items-end"> Solde disponible </p>
-        <div class="flex-none w-fit self-end">
+    <div class="bg-white flex flex-col gap-y-4 divide-y justify-center items-center roboto-medium text-4xl py-2 sm:pr-4 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+      <!--
+        <div>
+          <%= number_to_currency(@sum.to_f / 100, unit: "€", format: "%n %u") %>
+        </div>
+      -->
+      <div class="flex flex-col w-11/12 gap-y-4">
+
+        <div class="flex flex-row w-full">
+
+          <p class="text-base text-neutral-500 flex-auto w-fit"> Solde disponible </p>
+          <button class="rounded-lg p-1 shadow-sm active:shadow-inner bg-neutral-100">
+            <%= link_to new_assos_payout_path do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+              </svg>
+            <% end %>
+          </button>
+
+        </div>
+
+        <div class="flex-auto w-fit self-center">
           <%= number_to_currency(@account_balance.available.first.amount / 100, unit: '€', format: '%n %u') %>
         </div>
       </div>
 
-      <div class="flex flex-row w-11/12 gap-x-4 pt-2">
+      <div class="flex flex-row w-11/12 gap-x-4 pt-1">
         <p class="text-sm text-neutral-500 flex-auto w-fit flex items-end">Solde à venir </p>
-        <div class="flex-none w-fit self-end text-lg">
+        <div class="flex-auto w-fit self-end text-lg text-right text-neutral-500">
           <%= number_to_currency(@account_balance.pending.first.amount / 100, unit: '€', format: '%n %u') %>
         </div>
       </div>
