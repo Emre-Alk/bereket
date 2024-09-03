@@ -33,12 +33,12 @@
   <div class="w-full flex flex-col gap-y-8">
     <% if @account_balance.available.first.amount > 0 %>
       <%= form_with(url: assos_payout_path) do |form| %>
-        <%= form.submit 'Confirmer', class: "px-3 py-2 w-full bg-black rounded-lg text-white text-xl tracking-wider" %>
+        <%= form.submit 'Confirmer', class: "px-3 py-3 w-full bg-black rounded-lg text-white text-xl tracking-wider" %>
       <% end %>
     <% else %>
       <div class="flex flex-col justify-center items-start gap-y-2">
         <p class="roboto-light-italic text-red-500">Solde insuffisant.</p>
-        <button class= "disabled px-3 py-4 w-full bg-black/50 rounded-lg text-white text-xl tracking-wider">
+        <button class= "disabled px-3 py-3 w-full bg-black/50 rounded-lg text-white text-xl tracking-wider">
         Confirmer
         </button>
       </div>
@@ -49,9 +49,9 @@
     </button>
     -->
     <div class="flex justify-center">
-      <%= link_to asso_root_path do %>
-        <button class="size-fit p-4 rounded-full bg-black">
-          <%= image_tag("cross_icon_white.svg", size:"44x44") %>
+      <%= link_to :back do %>
+        <button class="p-4 rounded-full bg-black">
+          <%= image_tag("cross_icon_white.svg", size:"30x30") %>
         </button>
       <% end %>
     </div>
