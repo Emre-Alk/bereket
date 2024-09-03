@@ -1,6 +1,21 @@
 class CheckoutsController < ApplicationController
   skip_before_action :authenticate_user!
-  before_action :check_session!
+  # before_action :check_session!
+
+  def show
+    # collect all needed info on the payment to display a success page
+    place = Place.find(params[:place_id])
+    @checkout_session = Stripe::Checkout::Session.retrieve(
+      {
+        id: params[:session_id],
+        expand: [:line_items]
+      },
+      {
+        stripe_account: place.asso.account.stripe_id
+      }
+    )
+  end
+
   def create
     # on Gorails, corresponds to paymentcontroller#new. A buy btn redirects to new_payment_path to here
     # on tuto fullstack, corresponds to checkoutscontroller#create. AJAX hit it with POST to url /checkout
@@ -16,6 +31,35 @@ class CheckoutsController < ApplicationController
     # donation = params[:donation]
     # donation_amount = donation[:amount]
     # place = Place.find(donation[:place_id])
+
+    # ============= checkout by redirection ==============
+    place = Place.find(params[:place_id])
+    amount = params[:amount].to_f * 100
+    checkout_session = Stripe::Checkout::Session.create(
+      {
+        mode: 'payment',
+        success_url: place_checkout_url + "?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url: new_place_donation_url(place),
+        line_items: [{
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: 'donation'
+            },
+            unit_amount: amount.to_i
+          },
+          quantity: 1
+        }],
+        metadata: {
+          place_id: params[:place_id]
+        }
+      },
+      {
+        stripe_account: place.asso.account.stripe_id
+      }
+    )
+
+    redirect_to checkout_session.url, allow_other_host: true
   end
 
   def test

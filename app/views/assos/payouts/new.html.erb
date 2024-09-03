@@ -6,7 +6,7 @@
 
     <p class="text-lg text-black flex-auto w-fit flex items-end"> Solde disponible </p>
     <div class="flex-none w-fit self-end text-2xl roboto-medium">
-      <%= number_to_currency(@account_balance.available.first.amount / 100, unit: '€', format: '%n %u') %>
+      <%= number_to_currency(@account_balance.available.first.amount.to_f / 100, unit: '€', format: '%n %u') %>
     </div>
 
   </div>

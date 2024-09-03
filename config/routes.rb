@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   # this route don't interfer with the one in the asso namespace since it is nested inside asso namespace
   resources :places, only: %i[show] do
     resources :donations, only: %i[new]
+    resource :checkout, only: %i[create show]
   end
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
@@ -64,6 +65,6 @@ Rails.application.routes.draw do
 
   # ======== donations ========
   # create a donation between a donator and a place
-  resource :checkout, only: %i[create]
+  # resource :checkout, only: %i[create show]
   get 'checkout_test', to: 'checkouts#test'
 end
