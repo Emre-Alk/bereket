@@ -65,14 +65,14 @@
         </div>
 
         <div class="flex-auto w-fit self-center">
-          <%= number_to_currency(@account_balance.available.first.amount.to_f / 100, unit: '€', format: '%n %u') %>
+          <%= number_to_currency(@balance_available.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
         </div>
       </div>
 
       <div class="flex flex-row w-11/12 gap-x-4 pt-1">
         <p class="text-sm text-neutral-500 flex-auto w-fit flex items-end">Solde à venir </p>
         <div class="flex-auto w-fit self-end text-lg text-right text-neutral-500">
-          <%= number_to_currency(@account_balance.pending.first.amount.to_f / 100, unit: '€', format: '%n %u') %>
+          <%= number_to_currency(@balance_future.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
         </div>
       </div>
 

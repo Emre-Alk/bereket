@@ -55,6 +55,14 @@ class StripeAccount
           postal_code: '69001' # account.asso.places.first.zip_code => need to be valid type
         },
         name: account.asso.name
+      },
+      settings: {
+        payouts: {
+          schedule: {
+            interval: 'manual'
+          },
+          statement_descriptor: "DoGood - #{account.asso.name}"
+        }
       }
       # default_currency: "eur",
     )

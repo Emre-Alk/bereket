@@ -31,7 +31,7 @@
   </div>
 
   <div class="w-full flex flex-col gap-y-8">
-    <% if @account_balance.available.first.amount > 0 %>
+    <% if @account_balance.available.first.amount > 100 %>
       <%= form_with(url: assos_payout_path) do |form| %>
         <%= form.submit 'Confirmer', class: "px-3 py-3 w-full bg-black rounded-lg text-white text-xl tracking-wider" %>
       <% end %>
