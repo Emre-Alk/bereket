@@ -1,6 +1,7 @@
 class DonationsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:new]
   # skip auth (only new), apply auth by redirection inside new
+  before_action :redirect_if_asso, only: [:new]
 
   def index
     # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])
@@ -83,7 +84,15 @@ class DonationsController < ApplicationController
   #   end
   # end
 
-  # private
+  private
+
+  def redirect_if_asso
+    if current_user.asso?
+      # a shared/flashes created and rendered in application.html.erb but need some timeout to close it after a delay
+      flash[:alert] = "Désolé, vous ne pouvez pas faire de don en tant qu'association."
+      redirect_to asso_root_path
+    end
+  end
 
   # def set_params_donation
   #   params.require(:donation).permit(:amount, :occured_on)
