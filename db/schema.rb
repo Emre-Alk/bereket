@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_30_171316) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_05_162433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -78,6 +78,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_30_171316) do
     t.index ["user_id"], name: "index_assos_on_user_id"
   end
 
+  create_table "customers", force: :cascade do |t|
+    t.string "stripe_id"
+    t.bigint "donator_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["donator_id"], name: "index_customers_on_donator_id"
+  end
+
   create_table "donations", force: :cascade do |t|
     t.bigint "donator_id", null: false
     t.bigint "place_id", null: false
@@ -85,6 +93,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_30_171316) do
     t.datetime "occured_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "checkout_session_id"
     t.index ["donator_id"], name: "index_donations_on_donator_id"
     t.index ["place_id"], name: "index_donations_on_place_id"
   end
@@ -159,6 +168,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_30_171316) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assos", "asso_types"
   add_foreign_key "assos", "users"
+  add_foreign_key "customers", "donators"
   add_foreign_key "donations", "donators"
   add_foreign_key "donations", "places"
   add_foreign_key "donators", "users"

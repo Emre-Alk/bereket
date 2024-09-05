@@ -1,4 +1,40 @@
-<%= JSON.parse(@checkout_session.to_json) %>
-<div class="flex flex-col w-full rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+<!--
+-->
+ <%= JSON.parse(@checkout_session.to_json) %>
+
+<div class="flex flex-col w-full rounded-lg px-4 py-8 shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+  <div class="flex flex-row gap-x-2">
+    <div class="flex-auto w-6/12 flex-col bg-pink-200"> 1er colonne message
+      <p>don n°<%= @checkout_session.payment_intent.id %></p>
+      <p>Merci et Félicitation.</p>
+      <p>Vous venez d'accomplir une bonne action aujourd'hui.</p>
+      <p>Message de <%= @place.name %> : "blaaaabllaaablaaaa"</p>
+      <p>Vous n'etes pas encore DoGooder 😳 </p>
+      <p>renseigner vos infos ci-dessous pour faire partie de la communauté DoGooder en 1 clic.</p>
+      <input type="email" placeholder="votre email">
+      <input type="password" name="password" placeholder="mot de passe">
+      <input type="submit" value="Rejoindre" class="px-4 py-2 bg-black text-white">
+      <p>faites vos dons et suivi-les depuis votre espace.</p>
+      <p>Générer vos cerfa pour chacun de vos dons et profiter de la défiscalisation jusqu'à 70% !</p>
+      <p>retrouver votre don ici: lien donation#show </p>
+      <p>retrouver votre cerfa pour votre ici: lien vers cerfa</p>
+    </div>
+
+    <div class="flex-auto w-6/12 flex-col bg-green-200">2e colonne card info
+      <%= image_tag @place.place_image %>
+
+      <p>A: <%= @place.name %></p>
+
+      <p>Montant donné: <%= number_to_currency(@amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %></p>
+
+      <p> Montant pouvant être défiscalisé: <%= number_to_currency(@amount_detaxed.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %> </p>
+
+      <p>Ce que votre don vous a vraiment coûté: <%= number_to_currency((@amount - @amount_detaxed).to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %> </p>
+
+      <p><%= @checkout_session.payment_intent.payment_method.card.brand %></p>
+      <p>****<%= @checkout_session.payment_intent.payment_method.card.last4 %></p>
+    </div>
+
+  </div>
 
 </div>

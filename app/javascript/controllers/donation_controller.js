@@ -24,7 +24,7 @@ export default class extends Controller {
       event.preventDefault()
       confirmBox.classList.add("-translate-y-full")
       this.inputfieldTarget.value = event.target.value
-      this.monDonTarget.innerText = `${event.target.value} €`
+      this.monDonTargets[1].innerText = `${event.target.value} €`
       this.monDonTarget.setAttribute("value", `${event.target.value}`)
       this.overlay.classList.remove('hidden')
       event.stopPropagation()
@@ -34,7 +34,7 @@ export default class extends Controller {
       console.log(this.inputfieldTarget.value);
 
       confirmBox.classList.add("-translate-y-full")
-      this.monDonTarget.innerText = `${this.inputfieldTarget.value} €`
+      this.monDonTargets[1].innerText = `${this.inputfieldTarget.value} €`
       this.monDonTarget.setAttribute("value", `${this.inputfieldTarget.value}`)
       this.overlay.classList.remove('hidden')
     }

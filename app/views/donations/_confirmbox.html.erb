@@ -30,8 +30,9 @@
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" >
       <input type="hidden" name="place_id" value="<%= place.id %>">
       <input type="hidden" name="amount" data-donation-target="monDon">
-      <button type="submit">
-        donate
+      <button type="submit" class="h-16 w-36 bg-black rounded-lg flex flow-row justify-evenly items-center">
+        <%= image_tag("gift_icon.svg", class:"scale-125") %>
+        <div data-donation-target="monDon" class="roboto-medium text-xl text-white"></div>
       </button>
     </form>
   <!--

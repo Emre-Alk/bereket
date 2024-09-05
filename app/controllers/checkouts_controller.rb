@@ -8,12 +8,17 @@ class CheckoutsController < ApplicationController
     @checkout_session = Stripe::Checkout::Session.retrieve(
       {
         id: params[:session_id],
-        expand: [:line_items]
+        expand: [:line_items, 'payment_intent.payment_method']
       },
       {
         stripe_account: place.asso.account.stripe_id
       }
     )
+
+    @place = Place.find(@checkout_session.metadata.place_id)
+    @amount = @checkout_session.amount_total
+    detaxed_rate = 0.66 # logic auto selon type asso à implementer
+    @amount_detaxed = @amount * detaxed_rate
   end
 
   def create
@@ -35,11 +40,15 @@ class CheckoutsController < ApplicationController
     # ============= checkout by redirection ==============
     place = Place.find(params[:place_id])
     amount = params[:amount].to_f * 100
+    # customer = Customer.find_by(donator: current_user.donator)
+
     checkout_session = Stripe::Checkout::Session.create(
       {
         mode: 'payment',
         success_url: place_checkout_url + "?session_id={CHECKOUT_SESSION_ID}",
         cancel_url: new_place_donation_url(place),
+        # customer: customer.exists? ? customer.stripe_id : '',
+        customer_creation: 'always', # a voir si entre en conflit si passe un customer existant
         line_items: [{
           price_data: {
             currency: 'eur',

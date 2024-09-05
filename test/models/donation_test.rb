@@ -2,13 +2,14 @@
 #
 # Table name: donations
 #
-#  id         :bigint           not null, primary key
-#  amount     :integer
-#  occured_on :datetime
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  donator_id :bigint           not null
-#  place_id   :bigint           not null
+#  id                  :bigint           not null, primary key
+#  amount              :integer
+#  occured_on          :datetime
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  checkout_session_id :string
+#  donator_id          :bigint           not null
+#  place_id            :bigint           not null
 #
 # Indexes
 #
