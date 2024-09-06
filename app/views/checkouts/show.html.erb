@@ -11,9 +11,17 @@
       <p>Message de <%= @place.name %> : "blaaaabllaaablaaaa"</p>
       <p>Vous n'etes pas encore DoGooder 😳 </p>
       <p>renseigner vos infos ci-dessous pour faire partie de la communauté DoGooder en 1 clic.</p>
-      <input type="email" placeholder="votre email">
-      <input type="password" name="password" placeholder="mot de passe">
-      <input type="submit" value="Rejoindre" class="px-4 py-2 bg-black text-white">
+      <!--
+      create an authentification box if "log in" or "sign up"
+      with stimumus, dropdown the right form
+      use devise partial maybe ?
+      -->
+      <form action="#">
+        <input type="email", value="<%= @checkout_session.customer_details.email %>" placeholder="votre email">
+        <input type="password" name="password" placeholder="mot de passe">
+        <input type="password" name="confirm_password" placeholder="confirmer mot de passe">
+        <input type="submit" value="Rejoindre" class="px-4 py-2 bg-black text-white">
+      </form>
       <p>faites vos dons et suivi-les depuis votre espace.</p>
       <p>Générer vos cerfa pour chacun de vos dons et profiter de la défiscalisation jusqu'à 70% !</p>
       <p>retrouver votre don ici: lien donation#show </p>
@@ -21,7 +29,7 @@
     </div>
 
     <div class="flex-auto w-6/12 flex-col bg-green-200">2e colonne card info
-      <%= image_tag @place.place_image %>
+      <%= image_tag @place.place_image if @place.place_image.attached? %>
 
       <p>A: <%= @place.name %></p>
 

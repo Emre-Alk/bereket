@@ -55,7 +55,7 @@ class User < ApplicationRecord
       # using active record method:
       # Donator.create!(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
       # using devise helper methods:
-      user.create_donator!(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
+      donator = user.create_donator!(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
       # does the same as above but using devise method .create_'has_one' (rq: association must exist)
       # code below does also the same, using another devise method (rq: association must exist)
       # donator = build_donator(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)

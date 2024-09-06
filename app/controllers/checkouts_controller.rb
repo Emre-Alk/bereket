@@ -38,17 +38,21 @@ class CheckoutsController < ApplicationController
     # place = Place.find(donation[:place_id])
 
     # ============= checkout by redirection ==============
+
     place = Place.find(params[:place_id])
     amount = params[:amount].to_f * 100
-    # customer = Customer.find_by(donator: current_user.donator)
+
+    if user_signed_in?
+      customer = Customer.find_by(donator: current_user.donator)
+    end
 
     checkout_session = Stripe::Checkout::Session.create(
       {
         mode: 'payment',
         success_url: place_checkout_url + "?session_id={CHECKOUT_SESSION_ID}",
         cancel_url: new_place_donation_url(place),
-        # customer: customer.exists? ? customer.stripe_id : '',
-        customer_creation: 'always', # a voir si entre en conflit si passe un customer existant
+        customer: customer&.stripe_id,
+        customer_creation: 'always', # no conflict with 'customer' if customer = nil
         line_items: [{
           price_data: {
             currency: 'eur',
@@ -93,4 +97,5 @@ class CheckoutsController < ApplicationController
     # this works too
     render json: { url: new_user_session_path }
   end
+
 end

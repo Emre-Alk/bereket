@@ -1,19 +1,24 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
+
   # protect_from_forgery with: :exception
 
   # a devise method to execute after the resource(user) has sign in.
   # here I check whether the user has a role set to donator or asso.
   # then i redirect to their dedicated dashboards through the  rails path helper
+  # def after_sign_in_path_for(resource)
+  #   if resource.donator?
+  #     donator_root_path
+  #   elsif resource.asso?
+  #     asso_root_path
+  #   else
+  #     root_path # Fallback path to landing page if the user doesn't have a role or role is not recognized
+  #   end
+  # end
+
   def after_sign_in_path_for(resource)
-    if resource.donator?
-      donator_root_path
-    elsif resource.asso?
-      asso_root_path
-    else
-      root_path # Fallback path to landing page if the user doesn't have a role or role is not recognized
-    end
+    stored_location_for(resource) || first_time_sign
   end
 
   # here i create callbacks to set authorization on user to access dedicated dashboard according their role
@@ -38,6 +43,16 @@ class ApplicationController < ActionController::Base
     # devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
     devise_parameter_sanitizer.permit(:sign_up) do |user_params|
       user_params.permit(:role, :email, :first_name, :last_name, :password, :password_confirmation)
+    end
+  end
+
+  def first_time_sign
+    if resource.donator?
+      donator_root_path
+    elsif resource.asso?
+      asso_root_path
+    else
+      root_path # Fallback path to landing page if the user doesn't have a role or role is not recognized
     end
   end
 end
