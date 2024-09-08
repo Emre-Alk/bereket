@@ -19,6 +19,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Donator < ApplicationRecord
+  after_create :create_customer
   belongs_to :user
   has_many :donations
   has_many :places, through: :donations
@@ -29,4 +30,15 @@ class Donator < ApplicationRecord
   has_one :customer, dependent: :destroy
 
   validates :first_name, :last_name, :email, presence: true
+
+  private
+
+  def create_customer
+    donator = self
+    customer = Stripe::Customer.create(
+      email: donator.email,
+      name: "#{donator.first_name} #{donator.last_name}"
+    )
+    donator.create_customer!(donator_id: donator.id, stripe_id: customer.id)
+  end
 end
