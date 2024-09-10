@@ -20,6 +20,61 @@ class HandleEventJob < ApplicationJob
       handle_account_updated(stripe_event)
       # when 'capability.updated' # Useful if goal is to create/check financial account as external account
       # handle_capability_updated(stripe_event)
+    when 'checkout.session.completed'
+      handle_checkout_session_completed(stripe_event)
+    end
+  end
+
+  def handle_checkout_session_completed(stripe_event)
+    # retrive checkout session
+    checkout_session = Stripe::Checkout::Session.retrieve(
+      {
+        id: stripe_event.data.object.id,
+        expand: [:line_items, 'payment_intent.payment_method']
+      }
+    )
+
+    puts '🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩'
+    puts checkout_session
+    puts '🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩'
+
+    if checkout_session.payment_status == 'paid' # create a donation record if status is paid
+      # retrieve a place_id
+      place = Place.find(checkout_session.metadata.place_id)
+
+      # retrive a donator_id
+      if checkout_session.customer_creation
+        # case visitor not converted yet (cus created but not a user yet)
+        email = checkout_session.customer_details.email
+        name = checkout_session.customer_details.name || checkout_session.customer_details.email
+        visitor = User.create!(
+          email:,
+          password: '123456',
+          first_name: name,
+          last_name: 'last name',
+          role: 'donator'
+        )
+        donator = visitor.donator
+      else
+        # case when donator is already registrate
+        donator = Customer.find_by(stripe_id: @customer).donator
+      end
+
+      # retrive donated amount
+      amount = checkout_session.amount_total
+      # create a donation record (donator, place, cs, amount brut, occured_on)
+      Donation.create!(
+        place:,
+        donator:,
+        amount:,
+        occured_on: Date.today,
+        checkout_session_id: checkout_session.id
+      )
+      # for next time, payment intent with cus id and pm id can be done.
+      # however, on testing i had to create pi, then "status": "requires_confirmation".
+      # so i confirmed via Stripe::PaymentIntent.confirm(), then "status": "succeeded".
+      # the money is transfer and my app is paid.
+      # in live mode, do i still need to confirm server-side ?
     end
   end
 

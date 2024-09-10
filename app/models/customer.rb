@@ -18,4 +18,7 @@
 #
 class Customer < ApplicationRecord
   belongs_to :donator
+
+  validates :stripe_id, :donator_id, presence: true
+  validates :stripe_id, :donator_id, uniqueness: true
 end

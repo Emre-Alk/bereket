@@ -20,6 +20,7 @@
 #
 class Donator < ApplicationRecord
   after_create :create_customer
+
   belongs_to :user
   has_many :donations
   has_many :places, through: :donations

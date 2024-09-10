@@ -59,7 +59,7 @@ class StripeAccount
       settings: {
         payouts: {
           schedule: {
-            interval: 'manual'
+            interval: 'daily'
           },
           statement_descriptor: "DoGood - #{account.asso.name}"
         }
