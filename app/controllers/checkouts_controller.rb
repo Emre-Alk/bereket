@@ -17,8 +17,8 @@ class CheckoutsController < ApplicationController
     @connected_account = @checkout_session.payment_intent.transfer_data.destination
     @pm = @checkout_session.payment_intent.payment_method.id
     @payment_status = @checkout_session.payment_status
-    @customer = @checkout_session.customer
-    @donator = Customer.find_by(stripe_id: @customer).donator
+    @customer = Customer.find_by(stripe_id: @checkout_session.customer)
+    @donator = @customer&.donator || Donator.find_by(email: @checkout_session.customer_details.email)
     if @checkout_session.customer_creation
       @visitor = 'non'
     else
@@ -30,6 +30,11 @@ class CheckoutsController < ApplicationController
     @amount = @checkout_session.amount_total
     detaxed_rate = 0.66 # logic auto selon type asso à implementer
     @amount_detaxed = @amount * detaxed_rate
+
+    # if visitor => ask to convert:
+    ## case when ok: update donation object (retrieve via cs_id) association and delete old user-visitor account
+    ## case when nok: nothing more
+
   end
 
   def create

@@ -7,9 +7,10 @@
   <p> stripe account of the asso owning the place: <%= @connected_account %></p>
   <p> used payment method: <%= @pm %></p>
   <p> payment status: <%= @payment_status %></p>
-  <p> customer stripe id: <%= @customer %></p>
+  <p> customer stripe id: <%= @customer ? @customer.stripe_id : @donator.customer.stripe_id %></p>
   <p> Is registered donator ? <%= @visitor %></p>
   <p> if true, donator name: <%= @donator.first_name %></p>
+  <p> user is signed in? <%= user_signed_in? %></p>
  </div>
 
 <div class="flex flex-col w-full rounded-lg px-4 py-8 shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
@@ -19,21 +20,31 @@
       <p>Merci et Félicitation.</p>
       <p>Vous venez d'accomplir une bonne action aujourd'hui.</p>
       <p>Message de <%= @place.name %> : "blaaaabllaaablaaaa"</p>
-      <p>Vous n'etes pas encore DoGooder 😳 </p>
-      <p>renseigner vos infos ci-dessous pour faire partie de la communauté DoGooder en 1 clic.</p>
       <!--
       create an authentification box if "log in" or "sign up"
       with stimumus, dropdown the right form
       use devise partial maybe ?
       -->
-      <form action="#">
-        <input type="email", value="<%= @checkout_session.customer_details.email %>" placeholder="votre email">
-        <input type="password" name="password" placeholder="mot de passe">
-        <input type="password" name="confirm_password" placeholder="confirmer mot de passe">
-        <input type="submit" value="Rejoindre" class="px-4 py-2 bg-black text-white">
-      </form>
-      <p>faites vos dons et suivi-les depuis votre espace.</p>
-      <p>Générer vos cerfa pour chacun de vos dons et profiter de la défiscalisation jusqu'à 70% !</p>
+      <% if @donator.first_name == 'visiteur' %>
+
+        <p>Vous n'etes pas encore DoGooder 😳 </p>
+        <p>renseigner vos infos ci-dessous pour faire partie de la communauté DoGooder en 1 clic.</p>
+
+        <form action="/users" method="POST">
+          <input type="hidden" name="role" value="donator">
+          <input type="hidden" name="last_name" value="Nom">
+          <input type="hidden" name="first_name" value="Prénom">
+          <input type="email", name="email" value="<%= @checkout_session.customer_details.email %>">
+          <input type="password" name="password" placeholder="mot de passe">
+          <input type="password" name="password_confirmation" placeholder="confirmer vote mot de passe">
+          <input type="submit" value="Rejoindre" class="px-4 py-2 bg-black text-white">
+        </form>
+
+        <p>faites vos dons et suivi-les depuis votre espace.</p>
+        <p>Générer vos cerfa pour chacun de vos dons et profiter de la défiscalisation jusqu'à 70% !</p>
+
+      <% end %>
+
       <p>retrouver votre don ici: lien donation#show </p>
       <p>retrouver votre cerfa pour votre ici: lien vers cerfa</p>
     </div>
