@@ -75,7 +75,7 @@ class HandleEventJob < ApplicationJob
 
           puts '🟪🟪🟪🟪🟪🟪🟪🟪'
         else
-          # case initialize new visitor
+          # case initialize new visitor (1st visit)
           puts '🟧🟧🟧🟧🟧🟧🟧🟧🟧'
           puts visitor
           puts visitor.id
