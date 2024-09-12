@@ -59,6 +59,13 @@ class AssosController < ApplicationController
       @revenue_per_day_current_month = revenue_complete_days_current_month.reject { |day| day[0] > Date.today.strftime('%d') }
     end
     # ===== revenue of the current month ===== end
+    # ===== connected account balance (available money on the stripe account) ===== start
+    @account = Account.find_by(asso: current_user.asso)
+    account_balance = StripeAccount.new(@account).account_balance
+    @balance_available = account_balance.available.first.amount
+    @money_pending = account_balance.pending.first.amount
+    @balance_future = @balance_available + @money_pending
+    # ===== connected account balance (available money on the stripe account) ===== end
   end
 
   def new

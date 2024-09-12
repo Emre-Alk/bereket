@@ -10,6 +10,10 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  # ======== Webhooks ========
+  # set the entry point ot handle 3rd parties post requests (stripe, etc...)
+  post '/webhooks/:source', to: 'webhooks#create'
+
   # ======== Pages ========
   # this line sends any user to the landing page
   root to: "pages#landing"
@@ -27,6 +31,8 @@ Rails.application.routes.draw do
   namespace :assos do
     resources :places, only: %i[index show new create destroy]
     resource :signature, only: %i[new create]
+    resource :account, only: %i[create show]
+    resource :payout, only: %i[new create]
     # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
 
@@ -36,6 +42,7 @@ Rails.application.routes.draw do
   # this route don't interfer with the one in the asso namespace since it is nested inside asso namespace
   resources :places, only: %i[show] do
     resources :donations, only: %i[new]
+    resource :checkout, only: %i[create show]
   end
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
@@ -58,6 +65,6 @@ Rails.application.routes.draw do
 
   # ======== donations ========
   # create a donation between a donator and a place
-  resource :checkout, only: %i[create]
+  # resource :checkout, only: %i[create show]
   get 'checkout_test', to: 'checkouts#test'
 end

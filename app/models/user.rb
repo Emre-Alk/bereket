@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :bigint           not null, primary key
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  first_name             :string           not null
+#  last_name              :string           not null
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string
+#  role                   :string           not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#
 class User < ApplicationRecord
   after_create :create_donator
   # Include default devise modules. Others available are:
@@ -12,7 +33,7 @@ class User < ApplicationRecord
 
   validates :role, presence: true
   validates :role, inclusion: { in: ROLES }
-  validates :first_name, :last_name, format:{ with: /\A[a-zA-Z]+\z/,
+  validates :first_name, :last_name, format:{ with: /\A[A-Za-z]+(\s?[A-Za-z]+)*\z/,
     message: "letttres uniquement" }
 
   def donator?

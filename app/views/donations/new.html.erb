@@ -37,6 +37,14 @@
 
   </div>
 
+  <div class="mt-8">
+    <% if !user_signed_in? %>
+      <%= link_to new_user_session_path do %>
+        J'utilise déjà DoGood ? <button class="px-4"> Me connecter </button>
+      <% end %>
+    <% end %>
+  </div>
+
   <div>
     <%= render partial: "confirmbox", locals: { place: @place } %>
   </div>

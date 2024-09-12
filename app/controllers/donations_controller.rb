@@ -1,6 +1,8 @@
 class DonationsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:new]
   # skip auth (only new), apply auth by redirection inside new
+  before_action :redirect_if_asso, only: [:new]
+  before_action :store_user_location!
 
   def index
     # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])
@@ -47,8 +49,13 @@ class DonationsController < ApplicationController
     # array to  hash such as 'key' is amount and 'value' its occurence (tally) { 10: 2, 20: 1, ... }
     # then, filter the [key, value] for which value (ie, occurence) is max
     # finally, extract the corresponding key
-    @frequent_amount = array_all_amounts.tally.max_by { |_key, value| value }[0] / 100
-    @frequent_amount = @frequent_amount&.ceil ||= 10
+    if array_all_amounts.length.positive?
+      @frequent_amount = array_all_amounts.tally.max_by { |_key, value| value }[0] / 100
+      @frequent_amount = @frequent_amount&.ceil ||= 10
+    else
+      @frequent_amount = 10
+    end
+
     @amount_option.push(@frequent_amount)
     @amount_option.sort!
 
@@ -83,9 +90,25 @@ class DonationsController < ApplicationController
   #   end
   # end
 
-  # private
+  private
+
+  def redirect_if_asso
+    if user_signed_in? && current_user.asso?
+      # a shared/flashes created and rendered in application.html.erb but need some timeout to close it after a delay
+      flash[:alert] = "Désolé, vous ne pouvez pas faire de don en tant qu'association."
+      redirect_to asso_root_path
+    end
+  end
 
   # def set_params_donation
   #   params.require(:donation).permit(:amount, :occured_on)
   # end
+
+  def storable_location?
+    request.get? == false && !devise_controller? && !request.xhr?
+  end
+
+  def store_user_location!
+    store_location_for(:user, request.fullpath)
+  end
 end

@@ -25,10 +25,22 @@
   </div>
 
   <div class="flex flex-row gap-10 justify-center items-center">
+
+    <form action="/places/<%=place.id%>/checkout" method="POST" data-turbo="false">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" >
+      <input type="hidden" name="place_id" value="<%= place.id %>">
+      <input type="hidden" name="amount" data-donation-target="monDon">
+      <button type="submit" class="h-16 w-36 bg-black rounded-lg flex flow-row justify-evenly items-center">
+        <%= image_tag("gift_icon.svg", class:"scale-125") %>
+        <div data-donation-target="monDon" class="roboto-medium text-xl text-white"></div>
+      </button>
+    </form>
+  <!--
     <button class="h-16 w-36 bg-black rounded-lg flex flow-row justify-evenly items-center" data-action="click->donation#confirmTip">
       <%= image_tag("gift_icon.svg", class:"scale-125") %>
       <div data-donation-target="monDon" class="roboto-medium text-xl text-white"></div>
     </button>
+  -->
 
     <button class="h-16 w-36 bg-zinc-300 rounded-lg flex justify-center items-center" data-action="click->donation#cancelTip">
       <%= image_tag("cross_icon.svg", class:"scale-125") %>

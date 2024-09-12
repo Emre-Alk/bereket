@@ -10,9 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_17_152756) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_05_162433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "status", ["pending", "processing", "processed", "failed"]
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "stripe_id"
+    t.boolean "payouts_enabled"
+    t.boolean "charges_enabled"
+    t.bigint "asso_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "external_bank_account_id"
+    t.string "last_four"
+    t.index ["asso_id"], name: "index_accounts_on_asso_id"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -62,6 +78,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_17_152756) do
     t.index ["user_id"], name: "index_assos_on_user_id"
   end
 
+  create_table "customers", force: :cascade do |t|
+    t.string "stripe_id"
+    t.bigint "donator_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["donator_id"], name: "index_customers_on_donator_id"
+  end
+
   create_table "donations", force: :cascade do |t|
     t.bigint "donator_id", null: false
     t.bigint "place_id", null: false
@@ -69,6 +93,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_17_152756) do
     t.datetime "occured_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "checkout_session_id"
     t.index ["donator_id"], name: "index_donations_on_donator_id"
     t.index ["place_id"], name: "index_donations_on_place_id"
   end
@@ -81,6 +106,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_17_152756) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_donators_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.json "data"
+    t.string "source"
+    t.text "processing_errors"
+    t.enum "status", default: "pending", null: false, enum_type: "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "favorites", force: :cascade do |t|
@@ -129,10 +163,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_17_152756) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "accounts", "assos"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assos", "asso_types"
   add_foreign_key "assos", "users"
+  add_foreign_key "customers", "donators"
   add_foreign_key "donations", "donators"
   add_foreign_key "donations", "places"
   add_foreign_key "donators", "users"

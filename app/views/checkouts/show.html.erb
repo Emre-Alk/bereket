@@ -1,0 +1,78 @@
+<!--
+-->
+ <%= JSON.parse(@checkout_session.to_json) %>
+
+ <div>
+  <p> place receiving donation in DB: <%= @place %></p>
+  <p> stripe account of the asso owning the place: <%= @connected_account %></p>
+  <p> used payment method: <%= @pm %></p>
+  <p> payment status: <%= @payment_status %></p>
+  <p> customer stripe id: <%= @customer ? @customer.stripe_id : @donator.customer.stripe_id %></p>
+  <p> Is registered donator ? <%= @donator.first_name == 'visiteur' ? 'false' : 'true' %></p>
+  <p> donator name: <%= @donator.first_name %></p>
+  <p> user is signed in? <%= user_signed_in? %></p>
+ </div>
+
+<div class="flex flex-col w-full rounded-lg px-4 py-8 shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+  <div class="flex flex-row gap-x-2">
+    <div class="flex-auto w-6/12 flex-col bg-pink-200"> 1er colonne message
+      <p>don n°<%= @checkout_session.payment_intent.id %></p>
+      <p>Merci et Félicitation.</p>
+      <p>Vous venez d'accomplir une bonne action aujourd'hui.</p>
+      <p>Message de <%= @place.name %> : "blaaaabllaaablaaaa"</p>
+      <!--
+      create an authentification box if "log in" or "sign up"
+      with stimumus, dropdown the right form
+      use devise partial maybe ?
+      -->
+      <div class="bg-black text-white">
+        <%= @donator.user.inspect %>
+      </div>
+      <% if @donator.first_name == 'visiteur' %>
+
+        <p>Vous n'etes pas encore DoGooder 😳 </p>
+        <p>renseigner vos infos ci-dessous pour rejoindre la communauté DoGooder en 1 clic.</p>
+
+        <form action="/users" method="POST" class="flex flex-col gap-y-4 w-1/2 justify-center mx-auto my-4"
+                                            data-controller="convertion-visitor"
+                                            data-action="submit->convertion-visitor#newUser"
+                                            data-turbo="false">
+
+          <input type="hidden" name="current_email" value="<%= @donator.user.email %>">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+          <input type="text" name="last_name" value="<%= @checkout_session.customer_details.name.split(' ')[1] %>" placeholder="Nom">
+          <input type="text" name="first_name" value="<%= @checkout_session.customer_details.name.split(' ')[0] %>" placeholder="Prénom">
+          <input type="email", name="email" value="<%= @checkout_session.customer_details.email %>">
+          <input type="password" name="password" placeholder="mot de passe">
+          <input type="password" name="password_confirmation" placeholder="confirmer vote mot de passe">
+          <input type="submit" value="Rejoindre" class="px-4 py-2 bg-black text-white">
+        </form>
+
+        <p>faites vos dons et suivi-les depuis votre espace.</p>
+        <p>Générer vos cerfa pour chacun de vos dons et profiter de la défiscalisation jusqu'à 70% !</p>
+
+      <% end %>
+
+      <p>retrouver votre don ici: lien donation#show </p>
+      <p>retrouver votre cerfa pour votre ici: lien vers cerfa</p>
+    </div>
+
+    <div class="flex-auto w-6/12 flex-col bg-green-200">2e colonne card info
+      <%= image_tag @place.place_image if @place.place_image.attached? %>
+
+      <p>A: <%= @place.name %></p>
+
+      <p>Montant donné: <%= number_to_currency(@amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %></p>
+
+      <p> Montant pouvant être défiscalisé: <%= number_to_currency(@amount_detaxed.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %> </p>
+
+      <p>Ce que votre don vous a vraiment coûté: <%= number_to_currency((@amount - @amount_detaxed).to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %> </p>
+
+      <p><%= @checkout_session.payment_intent.payment_method.card.brand %></p>
+      <p>****<%= @checkout_session.payment_intent.payment_method.card.last4 %></p>
+    </div>
+
+  </div>
+
+</div>
