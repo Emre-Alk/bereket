@@ -10,21 +10,12 @@ class CheckoutsController < ApplicationController
         id: params[:session_id],
         expand: [:line_items, 'payment_intent.payment_method']
       }
-      # {
-      #   stripe_account: place.asso.account.stripe_id
-      # }
     )
     @connected_account = @checkout_session.payment_intent.transfer_data.destination
     @pm = @checkout_session.payment_intent.payment_method.id
     @payment_status = @checkout_session.payment_status
-    @customer = Customer.find_by(stripe_id: @checkout_session.customer)
-    @donator = @customer&.donator || Donator.find_by(email: @checkout_session.customer_details.email)
-    if @checkout_session.customer_creation
-      @visitor = 'non'
-    else
-      @visitor = 'oui'
-    end
-
+    @customer = Customer.find_by(stripe_id: @checkout_session.customer)  # this won't find a registered user that was not logged in
+    @donator = @customer&.donator || Donator.find_by(email: @checkout_session.customer_details.email) # So, in that case, i find it via email used in the CS
 
     @place = Place.find(@checkout_session.metadata.place_id)
     @amount = @checkout_session.amount_total

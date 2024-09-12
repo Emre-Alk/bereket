@@ -33,7 +33,7 @@ class User < ApplicationRecord
 
   validates :role, presence: true
   validates :role, inclusion: { in: ROLES }
-  validates :first_name, :last_name, format:{ with: /\A[a-zA-Z]+\z/,
+  validates :first_name, :last_name, format:{ with: /\A[A-Za-z]+(\s?[A-Za-z]+)*\z/,
     message: "letttres uniquement" }
 
   def donator?

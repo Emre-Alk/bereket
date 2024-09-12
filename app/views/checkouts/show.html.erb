@@ -8,8 +8,8 @@
   <p> used payment method: <%= @pm %></p>
   <p> payment status: <%= @payment_status %></p>
   <p> customer stripe id: <%= @customer ? @customer.stripe_id : @donator.customer.stripe_id %></p>
-  <p> Is registered donator ? <%= @visitor %></p>
-  <p> if true, donator name: <%= @donator.first_name %></p>
+  <p> Is registered donator ? <%= @donator.first_name == 'visiteur' ? 'false' : 'true' %></p>
+  <p> donator name: <%= @donator.first_name %></p>
   <p> user is signed in? <%= user_signed_in? %></p>
  </div>
 
@@ -25,15 +25,24 @@
       with stimumus, dropdown the right form
       use devise partial maybe ?
       -->
+      <div class="bg-black text-white">
+        <%= @donator.user.inspect %>
+      </div>
       <% if @donator.first_name == 'visiteur' %>
 
         <p>Vous n'etes pas encore DoGooder 😳 </p>
-        <p>renseigner vos infos ci-dessous pour faire partie de la communauté DoGooder en 1 clic.</p>
+        <p>renseigner vos infos ci-dessous pour rejoindre la communauté DoGooder en 1 clic.</p>
 
-        <form action="/users" method="POST">
-          <input type="hidden" name="role" value="donator">
-          <input type="hidden" name="last_name" value="Nom">
-          <input type="hidden" name="first_name" value="Prénom">
+        <form action="/users" method="POST" class="flex flex-col gap-y-4 w-1/2 justify-center mx-auto my-4"
+                                            data-controller="convertion-visitor"
+                                            data-action="submit->convertion-visitor#newUser"
+                                            data-turbo="false">
+
+          <input type="hidden" name="current_email" value="<%= @donator.user.email %>">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+          <input type="text" name="last_name" value="<%= @checkout_session.customer_details.name.split(' ')[1] %>" placeholder="Nom">
+          <input type="text" name="first_name" value="<%= @checkout_session.customer_details.name.split(' ')[0] %>" placeholder="Prénom">
           <input type="email", name="email" value="<%= @checkout_session.customer_details.email %>">
           <input type="password" name="password" placeholder="mot de passe">
           <input type="password" name="password_confirmation" placeholder="confirmer vote mot de passe">

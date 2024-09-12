@@ -42,7 +42,7 @@ class HandleEventJob < ApplicationJob
       if checkout_session.customer_creation
         # case visitor not converted yet (cus created by CS but not a user yet) || user not logged in
         email = checkout_session.customer_details.email
-        name = checkout_session.customer_details.name || checkout_session.customer_details.email
+        name = checkout_session.customer_details.name # || checkout_session.customer_details.email
 
         # this will find already existing visitor or an already registered user that is not logged in
         # or initiate a new one based on email and role
@@ -85,7 +85,7 @@ class HandleEventJob < ApplicationJob
 
           visitor.password = '654321'
           visitor.first_name = 'visiteur'
-          visitor.last_name = name.to_s
+          visitor.last_name = name.split(' ')[1].to_s
           visitor.save!
 
           donator = visitor.donator
@@ -94,8 +94,6 @@ class HandleEventJob < ApplicationJob
           # So if convert on sucess page, he will save his last donaton only based on CS id and Cus id (in the last CS)
           customer = donator.customer
           customer.update!(stripe_id: checkout_session.customer)
-
-
         end
 
       else
