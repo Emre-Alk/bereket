@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   # end
 
   def after_sign_in_path_for(resource)
-    stored_location_for(resource) || first_time_sign
+    stored_location_for(resource) || first_time_sign(resource)
   end
 
   # here i create callbacks to set authorization on user to access dedicated dashboard according their role
@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def first_time_sign
+  def first_time_sign(resource)
     if resource.donator?
       donator_root_path
     elsif resource.asso?
