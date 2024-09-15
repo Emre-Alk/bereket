@@ -21,6 +21,7 @@
 #
 class User < ApplicationRecord
   after_create :create_donator
+  after_update :update_donator
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -33,7 +34,7 @@ class User < ApplicationRecord
 
   validates :role, presence: true
   validates :role, inclusion: { in: ROLES }
-  validates :first_name, :last_name, format:{ with: /\A[A-Za-z]+(\s?[A-Za-z]+)*\z/,
+  validates :first_name, :last_name, format: { with: /\A[A-Za-z]+(\s?[A-Za-z]+)*\z/,
     message: "letttres uniquement" }
 
   def donator?
@@ -60,5 +61,10 @@ class User < ApplicationRecord
       # code below does also the same, using another devise method (rq: association must exist)
       # donator = build_donator(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
     end
+  end
+
+  def update_donator
+    user = self
+    user.donator.update!(first_name: user.first_name, last_name: user.last_name, email: user.email)
   end
 end

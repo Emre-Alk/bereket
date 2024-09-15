@@ -7,7 +7,7 @@
   <p> stripe account of the asso owning the place: <%= @connected_account %></p>
   <p> used payment method: <%= @pm %></p>
   <p> payment status: <%= @payment_status %></p>
-  <p> customer stripe id: <%= @customer ? @customer.stripe_id : @donator.customer.stripe_id %></p>
+  <p> customer stripe id: <%= @visitor_customer ? @visitor_customer.stripe_id : @donator.customer.stripe_id %></p>
   <p> Is registered donator ? <%= @donator.first_name == 'visiteur' ? 'false' : 'true' %></p>
   <p> donator name: <%= @donator.first_name %></p>
   <p> user is signed in? <%= user_signed_in? %></p>
@@ -33,26 +33,54 @@
         <p>Vous n'etes pas encore DoGooder 😳 </p>
         <p>renseigner vos infos ci-dessous pour rejoindre la communauté DoGooder en 1 clic.</p>
 
+        <%= render partial: "devise/registrations/edit"%>
+
+      <% end %>
+
+<!-- login form in hidden passed via AJAX (could not make it work)
+        <div class=''>
+          <%= form_for(@donator.user, url: session_path(@donator.user), method: :post, remote: :true, authenticity_token: :form_authenticity_token, html: { class: '', id: 'loginForm' }) do |f| %>
+            <div class="field">
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            </div>
+
+            <div class="field">
+              <%= f.label :password %><br />
+              <%= f.password_field :password, value: '123456', autocomplete: "current-password" %>
+            </div>
+
+             <div class="field">
+              <%= f.label :remember_me %>
+              <%= f.check_box :remember_me, value:'0' %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "Log in" %>
+            </div>
+          <% end %>
+        </div>
+-->
+
+<!-- sign up form filled by user and passed via AJAX (could not make it work)
         <form action="/users" method="POST" class="flex flex-col gap-y-4 w-1/2 justify-center mx-auto my-4"
-                                            data-controller="convertion-visitor"
-                                            data-action="submit->convertion-visitor#newUser"
-                                            data-turbo="false">
+                                            data-controller=""
+                                            data-action="">
 
-          <input type="hidden" name="current_email" value="<%= @donator.user.email %>">
-          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-
+          <input type="hidden" name="_method" value="patch">
           <input type="text" name="last_name" value="<%= @checkout_session.customer_details.name.split(' ')[1] %>" placeholder="Nom">
           <input type="text" name="first_name" value="<%= @checkout_session.customer_details.name.split(' ')[0] %>" placeholder="Prénom">
           <input type="email", name="email" value="<%= @checkout_session.customer_details.email %>">
+          <input type="hidden" name="current_password" value="654321">
           <input type="password" name="password" placeholder="mot de passe">
           <input type="password" name="password_confirmation" placeholder="confirmer vote mot de passe">
           <input type="submit" value="Rejoindre" class="px-4 py-2 bg-black text-white">
         </form>
-
         <p>faites vos dons et suivi-les depuis votre espace.</p>
         <p>Générer vos cerfa pour chacun de vos dons et profiter de la défiscalisation jusqu'à 70% !</p>
 
-      <% end %>
+-->
+
 
       <p>retrouver votre don ici: lien donation#show </p>
       <p>retrouver votre cerfa pour votre ici: lien vers cerfa</p>

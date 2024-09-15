@@ -20,6 +20,7 @@
 #
 class Donator < ApplicationRecord
   after_create :create_customer
+  after_update :update_customer
 
   belongs_to :user
   has_many :donations
@@ -41,5 +42,16 @@ class Donator < ApplicationRecord
       name: "#{donator.first_name} #{donator.last_name}"
     )
     donator.create_customer!(donator_id: donator.id, stripe_id: customer.id)
+  end
+
+  def update_customer
+    donator = self
+    customer = Stripe::Customer.update(
+      donator.customer.stripe_id,
+      {
+        email: donator.email,
+        name: "#{donator.first_name} #{donator.last_name}"
+      }
+    )
   end
 end

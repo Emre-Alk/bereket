@@ -4,7 +4,7 @@ class CheckoutsController < ApplicationController
 
   def show
     # collect all needed info on the payment to display a success page
-    place = Place.find(params[:place_id])
+    @place = Place.find(params[:place_id])
     @checkout_session = Stripe::Checkout::Session.retrieve(
       {
         id: params[:session_id],
@@ -14,10 +14,9 @@ class CheckoutsController < ApplicationController
     @connected_account = @checkout_session.payment_intent.transfer_data.destination
     @pm = @checkout_session.payment_intent.payment_method.id
     @payment_status = @checkout_session.payment_status
-    @customer = Customer.find_by(stripe_id: @checkout_session.customer)  # this won't find a registered user that was not logged in
-    @donator = @customer&.donator || Donator.find_by(email: @checkout_session.customer_details.email) # So, in that case, i find it via email used in the CS
+    @visitor_customer = Customer.find_by(stripe_id: @checkout_session.customer) # this won't find a registered user that was not logged in
+    @donator = @visitor_customer&.donator || Donator.find_by(email: @checkout_session.customer_details.email) # So, in that case, i find it via email used in the CS
 
-    @place = Place.find(@checkout_session.metadata.place_id)
     @amount = @checkout_session.amount_total
     detaxed_rate = 0.66 # logic auto selon type asso à implementer
     @amount_detaxed = @amount * detaxed_rate
@@ -25,6 +24,7 @@ class CheckoutsController < ApplicationController
     # if visitor => ask to convert:
     ## case when ok: update donation object (retrieve via cs_id) association and delete old user-visitor account
     ## case when nok: nothing more
+    sign_in @donator.user if @donator.user.first_name == 'visiteur'
 
   end
 
