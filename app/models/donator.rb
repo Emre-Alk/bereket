@@ -46,7 +46,7 @@ class Donator < ApplicationRecord
 
   def update_customer
     donator = self
-    customer = Stripe::Customer.update(
+    Stripe::Customer.update(
       donator.customer.stripe_id,
       {
         email: donator.email,

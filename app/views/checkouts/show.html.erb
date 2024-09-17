@@ -1,7 +1,8 @@
 <!--
--->
  <%= JSON.parse(@checkout_session.to_json) %>
+-->
 
+<!--
  <div>
   <p> place receiving donation in DB: <%= @place %></p>
   <p> stripe account of the asso owning the place: <%= @connected_account %></p>
@@ -12,95 +13,159 @@
   <p> donator name: <%= @donator.first_name %></p>
   <p> user is signed in? <%= user_signed_in? %></p>
  </div>
+-->
 
-<div class="flex flex-col w-full rounded-lg px-4 py-8 shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
-  <div class="flex flex-row gap-x-2">
-    <div class="flex-auto w-6/12 flex-col bg-pink-200"> 1er colonne message
-      <p>don n°<%= @checkout_session.payment_intent.id %></p>
-      <p>Merci et Félicitation.</p>
-      <p>Vous venez d'accomplir une bonne action aujourd'hui.</p>
-      <p>Message de <%= @place.name %> : "blaaaabllaaablaaaa"</p>
-      <!--
-      create an authentification box if "log in" or "sign up"
-      with stimumus, dropdown the right form
-      use devise partial maybe ?
-      -->
-      <div class="bg-black text-white">
-        <%= @donator.user.inspect %>
+<!--
+  <div class="flex flex-col w-full rounded-lg px-4 py-8 shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+    <div class="flex flex-row gap-x-2">
+      <div class="flex-auto w-6/12 flex-col bg-pink-200"> 1er colonne message
+        <p>don n°<%= @checkout_session.payment_intent.id %></p>
+        <p>Merci et Félicitation.</p>
+        <p>Vous venez d'accomplir une bonne action aujourd'hui.</p>
+        <p>Message de <%= @place.name %> : "blaaaabllaaablaaaa"</p>
+        <%# create an authentification box if "log in" or "sign up"
+        with stimumus, dropdown the right form
+        use devise partial maybe ? %>
+
+        <% if @donator.first_name == 'visiteur' %>
+
+          <p>Vous n'etes pas encore DoGooder 😳 </p>
+          <p>renseigner vos infos ci-dessous pour rejoindre la communauté DoGooder en 1 clic.</p>
+
+          <%= render partial: "devise/registrations/edit"%>
+
+        <% end %>
+
+        <p>retrouver votre don ici: lien donation#show </p>
+        <p>retrouver votre cerfa pour votre ici: lien vers cerfa</p>
       </div>
-      <% if @donator.first_name == 'visiteur' %>
 
-        <p>Vous n'etes pas encore DoGooder 😳 </p>
-        <p>renseigner vos infos ci-dessous pour rejoindre la communauté DoGooder en 1 clic.</p>
+      <div class="flex-auto w-6/12 flex-col bg-green-200">2e colonne card info
+        <%= image_tag @place.place_image if @place.place_image.attached? %>
 
-        <%= render partial: "devise/registrations/edit"%>
+        <p>A: <%= @place.name %></p>
 
-      <% end %>
+        <p>Montant donné: <%= number_to_currency(@amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %></p>
 
-<!-- login form in hidden passed via AJAX (could not make it work)
-        <div class=''>
-          <%= form_for(@donator.user, url: session_path(@donator.user), method: :post, remote: :true, authenticity_token: :form_authenticity_token, html: { class: '', id: 'loginForm' }) do |f| %>
-            <div class="field">
-              <%= f.label :email %><br />
-              <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-            </div>
+        <p> Montant pouvant être défiscalisé: <%= number_to_currency(@amount_detaxed.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %> </p>
 
-            <div class="field">
-              <%= f.label :password %><br />
-              <%= f.password_field :password, value: '123456', autocomplete: "current-password" %>
-            </div>
+        <p>Ce que votre don vous a vraiment coûté: <%= number_to_currency((@amount - @amount_detaxed).to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %> </p>
 
-             <div class="field">
-              <%= f.label :remember_me %>
-              <%= f.check_box :remember_me, value:'0' %>
-            </div>
+        <p><%= @checkout_session.payment_intent.payment_method.card.brand %></p>
+        <p>****<%= @checkout_session.payment_intent.payment_method.card.last4 %></p>
+      </div>
 
-            <div class="actions">
-              <%= f.submit "Log in" %>
-            </div>
-          <% end %>
-        </div>
--->
-
-<!-- sign up form filled by user and passed via AJAX (could not make it work)
-        <form action="/users" method="POST" class="flex flex-col gap-y-4 w-1/2 justify-center mx-auto my-4"
-                                            data-controller=""
-                                            data-action="">
-
-          <input type="hidden" name="_method" value="patch">
-          <input type="text" name="last_name" value="<%= @checkout_session.customer_details.name.split(' ')[1] %>" placeholder="Nom">
-          <input type="text" name="first_name" value="<%= @checkout_session.customer_details.name.split(' ')[0] %>" placeholder="Prénom">
-          <input type="email", name="email" value="<%= @checkout_session.customer_details.email %>">
-          <input type="hidden" name="current_password" value="654321">
-          <input type="password" name="password" placeholder="mot de passe">
-          <input type="password" name="password_confirmation" placeholder="confirmer vote mot de passe">
-          <input type="submit" value="Rejoindre" class="px-4 py-2 bg-black text-white">
-        </form>
-        <p>faites vos dons et suivi-les depuis votre espace.</p>
-        <p>Générer vos cerfa pour chacun de vos dons et profiter de la défiscalisation jusqu'à 70% !</p>
-
--->
-
-
-      <p>retrouver votre don ici: lien donation#show </p>
-      <p>retrouver votre cerfa pour votre ici: lien vers cerfa</p>
     </div>
 
-    <div class="flex-auto w-6/12 flex-col bg-green-200">2e colonne card info
-      <%= image_tag @place.place_image if @place.place_image.attached? %>
+  </div>
+-->
 
-      <p>A: <%= @place.name %></p>
+<div class="flex flex-col gap-y-5 items-center justify-center">
+  <%# icon check %>
+  <%# <div>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-20">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
+  </div> %>
+  <div>
+    <%= icon("fa-regular", "circle-check", class: "fa-4x") %>
+  </div>
 
-      <p>Montant donné: <%= number_to_currency(@amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %></p>
+  <div>
+    <%# message DoGood (How does it feel to have accomplish a good deed today ? Good right !) %>
+  </div>
+</div>
 
-      <p> Montant pouvant être défiscalisé: <%= number_to_currency(@amount_detaxed.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %> </p>
 
-      <p>Ce que votre don vous a vraiment coûté: <%= number_to_currency((@amount - @amount_detaxed).to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %> </p>
+<div class="w-full rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+  <%# card place %>
+  <%# image %>
+  <img src="<%= asset_path("default_avatar.png") %>" class="rounded-t-lg h-28 w-full object-cover object-center" alt="image of the place">
 
-      <p><%= @checkout_session.payment_intent.payment_method.card.brand %></p>
-      <p>****<%= @checkout_session.payment_intent.payment_method.card.last4 %></p>
+  <%# quick recap %>
+  <div class="rounded-b-lg text-xs flex flex-col gap-y-1 bg-white p-2">
+
+    <div class="flex flex-row gap-4 items-baseline">
+      <%= icon('fa-solid', 'hand-holding-heart') %>
+      <%= number_to_currency(@amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
+    </div>
+
+    <div class="flex flex-row gap-4 items-baseline">
+      <%= icon("fa-solid", "paper-plane") %>
+      <%= @place.name.titleize %>
+    </div>
+
+    <div class="flex flex-row gap-4 items-baseline">
+      <%= icon("fa-solid", "location-dot") %>
+      <%= @place.street_no %> <%= @place.address %>, <%= @place.city %> <%= @place.zip_code %>, <%= @place.country %>
+    </div>
+
+    <div class="flex flex-row gap-4 items-baseline">
+      <%= icon("fa-solid", "bullhorn") %>
+      <p class="text-justify">
+      Merci pour vote générosité. Grâce à vous, nous pouvons continuer à assurer notre mission. Au plaisir de vous revoir bientôt
+      </p>
     </div>
 
   </div>
 
+</div>
+
+<div>
+  <%# details w/ breakdown (as dropdown?) %>
+</div>
+
+<% if @donator.first_name != 'visiteur' %>
+
+  <div class="flex flex-col gap-y-4 w-full rounded-lg bg-white shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+    <%# CTA %>
+    <div class="text-justify text-sm">
+      <p>Ne perdez pas votre don !</p>
+      <p>Devenez un <strong>DoGooder</strong> et suivez toutes vos bonnes actions depuis votre tableau de bord.</p>
+      <p>Profitez de la <strong>réduction d'impôt</strong> en un seul clic grâce au reçu fiscal à retrouver dans votre espace.</p>
+      <p>Vivez une expérience nouvelle à travers vos bonnes actions avec DoGood.</p>
+    </div>
+
+    <div class="flex flex-col items-center justify-center">
+      <%= form_for(:user, :url => registration_path(:user), html: { method: :put }) do |f| %>
+
+        <%= f.text_field :last_name, autofocus: true, value: @checkout_session.customer_details.name.split(' ')[1]%>
+
+        <%= f.text_field :first_name, autofocus: true, value: @checkout_session.customer_details.name.split(' ')[0]%>
+
+        <%= f.text_field :email, autofocus: true, value: @checkout_session.customer_details.email %>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <div>
+          <%= f.password_field :password, autocomplete: "new-password" %>
+          <% if @minimum_password_length %>
+            <br />
+            <em><%= @minimum_password_length %> characters minimum</em>
+          <% end %>
+        </div>
+
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+
+        <div class="field hidden">
+          <%= f.password_field :current_password, value: '654321' %>
+        </div>
+
+        <%= f.submit 'Enregistrer' %>
+      <% end %>
+    </div>
+
+  </div>
+
+<% end %>
+
+
+<div>
+  <%# feedback and contact %>
+</div>
+
+<div>
+  <%# links %>
 </div>
