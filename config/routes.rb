@@ -61,6 +61,7 @@ Rails.application.routes.draw do
         get 'cerfa', to: 'pdfs#view_pdf'
       end
     end
+    resources :reviews, only: %i[create]
   end
 
   # ======== donations ========
