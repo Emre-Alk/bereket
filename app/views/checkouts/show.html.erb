@@ -171,9 +171,9 @@
 
   <h1 class="text-lg font-medium tracking-wider">Notez votre expérience</h1>
 
-  <p class="mb-2 text-sm text-center text-inherit opacity-70 roboto-light">Votre avis contribuera a notre amélioration continue pour rendre votre expérience meilleur.</p>
+  <p class="mb-2 text-sm text-center text-inherit opacity-70 roboto-light">Votre avis contribuera à notre amélioration continue pour rendre votre expérience meilleur.</p>
 
-  <div class="flex flex-col gap-y-2" data-controller="star-rating">
+  <div class="flex flex-col items-center gap-y-2" data-controller="star-rating">
     <div class="flex">
       <% 5.times do %>
         <button class="px-1" data-star-rating-target="star" data-action="click->star-rating#rate">
@@ -182,7 +182,37 @@
       <% end %>
     </div>
 
-    <div class="text-sm text-center text-inherit opacity-70 roboto-light" id="message"></div>
+    <div class="text-sm text-center text-inherit opacity-70 roboto-light" data-star-rating-target="message"></div>
+
+    <div class="flex flex-col gap-2 mt-2" >
+
+      <button disabled class="flex-auto text-sm px-3 py-2 rounded-lg bg-black disabled:opacity-25" data-star-rating-target="commentBtnOpen" data-action="click->star-rating#toggleComment">
+        <%= icon('fa-solid', 'comment', class:'fa-xl', style:'color: white;') %>
+      </button>
+
+
+
+      <form action="#" class="flex flex-col justify-center items-center gap-y-2" >
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="review[rating]" data-star-rating-target="formRating">
+        <textarea data-star-rating-target="commentForm" class="rounded-lg hidden" type="text" name="review[content]" cols="40" rows="3" name="review[content]"></textarea>
+        <div class="flex justify-evenly items-center gap-x-14 w-full">
+          <div class="hidden flex-auto w-1/4" data-star-rating-target="commentBtnClose" data-action="click->star-rating#toggleComment">
+            <button class=" px-3 py-2 rounded-lg bg-black w-full" >
+              <%= svg_tag("cross_icon_white", class:"size-5") %>
+            </button>
+          </div>
+
+          <button type="submit" class="flex-auto text-sm px-3 py-2 rounded-lg bg-black text-white tracking-wider w-1/4">
+            Envoyer
+          </button>
+        </div>
+      </form>
+
+
+
+    </div>
+
   </div>
 
   <div>

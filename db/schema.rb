@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_18_140938) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_18_182537) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -151,10 +151,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_18_140938) do
   create_table "reviews", force: :cascade do |t|
     t.integer "rating", null: false
     t.text "content"
-    t.bigint "donator_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["donator_id"], name: "index_reviews_on_donator_id"
+    t.bigint "donation_id", null: false
+    t.index ["donation_id"], name: "index_reviews_on_donation_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -185,5 +185,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_18_140938) do
   add_foreign_key "favorites", "places"
   add_foreign_key "places", "assos"
   add_foreign_key "places", "place_types"
-  add_foreign_key "reviews", "donators"
+  add_foreign_key "reviews", "donations"
 end
