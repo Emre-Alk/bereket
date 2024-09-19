@@ -59,171 +59,183 @@
 
   </div>
 -->
+  <%# scroll page %>
+<div class="pb-36">
 
-  <%# icon check %>
-<div class="mb-5 rounded-lg flex flex-col py-4 items-center justify-center bg-black">
-  <div>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-20 text-white dark:text-white">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-    </svg>
-  </div>
-
-  <div>
-    <%# message DoGood (How does it feel to have accomplish a good deed today ? Good right !) %>
-  </div>
-</div>
-
-  <%# card place %>
-<div class="rounded-lg mb-5 w-full shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
-  <%# image %>
-  <% if @place.place_image.attached? %>
-    <img src="<%= @place.place_image %>" class="rounded-t-lg h-28 w-full object-cover object-center" alt="image of the place">
-  <% else %>
-    <div class="rounded-t-lg flex justify-center items-center h-28 w-full bg-gray-300">
-      <svg class="size-20 bg-inherit text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m3 16 5-7 6 6.5m6.5 2.5L16 13l-4.286 6M14 10h.01M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
+    <%# icon check %>
+  <div class="mb-5 rounded-lg flex flex-col py-4 items-center justify-center bg-black">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-20 text-white dark:text-white">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
       </svg>
+    </div>
+
+    <div>
+      <%# message DoGood (How does it feel to have accomplish a good deed today ? Good right !) %>
+    </div>
+  </div>
+
+    <%# card place %>
+  <div class="rounded-lg mb-5 w-full shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+    <%# image %>
+    <% if @place.place_image.attached? %>
+      <img src="<%= @place.place_image %>" class="rounded-t-lg h-28 w-full object-cover object-center" alt="image of the place">
+    <% else %>
+      <div class="rounded-t-lg flex justify-center items-center h-28 w-full bg-gray-300">
+        <svg class="size-20 bg-inherit text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m3 16 5-7 6 6.5m6.5 2.5L16 13l-4.286 6M14 10h.01M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
+        </svg>
+      </div>
+    <% end %>
+
+    <%# quick recap %>
+    <div class="relative rounded-b-lg text-sm flex flex-col gap-y-1 bg-white p-2">
+
+      <div class="flex flex-row gap-4 items-baseline">
+        <%= icon('fa-solid', 'hand-holding-heart') %>
+        <%= number_to_currency(@amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
+      </div>
+
+      <div class="flex flex-row gap-4 items-baseline">
+        <%= icon("fa-solid", "paper-plane") %>
+        <%= @place.name.titleize %>
+      </div>
+
+      <div class="flex flex-row gap-4 items-baseline">
+        <%= icon("fa-solid", "location-dot") %>
+        <%= @place.street_no %> <%= @place.address %>, <%= @place.city %> <%= @place.zip_code %>, <%= @place.country %>
+      </div>
+
+      <div class="mb-2 flex flex-row gap-4 items-baseline">
+        <%= icon("fa-solid", "bullhorn") %>
+        <p class="text-justify">
+        Merci pour vote générosité. Grâce à vous, nous pouvons continuer à assurer notre mission. Au plaisir de vous revoir bientôt
+        </p>
+      </div>
+
+      <%# ajouter en fav %>
+      <% if @donator.first_name != 'visiteur' %>
+        <div class="absolute top-0 right-0 p-2">
+          <%= render partial:"favorites/favorite_icon", locals: { donator: @donator, place: @place, favorite: @favorite } %>
+        </div>
+      <% end %>
+
+    </div>
+
+  </div>
+
+  <div>
+    <%# details w/ breakdown (as dropdown?) %>
+  </div>
+
+  <% if @donator.first_name == 'visiteur' %>
+      <%# CTA %>
+    <div class="mb-5 flex flex-col gap-y-4 w-full rounded-lg bg-white shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+      <div class="text-justify text-sm">
+        <p>Ne perdez pas votre don !</p>
+        <p>Devenez un <strong>DoGooder</strong> et suivez toutes vos bonnes actions depuis votre tableau de bord.</p>
+        <p>Profitez de la <strong>réduction d'impôt</strong> en un seul clic grâce au reçu fiscal à retrouver dans votre espace.</p>
+        <p>Vivez une expérience nouvelle à travers vos bonnes actions avec DoGood.</p>
+      </div>
+
+      <div class="flex flex-col items-center justify-center">
+        <%= form_for(:user, :url => registration_path(:user), html: { method: :put }) do |f| %>
+
+          <%= f.text_field :last_name, autofocus: true, value: @checkout_session.customer_details.name.split(' ')[1]%>
+
+          <%= f.text_field :first_name, autofocus: true, value: @checkout_session.customer_details.name.split(' ')[0]%>
+
+          <%= f.text_field :email, autofocus: true, value: @checkout_session.customer_details.email %>
+
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+          <% end %>
+
+          <div>
+            <%= f.password_field :password, autocomplete: "new-password" %>
+            <% if @minimum_password_length %>
+              <br />
+              <em><%= @minimum_password_length %> characters minimum</em>
+            <% end %>
+          </div>
+
+          <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+
+          <div class="field hidden">
+            <%= f.password_field :current_password, value: '654321' %>
+          </div>
+
+          <%= f.submit 'Enregistrer' %>
+        <% end %>
+      </div>
+
     </div>
   <% end %>
 
-  <%# quick recap %>
-  <div class="rounded-b-lg text-xs flex flex-col gap-y-1 bg-white p-2">
 
-    <div class="flex flex-row gap-4 items-baseline">
-      <%= icon('fa-solid', 'hand-holding-heart') %>
-      <%= number_to_currency(@amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
-    </div>
+    <%# feedback and contact %>
+  <div class="mb-5 flex flex-col items-center justify-center">
 
-    <div class="flex flex-row gap-4 items-baseline">
-      <%= icon("fa-solid", "paper-plane") %>
-      <%= @place.name.titleize %>
-    </div>
+    <h1 class="text-lg font-medium tracking-wider">Notez votre expérience</h1>
 
-    <div class="flex flex-row gap-4 items-baseline">
-      <%= icon("fa-solid", "location-dot") %>
-      <%= @place.street_no %> <%= @place.address %>, <%= @place.city %> <%= @place.zip_code %>, <%= @place.country %>
-    </div>
+    <p class="mb-2 text-sm text-center text-inherit opacity-70 roboto-light">Votre avis contribuera à notre amélioration continue pour rendre votre expérience meilleur.</p>
 
-    <div class="flex flex-row gap-4 items-baseline">
-      <%= icon("fa-solid", "bullhorn") %>
-      <p class="text-justify">
-      Merci pour vote générosité. Grâce à vous, nous pouvons continuer à assurer notre mission. Au plaisir de vous revoir bientôt
-      </p>
-    </div>
-
-  </div>
-
-</div>
-
-<div>
-  <%# details w/ breakdown (as dropdown?) %>
-</div>
-
-<% if @donator.first_name == 'visiteur' %>
-    <%# CTA %>
-  <div class="mb-5 flex flex-col gap-y-4 w-full rounded-lg bg-white shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
-    <div class="text-justify text-sm">
-      <p>Ne perdez pas votre don !</p>
-      <p>Devenez un <strong>DoGooder</strong> et suivez toutes vos bonnes actions depuis votre tableau de bord.</p>
-      <p>Profitez de la <strong>réduction d'impôt</strong> en un seul clic grâce au reçu fiscal à retrouver dans votre espace.</p>
-      <p>Vivez une expérience nouvelle à travers vos bonnes actions avec DoGood.</p>
-    </div>
-
-    <div class="flex flex-col items-center justify-center">
-      <%= form_for(:user, :url => registration_path(:user), html: { method: :put }) do |f| %>
-
-        <%= f.text_field :last_name, autofocus: true, value: @checkout_session.customer_details.name.split(' ')[1]%>
-
-        <%= f.text_field :first_name, autofocus: true, value: @checkout_session.customer_details.name.split(' ')[0]%>
-
-        <%= f.text_field :email, autofocus: true, value: @checkout_session.customer_details.email %>
-
-        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-        <% end %>
-
-        <div>
-          <%= f.password_field :password, autocomplete: "new-password" %>
-          <% if @minimum_password_length %>
-            <br />
-            <em><%= @minimum_password_length %> characters minimum</em>
+    <% if @donation.review %>
+      <%= render partial: "reviews/thanks" %>
+    <% else %>
+      <div class="flex flex-col items-center gap-y-2" data-controller="star-rating">
+        <div class="flex">
+          <% 5.times do %>
+            <button class="px-1" data-star-rating-target="star" data-action="click->star-rating#rate">
+              <%= svg_tag("star", class: "size-9 text-gray-300") %>
+            </button>
           <% end %>
         </div>
 
-        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+        <div class="text-sm text-center text-inherit opacity-70 roboto-light" data-star-rating-target="message"></div>
 
-        <div class="field hidden">
-          <%= f.password_field :current_password, value: '654321' %>
+        <div class="flex gap-2 mt-2" >
+
+          <button disabled class="flex-auto w-20 text-sm px-3 py-2 rounded-lg bg-black disabled:opacity-25" data-star-rating-target="commentBtnOpen" data-action="click->star-rating#openComment">
+            <%= icon('fa-solid', 'comment', class:'fa-xl', style:'color: white;') %>
+          </button>
+
+          <form action="POST" url="/reviews" class="flex flex-col justify-center items-center gap-y-2"
+                                              data-action="submit->star-rating#sendReview">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="hidden" name="review[donation_id]" value="<%= @donation.id %>">
+            <input type="hidden" name="review[rating]" data-star-rating-target="ratingForm">
+            <textarea data-star-rating-target="commentForm" class="rounded-lg hidden" type="text" name="review[content]" cols="40" rows="3" name="review[content]"></textarea>
+
+            <button disabled type="submit" class="flex-auto text-sm px-3 py-2 rounded-lg bg-black text-white tracking-wider w-20 disabled:opacity-25"
+                                          data-star-rating-target="submitBtnOpen">
+              Envoyer
+            </button>
+          </form>
+
         </div>
 
-        <%= f.submit 'Enregistrer' %>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
 
   </div>
-<% end %>
-
-
-  <%# feedback and contact %>
-<div class="mb-5 flex flex-col items-center justify-center">
-
-  <h1 class="text-lg font-medium tracking-wider">Notez votre expérience</h1>
-
-  <p class="mb-2 text-sm text-center text-inherit opacity-70 roboto-light">Votre avis contribuera à notre amélioration continue pour rendre votre expérience meilleur.</p>
-
-  <% if @donation.review %>
-    <%= render partial: "reviews/thanks" %>
-  <% else %>
-    <div class="flex flex-col items-center gap-y-2" data-controller="star-rating">
-      <div class="flex">
-        <% 5.times do %>
-          <button class="px-1" data-star-rating-target="star" data-action="click->star-rating#rate">
-            <%= svg_tag("star", class: "size-9 text-gray-300") %>
-          </button>
-        <% end %>
-      </div>
-
-      <div class="text-sm text-center text-inherit opacity-70 roboto-light" data-star-rating-target="message"></div>
-
-      <div class="flex gap-2 mt-2" >
-
-        <button disabled class="flex-auto w-20 text-sm px-3 py-2 rounded-lg bg-black disabled:opacity-25" data-star-rating-target="commentBtnOpen" data-action="click->star-rating#openComment">
-          <%= icon('fa-solid', 'comment', class:'fa-xl', style:'color: white;') %>
-        </button>
-
-        <form action="POST" url="/reviews" class="flex flex-col justify-center items-center gap-y-2"
-                                            data-action="submit->star-rating#sendReview">
-          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-          <input type="hidden" name="review[donation_id]" value="<%= @donation.id %>">
-          <input type="hidden" name="review[rating]" data-star-rating-target="ratingForm">
-          <textarea data-star-rating-target="commentForm" class="rounded-lg hidden" type="text" name="review[content]" cols="40" rows="3" name="review[content]"></textarea>
-
-          <button disabled type="submit" class="flex-auto text-sm px-3 py-2 rounded-lg bg-black text-white tracking-wider w-20 disabled:opacity-25"
-                                        data-star-rating-target="submitBtnOpen">
-            Envoyer
-          </button>
-        </form>
-
-      </div>
-
-    </div>
-  <% end %>
 
 </div>
 
+    <%# links %>
+<div class="fixed inset-x-0 bottom-0 px-5 py-5 bg-white shadow">
+  <div class="flex flex-col gap-4 justify-center items-center text-white text-center text-md tracking-wide">
+    <% if @donator.first_name == 'visiteur' %>
+      <%= link_to "Créer mon compte", user_registration_path(:user), method: :put, class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+    <% else %>
+      <%= link_to "Home", donator_root_path(@donator), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+    <% end %>
 
-<div class="flex flex-col gap-4 justify-center items-center text-white text-center text-md tracking-wide">
-  <%# links %>
-  <% if @donator.first_name == 'visiteur' %>
-    <%= link_to "Créer mon compte", user_registration_path(:user), method: :put, class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
-  <% else %>
-    <%= link_to "Home", donator_root_path(@donator), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
-  <% end %>
-
-  <div class="flex-auto px-3 py-2 rounded-lg bg-black w-full" data-controller="clipboard">
-    <button data-action="clipboard#copy" value="0786415817" data-clipboard-target="source">
-      Nous contacter
-      <%= icon('fa-solid', 'headset', class:'ml-4 fa-xl') %>
-    </button>
+    <div class="flex-auto px-3 py-2 rounded-lg text-black bg-gray-200 w-full" data-controller="clipboard">
+      <button data-action="clipboard#copy" value="0786415817" data-clipboard-target="source">
+        Nous contacter
+        <%= icon('fa-solid', 'headset', class:'ml-4 fa-xl') %>
+      </button>
+    </div>
   </div>
 </div>
