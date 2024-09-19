@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="star-rating"
 export default class extends Controller {
-  static targets = ['star', 'message', 'commentBtnOpen', 'commentBtnClose', 'commentForm']
+  static targets = ['star', 'message', 'commentBtnOpen', 'commentForm']
   connect() {
 
   }
@@ -12,9 +12,6 @@ export default class extends Controller {
     this.commentBtnOpenTarget.classList.toggle('hidden')
     // display comment box
     this.commentFormTarget.classList.toggle('hidden')
-    // display comment btn close
-    console.log(this.commentBtnCloseTarget);
-    this.commentBtnCloseTarget.classList.toggle('hidden')
   }
 
   rate(event){
