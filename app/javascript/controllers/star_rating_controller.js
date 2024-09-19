@@ -3,14 +3,12 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="star-rating"
 export default class extends Controller {
   static targets = ['star', 'message', 'commentBtnOpen', 'commentForm', 'ratingForm', 'submitBtnOpen']
-  connect() {
-
-  }
 
   sendReview(event){
+    // prevent the form form being submitted
     event.preventDefault()
-    console.log(this.element);
 
+    // retrieve the form into a formData object
     const payload = {
       method: 'POST',
       headers: {
@@ -18,22 +16,25 @@ export default class extends Controller {
       },
       body: new FormData(event.target)
     }
-      fetch("/reviews", payload)
-      .then(response => response.json())
-      .then((data) => {
-        this.element.outerHTML = data.html;
-      })
-      .catch ((error) => {
-      console.log('error', error);
+
+    // perform AJAX to back end
+    // As the form is build on front with all strong params already
+    // the controller shall permit the params
+    fetch("/reviews", payload)
+    .then(response => response.json())
+    .then((data) => {
+      // success path: if review can be saved => render 'thanks' partial receive from response
+      this.element.outerHTML = data.html;
+    })
+    .catch ((error) => {
+      //failure path: activerecond::recordnotsaved raised => build an error message to user
       const div = document.createElement('div')
       div.classList.add('flex-auto', 'bg-red-400', 'rounded-lg', 'px-3', 'py-2', 'w-fit', 'text-white', 'text-sm', 'tracking-wider', 'text-center', 'roboto-regular')
       div.innerText = "Une erreur est survenu. Nous allons résoudre ce désagrément dans les plus bref délais."
 
+      // replace controller element by new div
       this.element.replaceWith(div)
-      })
-
-    // console.log('reatingform', this.ratingFormTarget.value);
-    // console.log('commentform', this.commentFormTarget.value);
+    })
   }
 
   openComment(){
@@ -130,6 +131,4 @@ export default class extends Controller {
     // display returned message inside the target container
     this.messageTarget.innerText = message
   }
-
-
 }
