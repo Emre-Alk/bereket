@@ -173,37 +173,43 @@
 
   <p class="mb-2 text-sm text-center text-inherit opacity-70 roboto-light">Votre avis contribuera à notre amélioration continue pour rendre votre expérience meilleur.</p>
 
-  <div class="flex flex-col items-center gap-y-2" data-controller="star-rating">
-    <div class="flex">
-      <% 5.times do %>
-        <button class="px-1" data-star-rating-target="star" data-action="click->star-rating#rate">
-          <%= svg_tag("star", class: "size-9 text-gray-300") %>
+  <% if @donation.review %>
+    <%= render partial: "reviews/thanks" %>
+  <% else %>
+    <div class="flex flex-col items-center gap-y-2" data-controller="star-rating">
+      <div class="flex">
+        <% 5.times do %>
+          <button class="px-1" data-star-rating-target="star" data-action="click->star-rating#rate">
+            <%= svg_tag("star", class: "size-9 text-gray-300") %>
+          </button>
+        <% end %>
+      </div>
+
+      <div class="text-sm text-center text-inherit opacity-70 roboto-light" data-star-rating-target="message"></div>
+
+      <div class="flex gap-2 mt-2" >
+
+        <button disabled class="flex-auto w-20 text-sm px-3 py-2 rounded-lg bg-black disabled:opacity-25" data-star-rating-target="commentBtnOpen" data-action="click->star-rating#openComment">
+          <%= icon('fa-solid', 'comment', class:'fa-xl', style:'color: white;') %>
         </button>
-      <% end %>
-    </div>
 
-    <div class="text-sm text-center text-inherit opacity-70 roboto-light" data-star-rating-target="message"></div>
+        <form action="POST" url="/reviews" class="flex flex-col justify-center items-center gap-y-2"
+                                            data-action="submit->star-rating#sendReview">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <input type="hidden" name="review[donation_id]" value="<%= @donation.id %>">
+          <input type="hidden" name="review[rating]" data-star-rating-target="ratingForm">
+          <textarea data-star-rating-target="commentForm" class="rounded-lg hidden" type="text" name="review[content]" cols="40" rows="3" name="review[content]"></textarea>
 
-    <div class="flex gap-2 mt-2" >
+          <button disabled type="submit" class="flex-auto text-sm px-3 py-2 rounded-lg bg-black text-white tracking-wider w-20 disabled:opacity-25"
+                                        data-star-rating-target="submitBtnOpen">
+            Envoyer
+          </button>
+        </form>
 
-      <button disabled class="flex-auto w-20 text-sm px-3 py-2 rounded-lg bg-black disabled:opacity-25" data-star-rating-target="commentBtnOpen" data-action="click->star-rating#toggleComment">
-        <%= icon('fa-solid', 'comment', class:'fa-xl', style:'color: white;') %>
-      </button>
-
-      <form action="#" class="flex flex-col justify-center items-center gap-y-2" >
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <input type="hidden" name="review[rating]" data-star-rating-target="formRating">
-        <textarea data-star-rating-target="commentForm" class="rounded-lg hidden" type="text" name="review[content]" cols="40" rows="3" name="review[content]"></textarea>
-
-        <button type="submit" class="flex-auto text-sm px-3 py-2 rounded-lg bg-black text-white tracking-wider w-20">
-          Envoyer
-        </button>
-      </form>
+      </div>
 
     </div>
-
-  </div>
-
+  <% end %>
 
 </div>
 

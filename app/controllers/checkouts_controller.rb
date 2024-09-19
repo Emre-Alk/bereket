@@ -16,6 +16,7 @@ class CheckoutsController < ApplicationController
     @payment_status = @checkout_session.payment_status
     @visitor_customer = Customer.find_by(stripe_id: @checkout_session.customer) # this won't find a registered user that was not logged in
     @donator = @visitor_customer&.donator || Donator.find_by(email: @checkout_session.customer_details.email) # So, in that case, i find it via email used in the CS
+    @donation = Donation.find_by(checkout_session_id: @checkout_session.id)
 
     @amount = @checkout_session.amount_total
     detaxed_rate = 0.66 # logic auto selon type asso à implementer

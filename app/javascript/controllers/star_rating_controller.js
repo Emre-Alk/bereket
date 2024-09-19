@@ -2,12 +2,41 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="star-rating"
 export default class extends Controller {
-  static targets = ['star', 'message', 'commentBtnOpen', 'commentForm']
+  static targets = ['star', 'message', 'commentBtnOpen', 'commentForm', 'ratingForm', 'submitBtnOpen']
   connect() {
 
   }
 
-  toggleComment(){
+  sendReview(event){
+    event.preventDefault()
+    console.log(this.element);
+
+    const payload = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json'
+      },
+      body: new FormData(event.target)
+    }
+      fetch("/reviews", payload)
+      .then(response => response.json())
+      .then((data) => {
+        this.element.outerHTML = data.html;
+      })
+      .catch ((error) => {
+      console.log('error', error);
+      const div = document.createElement('div')
+      div.classList.add('flex-auto', 'bg-red-400', 'rounded-lg', 'px-3', 'py-2', 'w-fit', 'text-white', 'text-sm', 'tracking-wider', 'text-center', 'roboto-regular')
+      div.innerText = "Une erreur est survenu. Nous allons résoudre ce désagrément dans les plus bref délais."
+
+      this.element.replaceWith(div)
+      })
+
+    // console.log('reatingform', this.ratingFormTarget.value);
+    // console.log('commentform', this.commentFormTarget.value);
+  }
+
+  openComment(){
     // hide comment btn open when clicked
     this.commentBtnOpenTarget.classList.toggle('hidden')
     // display comment box
@@ -17,6 +46,9 @@ export default class extends Controller {
   rate(event){
     // able comment btn
     this.commentBtnOpenTarget.removeAttribute('disabled')
+
+    // able send btn
+    this.submitBtnOpenTarget.removeAttribute('disabled')
 
     // retrive star touched by the user
     const currentStar = event.currentTarget
@@ -45,6 +77,9 @@ export default class extends Controller {
 
     // display a message in fct of the rating given by user
     this.displayMessage(rating)
+
+    // write rating score inside hidden input of the form
+    this.ratingFormTarget.value = rating.length
   }
 
   fill(star){
@@ -94,7 +129,6 @@ export default class extends Controller {
 
     // display returned message inside the target container
     this.messageTarget.innerText = message
-
   }
 
 
