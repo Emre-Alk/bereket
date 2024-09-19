@@ -120,9 +120,8 @@
 </div>
 
 <% if @donator.first_name == 'visiteur' %>
-
-  <div class="flex flex-col gap-y-4 w-full rounded-lg bg-white shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
     <%# CTA %>
+  <div class="mb-5 flex flex-col gap-y-4 w-full rounded-lg bg-white shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
     <div class="text-justify text-sm">
       <p>Ne perdez pas votre don !</p>
       <p>Devenez un <strong>DoGooder</strong> et suivez toutes vos bonnes actions depuis votre tableau de bord.</p>
@@ -162,12 +161,11 @@
     </div>
 
   </div>
-
 <% end %>
 
 
   <%# feedback and contact %>
-<div class="flex flex-col items-center justify-center">
+<div class="mb-5 flex flex-col items-center justify-center">
 
   <h1 class="text-lg font-medium tracking-wider">Notez votre expérience</h1>
 
@@ -213,6 +211,19 @@
 
 </div>
 
-<div>
+
+<div class="flex flex-col gap-4 justify-center items-center text-white text-center text-md tracking-wide">
   <%# links %>
+  <% if @donator.first_name == 'visiteur' %>
+    <%= link_to "Créer mon compte", user_registration_path(:user), method: :put, class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+  <% else %>
+    <%= link_to "Home", donator_root_path(@donator), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+  <% end %>
+
+  <div class="flex-auto px-3 py-2 rounded-lg bg-black w-full" data-controller="clipboard">
+    <button data-action="clipboard#copy" value="0786415817" data-clipboard-target="source">
+      Nous contacter
+      <%= icon('fa-solid', 'headset', class:'ml-4 fa-xl') %>
+    </button>
+  </div>
 </div>
