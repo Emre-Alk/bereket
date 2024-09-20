@@ -231,10 +231,10 @@
       <%= link_to "Home", donator_root_path(@donator), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
     <% end %>
 
-    <div class="flex-auto px-3 py-2 rounded-lg text-black bg-gray-200 w-full" data-controller="clipboard">
-      <button data-action="clipboard#copy" value="0786415817" data-clipboard-target="source">
+    <div class="w-full" data-controller="clipboard" >
+      <button class="flex justify-center items-center gap-4 px-3 py-2 rounded-lg text-black bg-gray-200 w-full" value="0786415817" data-action="clipboard#copy" data-clipboard-target="source">
         Nous contacter
-        <%= icon('fa-solid', 'headset', class:'ml-4 fa-xl') %>
+        <%= icon('fa-solid', 'headset', class:'fa-xl') %>
       </button>
     </div>
   </div>
