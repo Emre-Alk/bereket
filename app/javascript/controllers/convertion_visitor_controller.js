@@ -6,42 +6,55 @@ export default class extends Controller {
 
   connect() {
     console.log('hello convertion-visitor');
-    // console.log(this.submitBtnTarget);
-    // console.log(this.namesTargets);
-    // console.log(this.emailTarget);
-    // console.log(this.passwordsTarget);
-
-
-    const regexNames = /\A[A-Za-z]+(\s?[A-Za-z]+)*\z/
-    const regexEmail = new RegExp(/\A[^@\s]+@[^@\s]+\z/)
-    const name = "vdghjk"
-
-    console.log(regexNames.test(name));
-
-
-
-    this.namesTargets.forEach(name => {
-      const testColor = regexNames.test(name.value)
-
-      if (testColor) {
-        name.classList.add("border-green-500")
-      } else {
-        name.classList.add("border-red-500")
-      }
-
-    })
-
-
   }
-  // Started POST "/users/sign_in" for ::1 at 2024-09-12 23:31:37 +0200
-  // Processing by Devise::SessionsController#create as TURBO_STREAM
-  // Parameters: {"authenticity_token"=>"[FILTERED]",
-  //   "user"=>{"email"=>"donator2@donator2.com", "password"=>"[FILTERED]", "remember_me"=>"0"},
-  //   "commit"=>"Log in"}
-
 
   newUser(event) {
     event.preventDefault()
+    console.log('event', event.target);
+
+    const userForm = new FormData(event.target)
+
+    const payload = {
+      method: 'PUT',
+      headers: {
+        "X-CSRF-Token": document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content")
+      },
+      body: userForm
+    }
+
+      fetch("/users", payload)
+      .then(response => {
+        if (response.ok) {
+          // success path: display msg to user 'welcome and thank you...' & hide form
+          const username = userForm.get('user[first_name]')
+          const line_one = document.createElement('p')
+          const line_two = document.createElement('p')
+          line_one.innerText = `${username}, votre compte a été crée avec succès ! Vous pouvez dès maintenant éditer un reçu fiscal pour votre don.`
+          line_two.innerText = "Utiliser DoGood pour vos bonnes actions ! Suivez et gérez vos dons depuis votre tabelau de bord."
+
+          const successDiv = document.createElement('div')
+          successDiv.classList.add('mb-2', 'p-2', 'flex', 'flex-col', 'gap-y-3', 'text-center', 'text-sm', 'text-inherit', 'opacity-80', 'roboto-regular', 'tracking-wider')
+          successDiv.classList.add('bg-green-400', 'rounded-lg', 'px-3', 'py-2', 'w-fit')
+
+          successDiv.append(line_one)
+          successDiv.append(line_two)
+
+          this.element.replaceWith(successDiv)
+
+          // setTimeout(() => {
+          //   successDiv.outerHTML = ''
+          // }, 7000)
+
+        } else {
+          // failure path: display validation to fullfil before submitting
+        }
+      })
+
+
+
+
     // get the data of the form into a FormData(source) to work with
     // const formData = new FormData(this.element)
 
