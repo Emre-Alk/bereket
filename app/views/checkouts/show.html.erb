@@ -260,9 +260,9 @@
 <div class="fixed inset-x-0 bottom-0 px-5 py-5 bg-white shadow">
   <div class="flex flex-col gap-4 justify-center items-center text-white text-center text-md tracking-wide">
     <% if @donator.first_name == 'visiteur' %>
-      <%= link_to "Créer mon compte",  edit_user_registration_path(:user), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+      <%= link_to "Créer mon compte",  edit_user_registration_path(:user), id:"link", class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
     <% else %>
-      <%= link_to "Home", donator_root_path(@donator), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+      <%= link_to "Home", donator_root_path(), id:"link", class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
     <% end %>
 
     <div class="w-full" data-controller="clipboard" >

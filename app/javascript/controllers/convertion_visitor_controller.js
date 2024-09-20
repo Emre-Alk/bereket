@@ -28,24 +28,32 @@ export default class extends Controller {
       .then(response => {
         if (response.ok) {
           // success path: display msg to user 'welcome and thank you...' & hide form
+          // replace link 'create account' by 'home' manually instead of a window refresh (it cause to concurrency with successDiv)
+          const oldLink = document.getElementById('link')
+          oldLink.outerHTML = `<a id="link" class="flex-auto px-3 py-2 rounded-lg bg-black w-full " href="/donator">Home</a>`
+
+          // get username from the form and create the message
           const username = userForm.get('user[first_name]')
           const line_one = document.createElement('p')
           const line_two = document.createElement('p')
           line_one.innerText = `${username}, votre compte a été crée avec succès ! Vous pouvez dès maintenant éditer un reçu fiscal pour votre don.`
           line_two.innerText = "Utiliser DoGood pour vos bonnes actions ! Suivez et gérez vos dons depuis votre tabelau de bord."
 
+          // create the container of the message
           const successDiv = document.createElement('div')
-          successDiv.classList.add('mb-2', 'p-2', 'flex', 'flex-col', 'gap-y-3', 'text-center', 'text-sm', 'text-inherit', 'opacity-80', 'roboto-regular', 'tracking-wider')
+          // class list for the text mainly
+          successDiv.classList.add('mb-2', 'flex', 'flex-col', 'gap-y-3', 'text-center', 'text-sm', 'text-inherit', 'roboto-regular', 'tracking-wider')
+          // class list for the container
           successDiv.classList.add('bg-green-400', 'rounded-lg', 'px-3', 'py-2', 'w-fit')
 
+          // appending message to container
           successDiv.append(line_one)
           successDiv.append(line_two)
 
+          // replacing controller element by the message container. could have also been done with insertadjacenthtml()
           this.element.replaceWith(successDiv)
 
-          // setTimeout(() => {
-          //   successDiv.outerHTML = ''
-          // }, 7000)
+          // TODO(optional): create a <templace> tag arround the favori container to insert it also once new user
 
         } else {
           // failure path: display validation to fullfil before submitting
