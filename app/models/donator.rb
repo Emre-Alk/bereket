@@ -6,6 +6,7 @@
 #  email      :string
 #  first_name :string
 #  last_name  :string
+#  status     :enum             default("visitor"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  user_id    :bigint           not null
@@ -30,6 +31,11 @@ class Donator < ApplicationRecord
   has_one_attached :profile_image # service not specified and config active storage is default cloudinary => thus, store on cloud
   has_one_attached :cerfa #, service: :local # Use local disk for user PDFs
   has_one :customer, dependent: :destroy
+
+  enum :status, {
+    visitor: 'visitor',
+    enrolled: 'enrolled'
+  }, default: 'visitor'
 
   validates :first_name, :last_name, :email, presence: true
 

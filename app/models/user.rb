@@ -34,7 +34,7 @@ class User < ApplicationRecord
 
   validates :role, presence: true
   validates :role, inclusion: { in: ROLES }
-  validates :first_name, :last_name, format: { with: /\A[A-Za-z]+(\s?[A-Za-z]+)*\z/,
+  validates :first_name, :last_name, format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/,
     message: "letttres uniquement" }
 
   def donator?
@@ -56,7 +56,13 @@ class User < ApplicationRecord
       # using active record method:
       # Donator.create!(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
       # using devise helper methods:
-      user.create_donator!(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
+      user.create_donator!(
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        user_id: user.id,
+        status: 'enrolled'
+      )
       # does the same as above but using devise method .create_'has_one' (rq: association must exist)
       # code below does also the same, using another devise method (rq: association must exist)
       # donator = build_donator(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
@@ -65,6 +71,6 @@ class User < ApplicationRecord
 
   def update_donator
     user = self
-    user.donator.update!(first_name: user.first_name, last_name: user.last_name, email: user.email)
+    user.donator.update!(first_name: user.first_name, last_name: user.last_name, email: user.email, status: 'enrolled')
   end
 end

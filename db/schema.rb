@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_18_182537) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_23_133444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "donator_status", ["visitor", "enrolled"]
   create_enum "status", ["pending", "processing", "processed", "failed"]
+  create_enum "user_status", ["visitor", "active"]
 
   create_table "accounts", force: :cascade do |t|
     t.string "stripe_id"
@@ -105,6 +107,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_18_182537) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.enum "status", default: "visitor", null: false, enum_type: "donator_status"
     t.index ["user_id"], name: "index_donators_on_user_id"
   end
 
