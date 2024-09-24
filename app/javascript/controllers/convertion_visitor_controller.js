@@ -9,15 +9,31 @@ export default class extends Controller {
 
   connect() {
     console.log('hello convertion-visitor');
-    this.loginUser()
+    // login works but without a reload after ajax done, the update ajax don't work. an error "can't verify csrf token" pops.
+    // when e session is create, rails save a token in the session as well as in the back. so, when user navigate, rails compare session token with back token.
+    // I suppose without the reload, the token previously in the DOM is not the same as the one just created in the session after login ajax
+    // try if generate token via rails helper after login ajax can work ?
+    // try if from the login ajax response can get a session token ?
+    // this.loginUser()
+  }
+  scrollTo(event) {
+    event.preventDefault()
+    const form = document.getElementById('conversionForm')
+    form.scrollIntoView({behavior: "smooth"})
+    // this.formTarget.scrollIntoView()
   }
 
-  loginUser() {
 
+  loginUser() {
+    //create a new form object to send to back for login
     const loginForm = new FormData()
+    // needed entries are email and password.
+    // Use Value because need the email use to create visitor (from checkoutsession) whereas user can change his email in the form
     loginForm.append("user[email]", this.userEmailValue)
     loginForm.append("user[password]", '654321')
 
+    // build the payload. No accept needed since did not custom devise controller
+    // and only response.ok is of interest
     const payloadLogin = {
       method: 'POST',
       headers: {
@@ -36,14 +52,14 @@ export default class extends Controller {
         console.log('login nok');
       }
     })
-
   }
 
   newUser(event) {
     event.preventDefault()
-
+    //retrieve the filled form by visitor to convert him
     const userForm = new FormData(event.target)
 
+    // build the payload for the call
     const payload = {
       method: 'PUT',
       headers: {
@@ -54,6 +70,7 @@ export default class extends Controller {
       body: userForm
     }
 
+    // perform call and success/failure paths responses
     fetch("/users", payload)
     .then(response => {
       if (response.ok) {

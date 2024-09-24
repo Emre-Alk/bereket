@@ -18,16 +18,21 @@ class CheckoutsController < ApplicationController
     @payment_method = @checkout_session.payment_intent.payment_method.id
     @payment_status = @checkout_session.payment_status
 
-    # @visitor_customer = Customer.find_by(stripe_id: @checkout_session.customer) # this won't find a registered user that was not logged in
-    # @donator = @visitor_customer&.donator || Donator.find_by(email: @checkout_session.customer_details.email) # So, in that case, i find it via email used in the CS
-
     @donation = Donation.find_by(checkout_session_id: @checkout_session.id)
     @donator = @donation.donator
 
     @amount = @checkout_session.amount_total
     detaxed_rate = 0.66 # logic auto selon type asso à implementer
     @amount_detaxed = @amount * detaxed_rate
+    @amount_net = @amount - @amount_detaxed
 
+    @app_fee = @checkout_session.metadata.app_fee
+    @stripe_fee = @checkout_session.metadata.stripe_fee
+    @total_fee = @checkout_session.metadata.total_fee
+
+    # login user if visitor to allow smooth account update (via JS, login succeeds but requires a reload of page to change state to allow 'put' ajax to work)
+    # TODO: find a safer way to login visitor only when he choose to convert (ajax)
+    sign_in(@donator.user) if @donator.visitor?
   end
 
   def create
@@ -114,7 +119,10 @@ class CheckoutsController < ApplicationController
           quantity: 1
         }],
         metadata: {
-          place_id: params[:place_id]
+          place_id: place.id, # required for the handleEvent
+          total_fee: total_fee_amount,
+          app_fee: app_fee_amount,
+          stripe_fee: stripe_fee_amount
         }
       }
       # {
