@@ -13,4 +13,6 @@
   <p>
     <%= link_to  "sign in",  new_user_session_path %>
   </p>
+
+  <p><%= link_to "edit", edit_user_registration_path(current_user) unless !current_user %></p>
 </div>

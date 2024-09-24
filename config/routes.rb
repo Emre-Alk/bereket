@@ -63,6 +63,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # to collect feedback from donators after each donation paiement
+  resources :reviews, only: %i[create]
+
   # ======== donations ========
   # create a donation between a donator and a place
   # resource :checkout, only: %i[create show]

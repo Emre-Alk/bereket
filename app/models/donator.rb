@@ -6,6 +6,7 @@
 #  email      :string
 #  first_name :string
 #  last_name  :string
+#  status     :enum             default("visitor"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  user_id    :bigint           not null
@@ -20,6 +21,7 @@
 #
 class Donator < ApplicationRecord
   after_create :create_customer
+  after_update :update_customer
 
   belongs_to :user
   has_many :donations
@@ -29,6 +31,11 @@ class Donator < ApplicationRecord
   has_one_attached :profile_image # service not specified and config active storage is default cloudinary => thus, store on cloud
   has_one_attached :cerfa #, service: :local # Use local disk for user PDFs
   has_one :customer, dependent: :destroy
+
+  enum :status, {
+    visitor: 'visitor',
+    enrolled: 'enrolled'
+  }, default: 'visitor'
 
   validates :first_name, :last_name, :email, presence: true
 
@@ -41,5 +48,16 @@ class Donator < ApplicationRecord
       name: "#{donator.first_name} #{donator.last_name}"
     )
     donator.create_customer!(donator_id: donator.id, stripe_id: customer.id)
+  end
+
+  def update_customer
+    donator = self
+    Stripe::Customer.update(
+      donator.customer.stripe_id,
+      {
+        email: donator.email,
+        name: "#{donator.first_name} #{donator.last_name}"
+      }
+    )
   end
 end

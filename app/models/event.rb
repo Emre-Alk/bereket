@@ -11,7 +11,7 @@
 #  updated_at        :datetime         not null
 #
 class Event < ApplicationRecord
-   enum :status, {
+  enum :status, {
     pending: 'pending',
     processing: 'processing',
     processed: 'processed',

@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
+  helper_method :resource_name, :resource, :devise_mapping, :resource_class
 
   # protect_from_forgery with: :exception
 
@@ -16,6 +17,21 @@ class ApplicationController < ActionController::Base
   #     root_path # Fallback path to landing page if the user doesn't have a role or role is not recognized
   #   end
   # end
+
+  def resource_name
+    :user
+  end
+
+  def resource
+    @resource ||= User.new
+  end
+  def resource_class
+    User
+  end
+
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
 
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || first_time_sign(resource)
@@ -43,6 +59,10 @@ class ApplicationController < ActionController::Base
     # devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
     devise_parameter_sanitizer.permit(:sign_up) do |user_params|
       user_params.permit(:role, :email, :first_name, :last_name, :password, :password_confirmation)
+    end
+
+    devise_parameter_sanitizer.permit(:account_update) do |user_params|
+      user_params.permit(:email, :first_name, :last_name, :password, :password_confirmation, :current_password)
     end
   end
 
