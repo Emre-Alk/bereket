@@ -20,7 +20,6 @@ export default class extends Controller {
     event.preventDefault()
     const form = document.getElementById('conversionForm')
     form.scrollIntoView({behavior: "smooth"})
-    // this.formTarget.scrollIntoView()
   }
 
 
