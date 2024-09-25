@@ -9,7 +9,7 @@ class StripeAccount
     @account = account
   end
 
-  def
+  def default_url_options
     Rails.application.config.action_mailer.default_url_options
   end
 
@@ -38,7 +38,7 @@ class StripeAccount
         mcc: '8661',
         support_email: account.asso.email,
         # url: "https://appmynewproject-8b21a82c26ce.herokuapp.com" + place_path(account.asso.places.first).to_s,
-        url: place_url(account.asso.places.first).to_s,
+        url: place_url(account.asso.places.first),
         product_description: 'activités religieuses, spirituelles ou philosophiques',
         support_address: {
           line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
