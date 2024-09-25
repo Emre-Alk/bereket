@@ -9,7 +9,7 @@ class StripeAccount
     @account = account
   end
 
-  def default_url_options
+  def
     Rails.application.config.action_mailer.default_url_options
   end
 
@@ -37,7 +37,8 @@ class StripeAccount
         name: account.asso.name,
         mcc: '8661',
         support_email: account.asso.email,
-        url: "https://appmynewproject-8b21a82c26ce.herokuapp.com" + place_path(account.asso.places.first).to_s,
+        # url: "https://appmynewproject-8b21a82c26ce.herokuapp.com" + place_path(account.asso.places.first).to_s,
+        url: place_url(account.asso.places.first).to_s,
         product_description: 'activités religieuses, spirituelles ou philosophiques',
         support_address: {
           line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
@@ -74,7 +75,7 @@ class StripeAccount
     Stripe::AccountLink.create(
       {
         account: account.stripe_id,
-        refresh_url: 'https://appmynewproject-8b21a82c26ce.herokuapp.com/assos/account', # url for asso to go if refresh (not path because stripe will use it)
+        refresh_url: assos_account_url, # url for asso to go if refresh (not path because stripe will use it)
         return_url: assos_account_url, # 'http://192.168.1.168:3000/assos/account', # # url for asso to return to (not path because stripe will use it)
         type: 'account_onboarding',
         collection_options: { # collect is deprecated (obsolète. must use this now)
