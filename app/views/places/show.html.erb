@@ -1,3 +1,4 @@
+<!--
 <h1>this is show page of a place for donators</h1>
 
 <div>
@@ -15,15 +16,13 @@
       <%= image_tag("default_avatar.png", class:"size-12") %>
     <% end %>
   </div>
-  <!-- display qr code if logic is png w/ method "attach_qr_code_png"
-    <p><strong>place Qrcode:</strong> pe image_tag @place.qr_image pe</p>
-  -->
 
-  <!-- display qr code if logic is svg w/out attach to model instance
-    <p><strong>place Qrcode:</strong> pe @qr_code_svg.html_safe pe </p>
-  -->
+  <%# display qr code if logic is png w/ method "attach_qr_code_png" %>
+  <%# <p><strong>place Qrcode:</strong> pe image_tag @place.qr_image pe</p> %>
+  <%# display qr code if logic is svg w/out attach to model instance %>
+  <%# <p><strong>place Qrcode:</strong> pe @qr_code_svg.html_safe pe </p> %>
+  <%# display qr code if logic is svg w/ method "attach_qr_code_svg" %>
 
-  <!-- display qr code if logic is svg w/ method "attach_qr_code_svg" -->
   <div>
     <p><strong>place Qrcode:</strong></p>
     <div class="size-fit scale-50">
@@ -36,4 +35,29 @@
       <%= render partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite } %>
     </div>
   <% end %>
+</div>
+-->
+
+<%# banner of the place %>
+<div></div>
+
+<%# name of place with card (details)%>
+<div>
+  <%# name %>
+  <p></p>
+
+  <%# quick details about place  %>
+  <div>
+    <%# rating and number of rating %>
+    <%# km from my current position (not a feature for now since requires external service like mapbox, google map) %>
+    <%# link to more details (address, hours, about us) %>
+  </div>
+</div>
+
+<%# click to fav %>
+<div></div>
+
+<%# share to the community %>
+<div>
+  <%# cagnotte for some project %>
 </div>
