@@ -19,6 +19,8 @@
 #
 class Review < ApplicationRecord
   belongs_to :donation
+  has_one :place, through: :donation
+  has_one :donator, through: :donation
 
   validates :donation_id, uniqueness: true
 end

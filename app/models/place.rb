@@ -36,6 +36,8 @@ class Place < ApplicationRecord
   has_one_attached :qr_image
   has_one_attached :place_image
 
+  has_many :reviews, through: :donations
+
   # validation presence pour place_type_id?
   # validation pour format place_image ?
   validates :name, :address, :street_no, :city, :country, presence: true

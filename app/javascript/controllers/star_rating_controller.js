@@ -72,7 +72,7 @@ export default class extends Controller {
     // if user give a 5/5 star, color all stars in gold
     if (rating.length == 5 ) {
       rating.forEach((star) =>
-        star.getElementsByTagName("*")[0].classList.add('text-yellow-500')
+        star.getElementsByTagName("*")[0].classList.add('text-yellow-300')
       )
     }
 
