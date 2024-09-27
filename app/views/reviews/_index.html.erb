@@ -1,0 +1,68 @@
+<% if reviews.length > 0 %>
+  <div class="space-y-8">
+    <% reviews.each do |review| %>
+      <%# 1 review card %>
+      <div class="flex flex-col gap-y-2">
+        <%# who %>
+        <div class="flex items-center gap-x-4 justify-start">
+          <%# profile img of donator %>
+          <% if review.donator.profile_image.attached? %>
+            <%= image_tag(review.donator.profile_image, class:"rounded-full size-12") %>
+          <% else %>
+            <div class="size-12 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
+              <%= review.donator.first_name[0].capitalize %><%= review.donator.last_name[0].capitalize %>
+            </div>
+            <!--
+            <%= image_tag("default_avatar.png", alt:"picture", class:"rounded-full size-12") %>
+            -->
+          <% end %>
+
+          <%# donator name and date of membership %>
+          <div class="font-medium">
+            <h2><%= review.donator.first_name.capitalize %></h2>
+            <p class="text-xs text-gray-600 font-normal">DoGooder depuis <%= distance_of_time_in_words_to_now(review.donator.created_at, scope: 'datetime.distance_in_words') %></p>
+          </div>
+
+        </div>
+
+        <%# rating score %>
+        <div class="flex items-center justify-start">
+
+          <% review.rating.times do %>
+            <%= svg_tag('star', class:'size-3 scale-75 text-black') %>
+          <% end %>
+          <% (5 - review.rating.to_i).times do %>
+            <%= svg_tag('star', class:'size-3 scale-75 text-black/20') %>
+          <% end %>
+
+          <span class="size-0.5 mx-1.5 bg-gray-500 rounded-full"></span>
+
+          <div class="text-xs text-black">
+            <p> Il y a <%= distance_of_time_in_words_to_now(review.created_at) %> </p>
+          </div>
+
+        </div>
+
+        <%# content %>
+        <% if !review.content.empty? %>
+          <p class="text-sm leading-6 text-justify"> <%= review.content %></p>
+        <% else %>
+          <p class="text-sm leading-6 text-justify">Addddddieeoid nednezndzuendznudizFGHJKLMLKJfghj klml jhgv cvhj kdcbze vfverob reo bvreovr eovjbe orbve obverobvreob ve orbvreb veroh v be orvb erohvber o hvb erhvber o vhbero</p>
+        <% end %>
+
+        <%# <aside>
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">19 people found this helpful</p>
+          <div class="flex items-center mt-3">
+              <a href="#" class="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Helpful</a>
+              <a href="#" class="ps-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 border-gray-200 ms-4 border-s md:mb-0 dark:border-gray-600">Report abuse</a>
+          </div>
+        </aside> %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <%# pas de review %>
+  <div>
+    <p>Il n'y a pas encore d'avis.</p>
+  </div>
+<% end %>

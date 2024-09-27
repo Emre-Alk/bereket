@@ -62,12 +62,12 @@
 <% end %>
 
 
-<div class="relative bg-pink-300">
+<div class="relative">
   <%# ratings and score %>
-  <div class="flex items-center gap-x-1 ms-2">
-    <p class="text-sm text-black">4.95</p>
+  <div class="flex items-center justify-start gap-x-1 ms-2">
+    <p class=" text-black"><%= @score %></p>
     <%= svg_tag('star', class:'size-4 scale-90 text-black') %>
-    <a href="#" class="text-sm font-light text-black">(73 +)</a>
+    <p class=" font-light text-gray-600"><%= @reviews.length > 100 ? "(#{number_to_rounded(@reviews.length, local: :fr, precision: 0, round_mode: :down)}+)" : "(#{@reviews.length})" %></p>
   </div>
 
   <%# subscribe btn (feature for later so people can see posts from this place =/ than add to fav) %>
@@ -98,57 +98,7 @@
   <%# cagnotte for some project %>
 </div>
 
-  <%# review card %>
-<div class="mx-5">
-  <% @reviews.each do |review| %>
-    <article>
-      <%# who %>
-      <div class="flex items-center mb-4">
-        <%# profile img of donator %>
-        <% if review.donator.profile_image.attached? %>
-          <%= image_tag(review.donator.profile_image, class:"size-14 rounded-full") %>
-        <% else %>
-          <%= image_tag("default_avatar.png", alt:"picture", class:"rounded-full size-20 mb-1") %>
-        <% end %>
-
-        <%# donator name and date of review %>
-        <div class="ms-2">
-          <p><%= review.donator.first_name.capitalize %></p>
-        </div>
-
-      </div>
-
-      <%# rating score %>
-      <div class="flex items-center">
-        <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
-          <% review.rating.times do %>
-            <%= svg_tag('star', class:'size-4 scale-90 text-black') %>
-          <% end %>
-          <%= svg_tag('star', class:'size-4 scale-90 text-gray-300') unless review.rating.to_i == 5 %>
-        </div>
-        <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full"></span>
-        <div class="text-sm text-black">
-          <p> <%= distance_of_time_in_words_to_now(review.created_at) %> </p>
-        </div>
-      </div>
-
-
-      <%# content %>
-      <% if !review.content.empty? %>
-        <p class="line-clamp-3 text-sm"> <%= review.content %></p>
-        <a href="#" class="block mb-5 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Read more</a>
-      <% else %>
-        <p class="line-clamp-3 text-sm">ERTYUIOPFDFGHJKLMLKJfghjklmljhgvcvhjkdcbzevfverobreobvreovreovjbeorbverobverobvreobveorbvrebverohvbeorvberohvberohvberhvberovhbero</p>
-      <% end %>
-
-      <%# <aside>
-        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">19 people found this helpful</p>
-        <div class="flex items-center mt-3">
-            <a href="#" class="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Helpful</a>
-            <a href="#" class="ps-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 border-gray-200 ms-4 border-s md:mb-0 dark:border-gray-600">Report abuse</a>
-        </div>
-      </aside> %>
-
-    </article>
-  <% end %>
+<%# review card %>
+<div class="mx-5 my-5">
+  <%= render partial:'reviews/index', locals: { reviews: @reviews } %>
 </div>
