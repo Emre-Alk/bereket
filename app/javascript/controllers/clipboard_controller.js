@@ -9,13 +9,11 @@ export default class extends Controller {
     // in case the source is inside a link anchor and don't want browser to redirect on click
     event.preventDefault()
     // copy the source value in the clipboard
-    navigator.clipboard.writeText(this.sourceTarget.value)
-    // inform copying succeeded
-    this.displayCopy(this.sourceTarget.value)
-  }
-
-  displayCopy(value){
-    this.sourceTarget.innerHTML = `${value} <i class="fa-solid fa-headset fa-xl"></i>`
+    if (this.sourceTarget.value) {
+      navigator.clipboard.writeText(this.sourceTarget.value)
+    } else {
+      navigator.clipboard.writeText(this.sourceTarget.innerText)
+    }
 
     const iconCopied = document.createElement('div')
     iconCopied.classList.add('absolute', 'right-2', 'px-2', 'py-1', 'bg-gray-600', 'opacity-50', 'rounded-lg', 'text-white', 'text-sm')
@@ -25,8 +23,11 @@ export default class extends Controller {
     this.sourceTarget.append(iconCopied)
 
     setTimeout(() => {
-      iconCopied.outerHTML = ``
+      iconCopied.remove()
     }, 1000)
+  }
 
+  displayCopy(){
+    this.sourceTarget.innerHTML = `${this.sourceTarget.value} <i class="fa-solid fa-headset fa-xl"></i>`
   }
 }
