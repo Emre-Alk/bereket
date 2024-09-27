@@ -7,5 +7,6 @@ class PlacesController < ApplicationController
     @donator = current_user.donator if user_signed_in?
     @favorite = @place.favorites.where(donator: @donator).take
     @reviews = @place.reviews.includes(donation: :donator)
+    # @content_faker
   end
 end

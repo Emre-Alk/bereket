@@ -96,3 +96,5 @@ gem "sidekiq", "~> 7.3"
 gem "sidekiq-failures"
 
 gem "annotate", "~> 3.2", :group => :development
+
+gem "faker", "~> 3.4"
