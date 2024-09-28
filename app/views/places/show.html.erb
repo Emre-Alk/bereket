@@ -22,9 +22,9 @@
 <% end %>
 
 
-<div class="mb-4 mt-2 grid grid-flow-col auto-col-max gap-x-4 mx-5">
+<div class="mb-4 mt-2 flex flex-row items-start justify-between mx-2">
   <%# ratings and score %>
-  <div class="flex-none flex items-center justify-start gap-x-1">
+  <div class="basis-1/4 flex-none flex justify-start items-center gap-x-1">
     <p class=" text-black"><%= @score %></p>
     <%= svg_tag('star', class:'size-4 scale-90 text-black') %>
     <p class=" font-light text-gray-600"><%= @reviews.length > 100 ? "(#{number_to_rounded(@reviews.length, local: :fr, precision: 0, round_mode: :down)}+)" : "(#{@reviews.length})" %></p>
@@ -33,10 +33,10 @@
   <%# subscribe btn (feature for later so people can see posts from this place =/ than add to fav) %>
 
   <%# Donate btn %>
-  <%= link_to "Faire un don", new_place_donation_path(@place), class:"py-2 px-3 bg-black text-white rounded-lg tracking-wide text-center"%>
+  <%= link_to "Faire un don", new_place_donation_path(@place), class:"flex justify-center py-2.5 px-5 bg-black text-white rounded-lg tracking-wide text-center"%>
 
   <%# ajouter en fav %>
-  <div class="self-start">
+  <div class="basis-1/4 flex-none flex justify-end">
     <% if @donator.enrolled? %>
         <%= render partial:"favorites/favorite_icon", locals: { donator: @donator, place: @place, favorite: @favorite } %>
     <% end %>
@@ -84,6 +84,14 @@
 </div>
 
 <%# review card %>
-<div class="mx-5 my-5">
+<div class="px-5 py-5">
+  <%# muezzin %>
+  <%# imam %>
+  <%# hutbe %>
+
+  <%# propreté %>
+  <%# qualité des activités/services %>
+  <%# qualité des installations/equipements %>
+  <%# emplacement %>
   <%= render partial:'reviews/index', locals: { reviews: @reviews } %>
 </div>
