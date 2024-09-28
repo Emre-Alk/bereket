@@ -48,11 +48,18 @@
 <%# info on place %>
 <div class="flex flex-col border-y border-black/30 px-5 py-2">
   <%# address %>
-  <div class="flex flex-row gap-4 justify-start items-baseline  px-2 py-1" data-controller="clipboard" data-action="click->clipboard#copy">
+  <div class="flex flex-row gap-4 justify-start items-center px-2 py-1" data-controller="clipboard" >
+
     <%= icon("fa-solid", "location-dot") %>
-    <button data-clipboard-target="source">
-      <%= @place.street_no %> <%= @place.address %>, <%= @place.city %> <%= @place.zip_code %>, <%= @place.country %>
+
+    <button data-action="clipboard#copy" class="flex justify-start items-center gap-x-4">
+      <span data-clipboard-target="source"><%= @place.street_no %> <%= @place.address %>, <%= @place.city %> <%= @place.zip_code %>, <%= @place.country %></span>
+      <div>
+        <span data-clipboard-target="defaultIcon"><%= svg_tag('clipboard', class:"size-3.5") %></span>
+        <span data-clipboard-target="successIcon" class="hidden"><%= svg_tag('check', class:'size-4 stroke-2 stroke-black') %></span>
+      </div>
     </button>
+
   </div>
 
   <%# Opening hours %>
