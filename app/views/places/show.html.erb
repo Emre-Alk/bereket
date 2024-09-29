@@ -37,7 +37,7 @@
 
   <%# ajouter en fav %>
   <div class="basis-1/4 flex-none flex justify-end">
-    <% if current_user && @donator.enrolled? %>
+    <% if @donator&.enrolled? %>
         <%= render partial:"favorites/favorite_icon", locals: { donator: @donator, place: @place, favorite: @favorite } %>
     <% end %>
   </div>
