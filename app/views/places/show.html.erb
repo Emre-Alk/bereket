@@ -1,63 +1,97 @@
-<!--
-<h1>this is show page of a place for donators</h1>
-
-<div>
-  <p><strong>name:</strong> <%= @place.name %></p> <br>
-
-  <p><strong>address:</strong> <%= @place.address %></p> <br>
-  <p><strong>street_no:</strong> <%= @place.street_no %></p> <br>
-  <p><strong>city:</strong> <%= @place.city %></p><br>
-  <p><strong>country:</strong> <%= @place.country %></p><br>
-  <p><strong>place type:</strong> <%= @place.place_type.name %></p>
-  <div>
-    <% if @place.place_image.attached? %>
-      <%= image_tag @place.place_image %>
-    <% else %>
-      <%= image_tag("default_avatar.png", class:"size-12") %>
-    <% end %>
+<%# en tete %>
+<div class="mb-5">
+  <div class="flex justify-center items-center">
+    <h1 class="text-lg font-medium tracking-wide"><%= @place.name.split(' ').map(&:capitalize).join(' ') %></h1>
+    <span class="fa-stack fa-2xs scale-75" style="vertical-align: baseline;" >
+      <%= icon('fa-solid', 'certificate', class:'fa-stack-2x', style:'color: #0471FF;') %>
+      <%= icon('fa-solid', 'check', class:'fa-stack-1x', style:'color: white;') %>
+    </span>
   </div>
-
-  <%# display qr code if logic is png w/ method "attach_qr_code_png" %>
-  <%# <p><strong>place Qrcode:</strong> pe image_tag @place.qr_image pe</p> %>
-  <%# display qr code if logic is svg w/out attach to model instance %>
-  <%# <p><strong>place Qrcode:</strong> pe @qr_code_svg.html_safe pe </p> %>
-  <%# display qr code if logic is svg w/ method "attach_qr_code_svg" %>
-
-  <div>
-    <p><strong>place Qrcode:</strong></p>
-    <div class="size-fit scale-50">
-      <%= render partial: "assos/places/qr_code", locals: { place: @place } %>
-    </div>
-  </div>
-
-  <% if current_user && current_user.donator? %>
-    <div class="w-fit" >
-      <%= render partial: "favorites/favorite_icon", locals: { place: @place, donator: @donator, favorite: @favorite } %>
-    </div>
-  <% end %>
 </div>
--->
+
 
 <%# banner of the place %>
-<div></div>
+<% if @place.place_image.attached? %>
+  <div class="h-40">
+      <img src="<%= @place.place_image %>" class="rounded-t-lg object-cover" alt="image of the place">
+  </div>
+<% else %>
+  <div class="flex justify-center items-center h-40 w-full bg-gray-300">
+    <%= svg_tag('image_empty', class:'size-20 bg-inherit text-gray-200') %>
+  </div>
+<% end %>
 
-<%# name of place with card (details)%>
-<div>
-  <%# name %>
-  <p></p>
 
-  <%# quick details about place  %>
-  <div>
-    <%# rating and number of rating %>
-    <%# km from my current position (not a feature for now since requires external service like mapbox, google map) %>
-    <%# link to more details (address, hours, about us) %>
+<div class="mb-4 mt-2 flex flex-row items-start justify-between mx-2">
+  <%# ratings and score %>
+  <div class="basis-1/4 flex-none flex justify-start items-center gap-x-1">
+    <p class=" text-black"><%= @score %></p>
+    <%= svg_tag('star', class:'size-4 scale-90 text-black') %>
+    <p class=" font-light text-gray-600"><%= @reviews.length > 100 ? "(#{number_to_rounded(@reviews.length, local: :fr, precision: 0, round_mode: :down)}+)" : "(#{@reviews.length})" %></p>
+  </div>
+
+  <%# subscribe btn (feature for later so people can see posts from this place =/ than add to fav) %>
+
+  <%# Donate btn %>
+  <%= link_to "Faire un don", new_place_donation_path(@place), class:"flex justify-center py-2.5 px-5 bg-black text-white rounded-lg tracking-wide text-center"%>
+
+  <%# ajouter en fav %>
+  <div class="basis-1/4 flex-none flex justify-end">
+    <% if current_user && @donator.enrolled? %>
+        <%= render partial:"favorites/favorite_icon", locals: { donator: @donator, place: @place, favorite: @favorite } %>
+    <% end %>
   </div>
 </div>
 
-<%# click to fav %>
-<div></div>
+<%# info on place %>
+<div class="flex flex-col border-y border-black/30 px-5 py-2">
+  <%# address %>
+  <div class="flex flex-row gap-4 justify-start items-center" data-controller="clipboard" >
+
+    <%= icon("fa-solid", "location-dot") %>
+
+    <button data-action="clipboard#copy" class="flex justify-start items-center gap-x-4">
+      <span data-clipboard-target="source"><%= @place.street_no %> <%= @place.address %>, <%= @place.city %> <%= @place.zip_code %>, <%= @place.country %></span>
+      <div>
+        <span data-clipboard-target="defaultIcon"><%= svg_tag('clipboard', class:"size-3.5") %></span>
+        <span data-clipboard-target="successIcon" class="hidden"><%= svg_tag('check', class:'size-4 stroke-2 stroke-black') %></span>
+      </div>
+    </button>
+
+  </div>
+
+  <%# Opening hours %>
+
+
+</div>
+
+<%# my wall %>
+<div>
+  <%# bio %>
+  <div>
+    <%# model bio to be created %>
+  </div>
+
+  <div>
+    <%# links %>
+  </div>
+
+</div>
 
 <%# share to the community %>
 <div>
   <%# cagnotte for some project %>
+</div>
+
+<%# review card %>
+<div class="px-5 py-5">
+  <%# muezzin %>
+  <%# imam %>
+  <%# hutbe %>
+
+  <%# propreté %>
+  <%# qualité des activités/services %>
+  <%# qualité des installations/equipements %>
+  <%# emplacement %>
+  <%= render partial:'reviews/index', locals: { reviews: @reviews } %>
 </div>

@@ -32,6 +32,8 @@ class Donator < ApplicationRecord
   has_one_attached :cerfa #, service: :local # Use local disk for user PDFs
   has_one :customer, dependent: :destroy
 
+  has_many :reviews, through: :donations
+
   enum :status, {
     visitor: 'visitor',
     enrolled: 'enrolled'

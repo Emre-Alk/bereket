@@ -2,31 +2,34 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="clipboard"
 export default class extends Controller {
-  static targets =['source']
+  static targets =['source', 'defaultIcon', 'successIcon']
   // source is the target whome value is to be copied
 
   copy(event) {
     // in case the source is inside a link anchor and don't want browser to redirect on click
     event.preventDefault()
     // copy the source value in the clipboard
-    navigator.clipboard.writeText(this.sourceTarget.value)
-    // inform copying succeeded
-    this.displayCopy(this.sourceTarget.value)
+    if (this.sourceTarget.hasAttribute('value')) {
+      navigator.clipboard.writeText(this.sourceTarget.value)
+    } else {
+      navigator.clipboard.writeText(this.sourceTarget.innerText)
+    }
+
+    this.defaultIconTarget.classList.toggle('hidden')
+    this.successIconTarget.classList.toggle('hidden')
+    setTimeout(() => {
+      this.defaultIconTarget.classList.toggle('hidden')
+      this.successIconTarget.classList.toggle('hidden')
+    }, 2000)
+
   }
 
-  displayCopy(value){
-    this.sourceTarget.innerHTML = `${value} <i class="fa-solid fa-headset fa-xl"></i>`
-
-    const iconCopied = document.createElement('div')
-    iconCopied.classList.add('absolute', 'right-2', 'px-2', 'py-1', 'bg-gray-600', 'opacity-50', 'rounded-lg', 'text-white', 'text-sm')
-    iconCopied.innerHTML = ` Copié <i class="fa-solid fa-check" style="color: #11de0f;"></i>`
-
-    this.sourceTarget.classList.add('relative')
-    this.sourceTarget.append(iconCopied)
-
+  displayCopy(){
+    const textSource = this.sourceTarget.innerText
+    this.sourceTarget.firstChild.replaceWith(this.sourceTarget.value)
     setTimeout(() => {
-      iconCopied.outerHTML = ``
-    }, 1000)
+      this.sourceTarget.firstChild.replaceWith(textSource)
+    }, 2000);
 
   }
 }

@@ -8,9 +8,7 @@
   <%# icon check %>
   <div class="rounded-lg flex flex-col py-4 items-center justify-center bg-black">
     <div>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-20 text-white dark:text-white">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-      </svg>
+      <%= svg_tag('check_circle', class:'size-20 text-white') %>
     </div>
 
     <div>
@@ -241,9 +239,13 @@
     <% end %>
 
     <div class="w-full" data-controller="clipboard" >
-      <button class="flex justify-center items-center gap-4 px-3 py-2 rounded-lg text-black bg-gray-200 w-full" value="0786415817" data-action="clipboard#copy" data-clipboard-target="source">
+      <button class="relative flex justify-center items-center gap-4 px-3 py-2 rounded-lg text-black bg-gray-200 w-full" value="0786415817" data-action="clipboard#copy clipboard#displayCopy" data-clipboard-target="source">
         Nous contacter
-        <%= icon('fa-solid', 'headset', class:'fa-xl') %>
+        <span><%= svg_tag('headset') %></span>
+        <div class="absolute right-4">
+          <span data-clipboard-target="defaultIcon"> <%= svg_tag('clipboard', class:'size-3.5') %></span>
+          <span data-clipboard-target="successIcon" class='hidden' > <%= svg_tag('check', class:'size-4 stroke-2 stroke-black') %></span>
+        </div>
       </button>
     </div>
   </div>
