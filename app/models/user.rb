@@ -71,6 +71,8 @@ class User < ApplicationRecord
 
   def update_donator
     user = self
+    return if user.asso?
+
     user.donator.update!(first_name: user.first_name, last_name: user.last_name, email: user.email, status: 'enrolled')
   end
 end
