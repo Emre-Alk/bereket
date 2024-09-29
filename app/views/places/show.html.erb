@@ -25,7 +25,7 @@
 <div class="mb-4 mt-2 flex flex-row items-start justify-between mx-2">
   <%# ratings and score %>
   <div class="basis-1/4 flex-none flex justify-start items-center gap-x-1">
-    <p class=" text-black"><%= @score %></p>
+    <p class=" text-black"><%= @score%></p>
     <%= svg_tag('star', class:'size-4 scale-90 text-black') %>
     <p class=" font-light text-gray-600"><%= @reviews.length > 100 ? "(#{number_to_rounded(@reviews.length, local: :fr, precision: 0, round_mode: :down)}+)" : "(#{@reviews.length})" %></p>
   </div>
