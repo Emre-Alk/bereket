@@ -1,14 +1,23 @@
+<%# modal qr code %>
+<div class="fixed z-50 inset-0 top-48 rounded-t-3xl bg-pink-300 flex justify-center items-center">
+  <%= qr_generate(@place.qr_code, class:'size-48') %>
+</div>
+
 <%# en tete %>
 <div class="mb-5">
-  <div class="flex justify-center items-center">
+  <div class="relative flex justify-center items-center">
     <h1 class="text-lg font-medium tracking-wide"><%= @place.name.split(' ').map(&:capitalize).join(' ') %></h1>
     <span class="fa-stack fa-2xs scale-75" style="vertical-align: baseline;" >
       <%= icon('fa-solid', 'certificate', class:'fa-stack-2x', style:'color: #0471FF;') %>
       <%= icon('fa-solid', 'check', class:'fa-stack-1x', style:'color: white;') %>
     </span>
+
+    <button class="absolute right-4 ">
+      <%= svg_tag('qr_code', class:'size-10 p-2 scale-75 text-white bg-black rounded-lg') %>
+    </button>
+
   </div>
 </div>
-
 
 <%# banner of the place %>
 <% if @place.place_image.attached? %>
