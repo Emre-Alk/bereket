@@ -1,54 +1,75 @@
 
-<div class="flex justify-start mt-7 ml-7">
-  <%= link_to :back do %>
-    <%= icon('fa-solid', 'arrow-left', class:'fa-2xl') %>
+<%# go :back or :root link %>
+<div class="fixed top-7 left-7">
+  <%= link_to :back || root_path do %>
+    <%= svg_tag('chevron-left', class:'size-6 stroke-2') %>
   <% end %>
 </div>
 
-<div data-controller="donation" data-donation-donator-id-value="<%= @donator ? @donator.id : nil %>" data-donation-place-id-value="<%= @place.id %>" class="flex flex-col items-center justify-start gap-y-5">
+<div class="mt-7 flex flex-col items-center gap-y-10" data-controller="donation" data-donation-donator-id-value="<%= @donator ? @donator.id : nil %>" data-donation-place-id-value="<%= @place.id %>">
 
-  <div class="flex flex-row gap-3 justify-center items-baseline">
-    <%= icon("fa-solid", "gift", class:"fa-xl")%>
-    <p class="roboto-medium">Sélectionner votre donation</p>
+  <%# place identification %>
+  <div class="flex flex-col justify-center items-center gap-2">
+
+    <div class="flex justify-center items-center size-20 rounded-full bg-gray-300">
+      <%= svg_tag('image_empty', class:'size-8 bg-inherit text-gray-100') %>
+    </div>
+
+    <div class="flex justify-center items-center ps-1">
+      <h1 class="text-lg font-medium tracking-wide"><%= @place.name.split(' ').map(&:capitalize).join(' ') %></h1>
+      <span class="fa-stack fa-2xs scale-75" style="vertical-align: baseline;" >
+        <%= icon('fa-solid', 'certificate', class:'fa-stack-2x', style:'color: #0471FF;') %>
+        <%= icon('fa-solid', 'check', class:'fa-stack-1x', style:'color: white;') %>
+      </span>
+    </div>
+
   </div>
 
-  <div class="flex flex-col items-center justify-center gap-y-10">
+  <%# CTA %>
+  <div class="mt-6 flex flex-row gap-3 justify-center items-baseline">
+    <%= icon("fa-solid", "gift", class:"fa-xl")%>
+    <p class="text-lg tracking-wider antialiased roboto-medium">Sélectionner un montant</p>
+  </div>
 
-    <div class="flex flex-row justify-center items-center gap-x-2" >
+  <%# donation buttons %>
+  <div class="flex flex-col items-center justify-center gap-y-10 w-full">
+
+    <%# quick buttons flex flex-row justify-center items-center gap-x-2 %>
+    <div class="grid grid-cols-2 w-4/5 place-items-center gap-y-4 gap-x-px" >
+      <%# px-3 py-3 border-black border rounded-lg bg-white text-2xl roboto-medium active:bg-black active:text-white %>
       <% @amount_option.each_with_index do |amount, i| %>
-        <button data-action="click->donation#showConfirm" class="px-3 py-3 border-black border rounded-lg bg-white text-2xl roboto-medium active:bg-black active:text-white" id="<%= i %>" data-donation-target="btn" name="don" value="<%= amount %>"><%= amount %> €</button>
+        <button data-action="click->donation#showConfirm" class="active:bg-black active:text-white size-20 rounded-full bg-white shadow-xl text-black font-medium tracking-wider text-2xl text-center" id="<%= i %>" data-donation-target="btn" name="don" value="<%= amount %>"><%= amount %> €</button>
       <% end %>
     </div>
 
-      <div class="flex flex-col gap-y-5 justify-center items-center">
+    <%# input for other amount %>
+    <div class="flex flex-col gap-y-5 justify-center items-center w-1/2">
 
-        <div class="w-full">
-            <input data-action="input->donation#onInput blur->donation#onBlur" data-donation-target="inputfield" placeholder="Autre montant" class="rounded-full w-full" type="Number" min="2.3">
-            <p data-donation-target="message" class="hidden text-slate-500 italic"></p>
-        </div>
-
-        <div class="w-full">
-          <button disabled data-action="click->donation#submitInput" data-donation-target="submitBtn" class="px-3 py-2 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg disabled:bg-black/50" >
-          Donner
-          </button>
-        </div>
-
+      <div class="w-full">
+        <input data-action="input->donation#onInput blur->donation#onBlur" data-donation-target="inputfield" placeholder="Autre montant" class="peer rounded-full w-full" type="Number" min="2">
+        <p data-donation-target="message" class="hidden text-slate-500 italic"></p>
+        <button disabled data-action="click->donation#submitInput" data-donation-target="submitBtn" class="disabled:hidden mt-5 px-3 py-2 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg disabled:bg-black/50" >
+        Donner
+        </button>
       </div>
+    </div>
 
   </div>
 
-  <div class="mt-8">
+  <%# user login suggestion %>
+  <div class="flex space-x-4">
     <% if !user_signed_in? %>
-      <%= link_to new_user_session_path do %>
-        J'utilise déjà DoGood ? <button class="px-4"> Me connecter </button>
+      <p>J'utilise déjà DoGood ? </p>
+      <%= link_to new_user_session_path , class: "underline underline-offset-4 decoration-indigo-500 active:decoration-black" do %>
+        <p >Me connecter</p>
       <% end %>
     <% end %>
   </div>
 
-  <div>
-    <%= render partial: "confirmbox", locals: { place: @place } %>
-  </div>
+  <%# confirmation modal %>
+  <%= render partial: "confirmbox", locals: { place: @place } %>
+
 </div>
 
-<div id="overlay" class="hidden fixed inset-x-0 inset-y-0 bg-black/50">
-</div>
+<%# overlay to blur background when modal is open %>
+<div id="overlay" class="hidden fixed inset-x-0 inset-y-0 bg-black/50"></div>

@@ -22,10 +22,13 @@ export default class extends Controller {
     if (event) {
       console.log('w/ event');
       event.preventDefault()
+
       confirmBox.classList.add("-translate-y-full")
       this.inputfieldTarget.value = event.target.value
       this.monDonTargets[1].innerText = `${event.target.value} €`
+      console.log('if plural 1', this.monDonTargets[1])
       this.monDonTarget.setAttribute("value", `${event.target.value}`)
+      console.log('if singular', this.monDonTarget);
       this.overlay.classList.remove('hidden')
       event.stopPropagation()
 
@@ -35,9 +38,33 @@ export default class extends Controller {
 
       confirmBox.classList.add("-translate-y-full")
       this.monDonTargets[1].innerText = `${this.inputfieldTarget.value} €`
+      console.log('else plural 1', this.monDonTargets[1])
       this.monDonTarget.setAttribute("value", `${this.inputfieldTarget.value}`)
+      console.log('else singular', this.monDonTarget);
       this.overlay.classList.remove('hidden')
     }
+
+
+    // parse to float a string representing the amount given as donation
+    const amount = parseFloat(this.monDonTarget.value)
+    // apply the discount (ToDo: in auto)
+    const amountDiscount = amount * 0.66
+    // deduce the net amount
+    const amountNet = amount - amountDiscount
+
+    // convert number to currency using 'Intl.NumberFormat' but require a number in 'format'
+    // toFixed to rounded at x decimal, and result is type string. then back to parseFloat to get a number
+    const discountCurrency = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(parseFloat(amountDiscount.toFixed(2)))
+    const netCurrency = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(parseFloat(amountNet.toFixed(2)))
+
+    // retrieve the donation breakdown elements
+    const discount = document.getElementById('discount')
+    const net = document.getElementById('net')
+
+    // insert results at places
+    discount.innerText = `-${discountCurrency}`
+    net.innerText = netCurrency
+
   }
 
   hideConfirmation(event) {
@@ -117,98 +144,4 @@ export default class extends Controller {
 
   }
 
-  confirmTip() {
-    // Implement your confirmation logic here
-
-    // this.hideConfirmation()
-    confirmBox.classList.remove("-translate-y-full")
-    this.overlay.classList.add('hidden')
-
-    if (this.donatorIdValue) {
-      // logic when donator exists
-      // continue to checkout stripe
-      this.checkoutTest()
-    } else {
-      // logic when donator do not exists
-      // you go on stripe but in the form add input fields for email and mdp
-      // other attribute to create user and donator record can be completed by myself
-      // Or redirect to sign_in / registration
-      // Or custom form to insert in dom to fill email and mdp
-      // if credential exit => log in user
-      // if don't exist => create user donator
-      // then, get back on track
-      this.checkoutTest()
-
-    }
-  }
-
-  checkoutTest() {
-    console.log('you are being redirected to stripe payment test');
-    fetch('/checkout_test', {
-      headers: {
-        'Accept' : 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then((data) => {
-      console.log('data', data);
-      if (data.url) {
-        // user is sign in
-        // go to stripe checkout (user needs to be signed in before landing in stripe)
-        window.location.href = data.url
-      } else if (data.error === 'You need to sign in or sign up before continuing.') {
-        // user not logged in or not registered
-        // go to authenticate by signing in or signing up (connection ou inscription)
-        console.log('authentication needed');
-      } else {
-        console.log('error case not handled');
-      }
-    })
-  }
-
-  checkout() {
-    // donation value is retrived. its type is string and unit is not converted to 1000s (ex: 21 or 20,5 and not 2100)
-    const donationValue = this.monDonTarget.getAttribute('value')
-    // defining an object to store all informations about the donation to send to backend
-    const donation = {
-      donator_id: this.donatorIdValue,
-      place_id: this.placeIdValue,
-      amount: donationValue
-    }
-    // defining a object 'payload' for the AJAX to works properly
-    // the auth token will be filled by rails
-    const payload = {
-      authenticity_token: "",
-      donation: donation
-    }
-
-    const url = `/checkout`
-    const details = {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "X-CSRF-Token": document
-          .querySelector('meta[name="csrf-token"]')
-          .getAttribute("content")
-      },
-      body: JSON.stringify(payload)
-    }
-
-    fetch(url, details)
-    .then(response => {
-      if (response.ok) {
-        response.json()
-        .then((data) => {
-          // success logic : redirect the user to stripe embedded form with the url returned from checkout:session.create()
-          window.location.href = data.url
-        })
-      } else {
-        response.json()
-        .then((data) => {
-          // failure logic: render cancel template with msg 'smthg went wrong. ur donation couldnt be processed'
-        })
-      }
-    })
-  }
 }
