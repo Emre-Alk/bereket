@@ -21,7 +21,7 @@
 #
 class User < ApplicationRecord
   after_create :create_donator
-  after_update :update_donator
+  after_update :update_donator, if: :donator?
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -71,7 +71,7 @@ class User < ApplicationRecord
 
   def update_donator
     user = self
-    return if user.asso?
+    # return if user.asso? # add if: to callback
 
     user.donator.update!(first_name: user.first_name, last_name: user.last_name, email: user.email, status: 'enrolled')
   end
