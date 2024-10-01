@@ -4,11 +4,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [ "scanBox", "scanBtn" ]
 
-  connect() {
-    console.log("hello scan")
-    // this.qrReader = new Html5Qrcode("scanBox") pas nessaire d'instancier dès l'ouverture de la page dashboard
-  }
-
   fetchPlaceDonationNew(path, qrText) {
     const details = {
       method: 'GET',
