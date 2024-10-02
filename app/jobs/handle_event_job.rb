@@ -155,6 +155,9 @@ class HandleEventJob < ApplicationJob
       external_bank_account_id: stripe_account.external_accounts.data.first.id,
       last_four: stripe_account.external_accounts.data.first.last4
     )
+    puts '✅✅✅✅✅✅✅✅✅✅'
+    puts "#{account.inspect}"
+    puts '✅✅✅✅✅✅✅✅✅✅'
   end
 
   def handle_customer_created(stripe_event)
