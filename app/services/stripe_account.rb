@@ -62,7 +62,8 @@ class StripeAccount
           schedule: {
             interval: 'daily'
           },
-          statement_descriptor: "DoGood - #{account.asso.name}"
+          # statement_descriptor: "DoGood - #{account.asso.name}"
+          statement_descriptor: "DoGood service"
         }
       }
       # default_currency: "eur",

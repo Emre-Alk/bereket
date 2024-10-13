@@ -10,7 +10,7 @@
 
     <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
       <p><%= don.place.name %></p>
-      <p><%= don.amount / 100.00 %> €</p>
+      <p><%= don.amount_net / 100.00 %> €</p>
       <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
     </div>
   </div>
