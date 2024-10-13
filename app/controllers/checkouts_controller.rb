@@ -123,7 +123,8 @@ class CheckoutsController < ApplicationController
           total_fee: total_fee_amount,
           app_fee: app_fee_amount,
           stripe_fee: stripe_fee_amount
-        }
+        },
+        submit_type: 'donate'
       }
       # {
       #   stripe_account: place.asso.account.stripe_id
