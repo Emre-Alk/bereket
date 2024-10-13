@@ -110,7 +110,7 @@ class HandleEventJob < ApplicationJob
 
       # retrive donated amount
       amount = checkout_session.amount_total
-      total_fee = check_session.metadata.total_fee
+      total_fee = checkout_session.metadata.total_fee
       amount_net = amount - total_fee
 
       # create a donation record (donator, place, cs, amount brut, occured_on)
