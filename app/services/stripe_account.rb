@@ -37,7 +37,6 @@ class StripeAccount
         name: account.asso.name,
         mcc: '8661',
         support_email: account.asso.email,
-        # url: "https://appmynewproject-8b21a82c26ce.herokuapp.com" + place_path(account.asso.places.first).to_s,
         url: place_url(account.asso.places.first),
         product_description: 'activités religieuses, spirituelles ou philosophiques',
         support_address: {
@@ -48,14 +47,14 @@ class StripeAccount
         }
       },
       company: {
+        name: account.asso.name,
         structure: 'incorporated_non_profit',
         address: {
           line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
+          postal_code: '69001', # account.asso.places.first.zip_code => need to be valid type
           city: account.asso.places.first.city,
-          country: 'FR', # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
-          postal_code: '69001' # account.asso.places.first.zip_code => need to be valid type
-        },
-        name: account.asso.name
+          country: 'FR' # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
+        }
       },
       settings: {
         payouts: {

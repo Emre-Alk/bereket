@@ -16,13 +16,13 @@ class HandleEventJob < ApplicationJob
     case stripe_event.type
     when 'customer.created' # test with stripe CLI
       handle_customer_created(stripe_event)
-    when 'account.updated' # capabilities.updated
+    when 'account.updated'
       handle_account_updated(stripe_event)
-      # when 'capability.updated' # Useful if goal is to create/check financial account as external account
-      # handle_capability_updated(stripe_event)
     when 'checkout.session.completed'
       handle_checkout_session_completed(stripe_event)
     end
+    # when 'capability.updated' # Useful if goal is to create/check financial account as external account
+    # handle_capability_updated(stripe_event)
   end
 
   def handle_checkout_session_completed(stripe_event)
@@ -158,9 +158,19 @@ class HandleEventJob < ApplicationJob
       external_bank_account_id: stripe_account.external_accounts.data.first.id,
       last_four: stripe_account.external_accounts.data.first.last4
     )
-    puts '✅✅✅✅✅✅✅✅✅✅'
-    puts "#{account.inspect}"
-    puts '✅✅✅✅✅✅✅✅✅✅'
+
+    stripe_deadline = Time.at(stripe_account.requirements.current_deadline).to_datetime
+    # if eventually_due is not empty
+    account.update!(requirements: 'eventually') unless stripe_account.requirements.eventually_due.empty?
+
+    # if currently_due is not empty
+    account.update!(requirements: 'currently', stripe_deadline:) unless stripe_account.requirements.currently_due.empty?
+
+    # if past_due is not empty
+    account.update!(requirements: 'past', stripe_deadline:) unless stripe_account.requirements.past_due.empty?
+
+    # if account disabled
+    account.update!(status: 'disabled') unless stripe_account.requirements.disabled_reason.empty?
   end
 
   def handle_customer_created(stripe_event)

@@ -6,6 +6,9 @@
 #  charges_enabled          :boolean
 #  last_four                :string
 #  payouts_enabled          :boolean
+#  requirements             :enum             default("clear"), not null
+#  status                   :enum             default("clear"), not null
+#  stripe_deadline          :datetime
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  asso_id                  :bigint           not null
@@ -22,4 +25,16 @@
 #
 class Account < ApplicationRecord
   belongs_to :asso
+
+  enum :requirements, {
+    past: 'past',
+    currently: 'currently',
+    eventually: 'eventually',
+    clear: 'clear'
+  }, default: 'clear'
+
+  enum :status, {
+    disabled: 'disabled',
+    active: 'active'
+  }, default: 'active'
 end

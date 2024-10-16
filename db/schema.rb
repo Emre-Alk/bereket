@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_13_161720) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_16_201301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "account_status", ["disabled", "active"]
   create_enum "donator_status", ["visitor", "enrolled"]
+  create_enum "requirement_status", ["past", "currently", "eventually", "clear"]
   create_enum "status", ["pending", "processing", "processed", "failed"]
   create_enum "user_status", ["visitor", "active"]
 
@@ -29,6 +31,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_13_161720) do
     t.datetime "updated_at", null: false
     t.string "external_bank_account_id"
     t.string "last_four"
+    t.enum "requirements", default: "clear", null: false, enum_type: "requirement_status"
+    t.datetime "stripe_deadline"
+    t.enum "status", default: "active", null: false, enum_type: "account_status"
     t.index ["asso_id"], name: "index_accounts_on_asso_id"
   end
 
