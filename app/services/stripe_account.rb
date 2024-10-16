@@ -10,7 +10,7 @@ class StripeAccount
   end
 
   def default_url_options
-    Rails.env.production? ? { host: 'https://appmynewproject-8b21a82c26ce.herokuapp.com' } : { host: 'localhost:3000' }
+    Rails.env.production? ? { host: 'https://www.goodify.fr' } : { host: 'localhost:3000' }
   end
 
   def create_account
