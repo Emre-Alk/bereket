@@ -1,11 +1,20 @@
-<div>
-  <h1>Landing page here</h1><br>
+<div class="px-5">
+  <div data-controller="typewriter">
+    <span data-typewriter-target="text" class="inline-block">landing page here</span>
+
+    <span class="inline-block align-middle text-center bg-green-300 rounded-full p-2"  data-typewriter-target="logo" >
+      <%= svg_tag('g', class:"text-black size-6") %>
+    </span>
+  </div>
+
+
+  <!--
   <h2>Bienvenue</h2>
   <p>Ce projet a pour but d'être un outils indispensable aux associations ainsi qu'à leurs donateurs</p>
   <p>Nous croyons très fort que tout le monde peut être mieux encourager à soutenir nos associations</p>
   <p>Ceci en rassemblant les associations en un seul endroit, en fluidifiant la donation et en récompensant le donateur</p>
   <p>Découvrer une expérience nouvelle avec 'DoGood' notre plateforme bientôt disponible</p>
-
+  -->
   <p>user sign in ?<%= user_signed_in? %></p>
   <p>
     <%= link_to  "sign out",  destroy_user_session_path, data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"}%>
@@ -15,4 +24,34 @@
   </p>
 
   <p><%= link_to "edit", edit_user_registration_path(current_user) unless !current_user %></p>
+</div>
+
+<div class="fixed bottom-0 inset-x-0 w-full px-5 py-10 rounded-t-3xl flex flex-col items-center justify-center space-y-5 bg-black">
+  <!--
+  later to remove link_to and add JS to open pop-up form
+  -->
+
+  <% if user_signed_in? %>
+    <%= link_to new_user_session_path, class:'w-full py-2 rounded-lg flex justify-center items-center space-x-4 text-lg tracking-wide bg-white text-black' do %>
+      <%= icon('fa-solid', 'circle-user') %>
+      <p>Home</p>
+    <% end %>
+
+    <%= link_to destroy_user_session_path, data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"}, class:'w-full py-2 rounded-lg flex justify-center items-center space-x-4 text-lg tracking-wide border-2 border-white bg-black text-white' do %>
+      <%= icon('fa-solid', 'arrow-right-from-bracket') %>
+      <p>Se déconnecter</p>
+    <% end %>
+
+  <% else %>
+    <%= link_to new_user_registration_path, class:'w-full py-2 rounded-lg flex justify-center items-center space-x-4 text-lg tracking-wide bg-white text-black' do %>
+      <%= icon('fa-solid', 'envelope') %>
+      <p>S'enregistrer avec un email</p>
+    <% end %>
+
+    <%= link_to new_user_session_path, class:'w-full py-2 rounded-lg flex justify-center items-center space-x-4 text-lg tracking-wide border-2 border-white bg-black text-white' do %>
+      <%= icon('fa-solid', 'user') %>
+      <p>Se connecter</p>
+    <% end %>
+  <% end %>
+
 </div>
