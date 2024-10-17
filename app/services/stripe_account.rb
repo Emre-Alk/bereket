@@ -37,7 +37,7 @@ class StripeAccount
         name: account.asso.name,
         mcc: '8661',
         support_email: account.asso.email,
-        url: place_url(account.asso.places.first),
+        url: Rails.env.production? ? place_url(account.asso.places.first) : "https://www.goodify.fr#{place_path(account.asso.places.first)}",
         product_description: 'activités religieuses, spirituelles ou philosophiques',
         support_address: {
           line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
