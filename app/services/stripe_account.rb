@@ -21,8 +21,8 @@ class StripeAccount
       # create account either by 'controller' or by 'type'. They are mutually exclusive.
       controller: {
         stripe_dashboard: { type: 'none' },
-        fees: { payer: 'account' },
-        losses: { payments: 'stripe' },
+        fees: { payer: 'application' },
+        losses: { payments: 'application' },
         requirement_collection: 'application'
       },
       country: 'FR',
