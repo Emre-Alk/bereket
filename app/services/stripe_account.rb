@@ -23,7 +23,7 @@ class StripeAccount
         stripe_dashboard: { type: 'none' },
         fees: { payer: 'account' },
         losses: { payments: 'stripe' },
-        requirement_collection: 'stripe'
+        requirement_collection: 'application'
       },
       country: 'FR',
       email: account.asso.email,
