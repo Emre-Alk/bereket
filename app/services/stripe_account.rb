@@ -20,9 +20,16 @@ class StripeAccount
       # create account either by 'controller' or by 'type'. They are mutually exclusive.
       # type: 'custom',
       controller: {
-        fees: { payer: 'account' },
-        losses: { payments: 'stripe' },
-        requirement_collection: 'stripe',
+        # controller params V1 => works
+        # fees: { payer: 'account' },
+        # losses: { payments: 'stripe' },
+        # requirement_collection: 'stripe',
+        # stripe_dashboard: { type: 'none' }
+        # controller params V2 => ...
+        losses: { payments: 'application' },
+        fees: { payer: 'application' },
+        # who collect infos when new requirements are requested (if 'app', then all other must be 'app' also)
+        requirement_collection: 'application',
         stripe_dashboard: { type: 'none' }
       },
       country: 'FR',
