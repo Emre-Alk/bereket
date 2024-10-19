@@ -10,6 +10,15 @@ class Assos::AccountsController < AssosController
     @account = current_user.asso.account
   end
 
+  def account_token
+    respond_to do |format|
+      format.json do
+        # render json: { publishableKey: ENV['STRIPE_PUBLISHABLE_KEY'] }
+        render json: { publishableKey: ENV["STRIPE_PUBLIC_KEY_LIVE"] }
+      end
+    end
+  end
+
   def create
     # this is used to create a stripe connected account to an asso user
     # this action will be hit by a post request from a form submit within a button

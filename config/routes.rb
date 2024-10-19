@@ -31,7 +31,11 @@ Rails.application.routes.draw do
   namespace :assos do
     resources :places, only: %i[index show new create destroy]
     resource :signature, only: %i[new create]
-    resource :account, only: %i[create show]
+    resource :account, only: %i[create show] do
+      member do
+        get '/stripe', to: 'accounts#account_token' # to retrieve public key client side for stripe js
+      end
+    end
     resource :payout, only: %i[new create]
     # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
@@ -66,8 +70,5 @@ Rails.application.routes.draw do
   # to collect feedback from donators after each donation paiement
   resources :reviews, only: %i[create]
 
-  # ======== donations ========
-  # create a donation between a donator and a place
-  # resource :checkout, only: %i[create show]
-  get 'checkout_test', to: 'checkouts#test'
+
 end

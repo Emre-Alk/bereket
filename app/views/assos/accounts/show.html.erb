@@ -17,6 +17,9 @@
 
         <%= form_with(model: @account, url: "/assos/account", data: { turbo: false, controller: "stripe", action: 'submit->stripe#token'}, method: "POST") do |f| %>
           <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
+          <%= f.hidden_field :name, value: current_user.asso.name %>
+          <%= f.hidden_field :line1, value: "#{current_user.asso.places.first.street_no} #{current_user.asso.places.first.address}" %>
+          <%= f.hidden_field :city, value: current_user.asso.places.first.city %>
           <%= f.submit 'Activer mon portefeuille', data: { toggle_button_target: 'button' }, disabled: true, class: "disabled:opacity-50 px-3 py-2 bg-black rounded-lg text-white" %>
         <% end %>
       </div>
