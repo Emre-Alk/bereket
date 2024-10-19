@@ -17,13 +17,13 @@ class StripeAccount
     return unless account.stripe_id.nil?
 
     stripe_account = Stripe::Account.create(
-      # type: 'custom',
       # create account either by 'controller' or by 'type'. They are mutually exclusive.
+      # type: 'custom',
       controller: {
-        stripe_dashboard: { type: 'none' },
-        fees: { payer: 'application' },
-        losses: { payments: 'application' },
-        requirement_collection: 'application'
+        fees: { payer: 'account' },
+        losses: { payments: 'stripe' },
+        requirement_collection: 'stripe',
+        stripe_dashboard: { type: 'none' }
       },
       country: 'FR',
       email: account.asso.email,
@@ -35,7 +35,8 @@ class StripeAccount
       business_profile: {
         # industry: 'membership_organizations__religious_organizations', # not in here
         name: account.asso.name,
-        mcc: '8661',
+        mcc: '8661', # 'religious_organization'
+        # mcc: '8398', # 'charitable_and_social_service_organizations_fundraising'
         support_email: account.asso.email,
         url: Rails.env.production? ? place_url(account.asso.places.first) : "https://www.goodify.fr#{place_path(account.asso.places.first)}",
         product_description: 'activités religieuses, spirituelles ou philosophiques',
