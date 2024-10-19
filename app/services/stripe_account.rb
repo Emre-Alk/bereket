@@ -13,8 +13,34 @@ class StripeAccount
     Rails.env.production? ? { host: 'https://www.goodify.fr' } : { host: 'localhost:3000' }
   end
 
+  def create_account_token
+    Stripe::Token.create({
+      account: {
+        business_type: 'non_profit',
+        tos_shown_and_accepted: true
+      }
+    })
+  end
+
   def create_account
     return unless account.stripe_id.nil?
+
+    account_token = Stripe::Token.create({
+      account: {
+        business_type: 'non_profit',
+        company: {
+          name: account.asso.name,
+          structure: 'incorporated_non_profit',
+          address: {
+            line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
+            postal_code: '69001', # account.asso.places.first.zip_code => need to be valid type
+            city: account.asso.places.first.city,
+            country: 'FR' # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
+          }
+        },
+        tos_shown_and_accepted: true
+      }
+    })
 
     stripe_account = Stripe::Account.create(
       # create account either by 'controller' or by 'type'. They are mutually exclusive.
@@ -38,7 +64,7 @@ class StripeAccount
         card_payments: { requested: true },
         transfers: { requested: true }
       },
-      business_type: 'non_profit',
+      # business_type: 'non_profit', # already passed with token
       business_profile: {
         # industry: 'membership_organizations__religious_organizations', # not in here
         name: account.asso.name,
@@ -54,16 +80,16 @@ class StripeAccount
           postal_code: '69001' # account.asso.places.first.zip_code => need to be valid type
         }
       },
-      company: {
-        name: account.asso.name,
-        structure: 'incorporated_non_profit',
-        address: {
-          line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
-          postal_code: '69001', # account.asso.places.first.zip_code => need to be valid type
-          city: account.asso.places.first.city,
-          country: 'FR' # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
-        }
-      },
+      # company: { # already passed with token
+      #   name: account.asso.name,
+      #   structure: 'incorporated_non_profit',
+      #   address: {
+      #     line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
+      #     postal_code: '69001', # account.asso.places.first.zip_code => need to be valid type
+      #     city: account.asso.places.first.city,
+      #     country: 'FR' # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
+      #   }
+      # },
       settings: {
         payouts: {
           schedule: {
@@ -72,7 +98,8 @@ class StripeAccount
           # statement_descriptor: "DoGood - #{account.asso.name}"
           statement_descriptor: "DoGood service"
         }
-      }
+      },
+      account_token: account_token.id
       # default_currency: "eur",
     )
 

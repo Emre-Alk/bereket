@@ -23,6 +23,7 @@ class Assos::AccountsController < AssosController
     # create a stripe account service instance:
     # first, to make an API call to create connected account for this asso
     service = StripeAccount.new(@account)
+
     service.create_account
 
     # then, to generate an onboarding flow for this connected account (necessary to enable payouts)
