@@ -152,22 +152,16 @@ class HandleEventJob < ApplicationJob
   def handle_account_updated(stripe_event)
     stripe_account = stripe_event.data.object
     account = Account.find_by(stripe_id: stripe_account.id)
-    deadline = Time.at(stripe_account.requirements.current_deadline).to_datetime
 
-    puts '✅✅✅✅✅✅✅'
     if !stripe_account.requirements.eventually_due.empty? # if eventually_due is not empty
       requirements = 'eventually'
     elsif !stripe_account.requirements.currently_due.empty? # if currently_due is not empty
       requirements = 'currently'
-      stripe_deadline = deadline
     elsif !stripe_account.requirements.past_due.empty? # if past_due is not empty
       requirements = 'past'
-      stripe_deadline = deadline
     else
       requirements = 'clear'
     end
-
-    status = 'disabled' unless stripe_account.requirements.disabled_reason.empty?
 
     account.update!(
       charges_enabled: stripe_account.charges_enabled,
@@ -175,11 +169,9 @@ class HandleEventJob < ApplicationJob
       external_bank_account_id: stripe_account.external_accounts.data.first.id,
       last_four: stripe_account.external_accounts.data.first.last4,
       requirements:,
-      stripe_deadline:,
-      status:,
+      stripe_deadline: stripe_account.requirements.current_deadline ? Time.at(stripe_account.requirements.current_deadline).to_datetime : nil,
+      status: stripe_account.requirements.disabled_reason ? 'disabled' : 'active'
     )
-
-    puts '✅✅✅✅✅✅✅'
 
     # stripe_deadline = Time.at(stripe_account.requirements.current_deadline).to_datetime
     # # if eventually_due is not empty
