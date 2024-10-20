@@ -99,7 +99,7 @@ class StripeAccount
           statement_descriptor: "DoGood service"
         }
       },
-      account_token:,
+      account_token: account_token,
       # default_currency: "eur",
     )
 
