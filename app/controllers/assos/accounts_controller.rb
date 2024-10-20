@@ -33,6 +33,9 @@ class Assos::AccountsController < AssosController
     service = StripeAccount.new(@account)
 
     account_token = set_account_params[:account_token]
+    puts "✅✅✅✅✅✅✅✅✅✅"
+    puts "#{account_token}"
+    puts "✅✅✅✅✅✅✅✅✅✅"
 
     service.create_account(account_token)
 

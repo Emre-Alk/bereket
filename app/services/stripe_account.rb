@@ -24,23 +24,9 @@ class StripeAccount
 
   def create_account(account_token)
     return unless account.stripe_id.nil?
-
-    # account_token = Stripe::Token.create({
-    #   account: {
-    #     business_type: 'non_profit',
-    #     company: {
-    #       name: account.asso.name,
-    #       structure: 'incorporated_non_profit',
-    #       address: {
-    #         line1: "#{account.asso.places.first.street_no} #{account.asso.places.first.address}",
-    #         postal_code: '69001', # account.asso.places.first.zip_code => need to be valid type
-    #         city: account.asso.places.first.city,
-    #         country: 'FR' # account.asso.places.first.country => a method to use 2-letters standard (ISO 3166-1 alpha-2).
-    #       }
-    #     },
-    #     tos_shown_and_accepted: true
-    #   }
-    # })
+    puts '🟪🟪🟪🟪🟪🟪🟪🟪🟪'
+    puts "#{account_token}"
+    puts '🟪🟪🟪🟪🟪🟪🟪🟪🟪'
 
     stripe_account = Stripe::Account.create(
       # create account either by 'controller' or by 'type'. They are mutually exclusive.
