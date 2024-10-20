@@ -152,25 +152,46 @@ class HandleEventJob < ApplicationJob
   def handle_account_updated(stripe_event)
     stripe_account = stripe_event.data.object
     account = Account.find_by(stripe_id: stripe_account.id)
+    deadline = Time.at(stripe_account.requirements.current_deadline).to_datetime
+
+    if !stripe_account.requirements.eventually_due.empty? # if eventually_due is not empty
+      requirements = 'eventually'
+    elsif !stripe_account.requirements.currently_due.empty? # if currently_due is not empty
+      requirements = 'currently'
+      stripe_deadline = deadline
+    elsif !stripe_account.requirements.past_due.empty? # if past_due is not empty
+      requirements = 'past'
+      stripe_deadline = deadline
+    else
+      requirements = 'clear'
+    end
+
+    if !stripe_account.requirements.disabled_reason.empty? # if account disabled
+      status = 'disabled'
+    end
+
     account.update!(
       charges_enabled: stripe_account.charges_enabled,
       payouts_enabled: stripe_account.payouts_enabled,
       external_bank_account_id: stripe_account.external_accounts.data.first.id,
-      last_four: stripe_account.external_accounts.data.first.last4
+      last_four: stripe_account.external_accounts.data.first.last4,
+      requirements:,
+      stripe_deadline:,
+      status:,
     )
 
-    stripe_deadline = Time.at(stripe_account.requirements.current_deadline).to_datetime
-    # if eventually_due is not empty
-    account.update!(requirements: 'eventually') unless stripe_account.requirements.eventually_due.empty?
+    # stripe_deadline = Time.at(stripe_account.requirements.current_deadline).to_datetime
+    # # if eventually_due is not empty
+    # account.update!(requirements: 'eventually') unless stripe_account.requirements.eventually_due.empty?
 
-    # if currently_due is not empty
-    account.update!(requirements: 'currently', stripe_deadline:) unless stripe_account.requirements.currently_due.empty?
+    # # if currently_due is not empty
+    # account.update!(requirements: 'currently', stripe_deadline:) unless stripe_account.requirements.currently_due.empty?
 
-    # if past_due is not empty
-    account.update!(requirements: 'past', stripe_deadline:) unless stripe_account.requirements.past_due.empty?
+    # # if past_due is not empty
+    # account.update!(requirements: 'past', stripe_deadline:) unless stripe_account.requirements.past_due.empty?
 
-    # if account disabled
-    account.update!(status: 'disabled') unless stripe_account.requirements.disabled_reason.empty?
+    # # if account disabled
+    # account.update!(status: 'disabled') unless stripe_account.requirements.disabled_reason.empty?
   end
 
   def handle_customer_created(stripe_event)

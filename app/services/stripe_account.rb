@@ -24,9 +24,6 @@ class StripeAccount
 
   def create_account(account_token)
     return unless account.stripe_id.nil?
-    puts '🟪🟪🟪🟪🟪🟪🟪🟪🟪'
-    puts "#{account_token}"
-    puts '🟪🟪🟪🟪🟪🟪🟪🟪🟪'
 
     stripe_account = Stripe::Account.create(
       # create account either by 'controller' or by 'type'. They are mutually exclusive.
