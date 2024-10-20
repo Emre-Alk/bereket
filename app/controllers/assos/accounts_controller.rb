@@ -13,7 +13,7 @@ class Assos::AccountsController < AssosController
   def account_token
     respond_to do |format|
       format.json do
-        render json: { publishableKey: Rails.env.production? ? ENV["STRIPE_PUBLIC_KEY_LIVE"] : ENV["STRIPE_PUBLIC_KEY"] }
+        render json: { publishableKey: Rails.env.production? ? "pk_live_51OtFSuGd9wN7UfIMLeZwm9WJrLGfIpOxlyBRX8b9at8GXa5dJfZbufP21jXMrbiXw7EAis9NKUMXGJbOkEPaGDhY00a8CPrQen" : ENV["STRIPE_PUBLIC_KEY"] }
       end
     end
   end
