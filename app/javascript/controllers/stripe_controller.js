@@ -4,7 +4,7 @@ import {loadStripe} from '@stripe/stripe-js'
 
 // Connects to data-controller="stripe"
 export default class extends Controller {
-  static targets = ['form']
+  static targets = ['form', 'submit']
 
   async connect() {
 
@@ -15,6 +15,14 @@ export default class extends Controller {
 
     async function handleForm(event) {
       event.preventDefault()
+
+      const submitBtn = document.getElementById('submitBtn')
+      if (submitBtn) {
+        console.log('text:', submitBtn.children[0])
+        submitBtn.children[0].remove()
+        const spinner = document.getElementById('spinner')
+        spinner.classList.toggle('hidden')
+      }
 
       const form = new FormData(myForm)
 
