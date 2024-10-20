@@ -13,8 +13,7 @@ class Assos::AccountsController < AssosController
   def account_token
     respond_to do |format|
       format.json do
-        # render json: { publishableKey: ENV['STRIPE_PUBLISHABLE_KEY'] }
-        render json: { publishableKey: ENV["STRIPE_PUBLIC_KEY_LIVE"] }
+        render json: { publishableKey: Rails.env.production? ? ENV["STRIPE_PUBLIC_KEY_LIVE"] : ENV["STRIPE_PUBLIC_KEY"] }
       end
     end
   end
@@ -33,9 +32,20 @@ class Assos::AccountsController < AssosController
     # first, to make an API call to create connected account for this asso
     service = StripeAccount.new(@account)
 
-    service.create_account
+    account_token = set_account_params[:account_token]
+    puts '🟪🟪🟪🟪🟪🟪🟪'
+    puts "#{account_token}"
+    puts '🟪🟪🟪🟪🟪🟪🟪'
+
+    service.create_account(account_token)
 
     # then, to generate an onboarding flow for this connected account (necessary to enable payouts)
     redirect_to service.onboarding_url, allow_other_host: true
+  end
+
+  private
+
+  def set_account_params
+    params.require(:account).permit(:account_token)
   end
 end

@@ -22,7 +22,7 @@ class StripeAccount
     })
   end
 
-  def create_account
+  def create_account(account_token)
     return unless account.stripe_id.nil?
 
     # account_token = Stripe::Token.create({
@@ -99,7 +99,7 @@ class StripeAccount
           statement_descriptor: "DoGood service"
         }
       },
-      account_token: account_token.id
+      account_token:,
       # default_currency: "eur",
     )
 
