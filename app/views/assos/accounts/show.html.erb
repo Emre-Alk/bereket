@@ -11,33 +11,7 @@
         Votre portefeuille monétaire n'est pas actif.
       </p>
 
-      <div data-controller="toggle-button" class="space-y-4">
-        <input data-action="toggle-button#toggle" class="focus:" type="checkbox" id="tos">
-        <label for="tos">J'accepte <a href="#" class="text-blue-600 visited:text-purple-800">les Conditions Générales d'Utilisation</a> ainsi que les <a href="https://stripe.com/connect-account/legal" target="_blanck" class="text-blue-600 visited:text-purple-800">Conditions d'Utilisation des Comptes Connectés Stripe</a>.</label>
-
-        <!--
-        <%= form_with( model: @account, data: {turbo: false, controller: "stripe", stripe_target: 'form'}) do |f| %>
-          <%= f.hidden_field :token_account %>
-          <%= f.hidden_field :name, value: current_user.asso.name %>
-          <%= f.hidden_field :line1, value: "#{current_user.asso.places.first.street_no} #{current_user.asso.places.first.address}" %>
-          <%= f.hidden_field :city, value: current_user.asso.places.first.city %>
-          <%= f.submit 'Activer mon portefeuille', data: { toggle_button_target: 'button' }, disabled: true, class: "disabled:opacity-50 px-3 py-2 bg-black rounded-lg text-white" %>
-        <% end %>
-        -->
-
-        <form action="/assos/account" method="POST" data-turbo="false" data-controller="stripe" data-stripe-target="form">
-          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-          <input type="hidden" name="name" value="<%= current_user.asso.name %>">
-          <input type="hidden" name="line1" value="<%= "#{current_user.asso.places.first.street_no} #{current_user.asso.places.first.address}" %>">
-          <input type="hidden" name="city" value="<%= current_user.asso.places.first.city %>">
-          <input type="hidden" name="postal_code" value="69001">
-          <input type="hidden" name="country" value="FR">
-          <input type="hidden" name="structure" value="incorporated_non_profit">
-
-          <input type="hidden" name="account[account_token]" id="token_account">
-          <input type="submit" value="Activer mon portefeuille" data-toggle-button-target="button" disabled class="disabled:opacity-50 px-3 py-2 bg-black rounded-lg text-white">
-        </form>
-      </div>
+      <%= render partial:'form_onboarding', locals: { action: 'Activer mon portefeuille' } %>
 
     </div>
 
@@ -71,38 +45,51 @@
 
     </div>
 
-    <% if @account.stripe_id.nil? || !@account.charges_enabled? || !@account.payouts_enabled? || @account.external_bank_account_id.nil? %>
+    <% if @account.stripe_id && @account.charges_enabled? && @account.payouts_enabled? && @account.external_bank_account_id.present? %>
+
+      <div class="py-4">
+        <form action="/assos/account" method="POST" data-turbo="false" data-controller="stripe" data-stripe-target="form">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <input type="hidden" name="name" value="<%= current_user.asso.name %>">
+          <input type="hidden" name="line1" value="<%= "#{current_user.asso.places.first.street_no} #{current_user.asso.places.first.address}" %>">
+          <input type="hidden" name="city" value="<%= current_user.asso.places.first.city %>">
+          <input type="hidden" name="postal_code" value="69001">
+          <input type="hidden" name="country" value="FR">
+          <input type="hidden" name="structure" value="incorporated_non_profit">
+
+          <input type="hidden" name="account[account_token]" id="token_account">
+          <input type="submit" value="Editer mon portefeuille" class="px-3 py-2 bg-black rounded-lg text-white">
+        </form>
+      </div>
+
+    <% elsif @account.requirements == 'currently' %>
+
+      <div class="flex flex-col justify-center items-start gap-y-4 sm:flex-row sm:items-center sm:justify-between pt-6">
+
+        <p>Des documents supplémentaires sont nécessaires pour éviter le blocage de votre portefeuille avant le <%= @account.stripe_deadline.strftime('%d/%m/%Y') %></p>
+
+        <%= render partial:'form_onboarding', locals: { action: 'Mettre à jour mon portefeuille' } %>
+
+      </div>
+
+    <% else %>
+
       <div class="flex flex-col justify-center items-start gap-y-4 sm:flex-row sm:items-center sm:justify-between pt-6">
         <p>
           Votre portefeuille monétaire est incomplet.
         </p>
-        <div>
-          <%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
-            <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
-            <%= f.submit 'Finaliser mon portefeuille', class: "px-3 py-2 bg-black rounded-lg text-white" %>
-          <% end %>
-        </div>
-      </div>
-
-    <% elsif @account && @account.charges_enabled? && @account.payouts_enabled? && !@account.external_bank_account_id.nil? %>
-
-      <div class="flex flex-row items-center justify-center pt-6">
-        <%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
-          <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
-          <%= f.submit 'Editer mon portefeuille', class: "px-3 py-2 bg-black rounded-lg text-white" %>
-        <% end %>
-
-        <!--form to have a loading svg while submitting form
-
-        <form action="/assos/account" method="POST" data-turbo="false">
-          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-          <button type="submit" class="px-3 py-2 bg-black rounded-lg text-white">
-            <%= icon("fa-solid", "circle-notch", class: "animate-spin", style:"color: white") %>
-          </button>
-        </form>
-         -->
+        <!--
+          <div>
+            <%= form_with(model: @account, url: "/assos/account", data: {turbo: false}, method: "POST") do |f| %>
+              <% f.hidden_field  :authenticity_token, value: :form_authenticity_token %>
+              <%= f.submit 'Finaliser mon portefeuille', class: "px-3 py-2 bg-black rounded-lg text-white" %>
+            <% end %>
+          </div>
+        -->
+        <%= render partial:'form_onboarding', locals: { action: 'Finaliser mon portefeuille' } %>
 
       </div>
+
     <% end %>
 
   <% end %>
