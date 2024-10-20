@@ -154,6 +154,7 @@ class HandleEventJob < ApplicationJob
     account = Account.find_by(stripe_id: stripe_account.id)
     deadline = Time.at(stripe_account.requirements.current_deadline).to_datetime
 
+    puts '✅✅✅✅✅✅✅'
     if !stripe_account.requirements.eventually_due.empty? # if eventually_due is not empty
       requirements = 'eventually'
     elsif !stripe_account.requirements.currently_due.empty? # if currently_due is not empty
@@ -166,9 +167,7 @@ class HandleEventJob < ApplicationJob
       requirements = 'clear'
     end
 
-    if !stripe_account.requirements.disabled_reason.empty? # if account disabled
-      status = 'disabled'
-    end
+    status = 'disabled' unless stripe_account.requirements.disabled_reason.empty?
 
     account.update!(
       charges_enabled: stripe_account.charges_enabled,
@@ -179,6 +178,8 @@ class HandleEventJob < ApplicationJob
       stripe_deadline:,
       status:,
     )
+
+    puts '✅✅✅✅✅✅✅'
 
     # stripe_deadline = Time.at(stripe_account.requirements.current_deadline).to_datetime
     # # if eventually_due is not empty
