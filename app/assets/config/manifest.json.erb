@@ -1,9 +1,9 @@
 {
   "name": "Goodify",
-  "start_url": "../users/sign_in",
+  "start_url": "https://goodify.fr",
   "background_color": "black",
   "description": "Goodify c'est une seule app pour faire vos dons, les centraliser et gérer vos déductions d'impôts",
-  "display": "standalone",
+  "display": "fullscreen",
   "icons": [
     <% files = Dir.entries(Rails.root.join("app/assets/images/icons/")).select {|f| !File.directory? f} %>
     <% files.each_with_index do |file, index| %>
