@@ -21,12 +21,12 @@
   </head>
 
   <body class="bg-neutral-100 roboto-regular">
-    <p class="notice fixed top-0 z-50"><%= notice %></p>
-    <p class="alert fixed top-0 z-50"><%= alert %></p>
+    <p class="notice absolute top-0 z-50"><%= notice %></p>
+    <p class="alert absolute top-0 z-50"><%= alert %></p>
     <!--
     comment render flash
-    -->
     <%= render "shared/flash_msg" %>
+    -->
 
     <main class="my-5">
       <%= yield %>
