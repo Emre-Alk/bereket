@@ -44,7 +44,6 @@ export default class extends Controller {
 
 
       if (accountToken.token) {
-        console.log('token', accountToken.token.id);
 
         const field = document.getElementById('token_account')
         field.value = accountToken.token.id
