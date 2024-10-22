@@ -18,7 +18,6 @@ export default class extends Controller {
 
       const submitBtn = document.getElementById('submitBtn')
       if (submitBtn) {
-        console.log('text:', submitBtn.children[0])
         submitBtn.children[0].remove()
         const spinner = document.getElementById('spinner')
         spinner.classList.toggle('hidden')
