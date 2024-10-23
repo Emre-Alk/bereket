@@ -31,7 +31,7 @@ class AssosController < ApplicationController
     # ===== top donateurs ===== end
 
     # ===== last donations (plus recent au plus ancien) ===== start
-    @sorted_donations = @donations.order(occured_on: :desc)
+    @sorted_donations = @donations.order(created_at: :desc)
     # ===== last donations (plus recent au plus ancien) ===== end
 
     # ===== revenue of the current month ===== start

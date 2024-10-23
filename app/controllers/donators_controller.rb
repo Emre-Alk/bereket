@@ -19,7 +19,7 @@ class DonatorsController < ApplicationController
     @total_discount = @total * 0.66
     @total_net = @total - @total_discount
     # --- ses 10 derniers dons ---
-    @sorted_donations = @donations.order(occured_on: :desc)
+    @sorted_donations = @donations.order(created_at: :desc)
     # --- ses favoris ---
     @favorites = @donator.favorites
   end

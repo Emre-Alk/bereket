@@ -9,7 +9,7 @@ class DonationsController < ApplicationController
     # @donations = user.donations
     if current_user.donator?
       @donator = Donator.find(params[:donator_id])
-      @donations = @donator.donations
+      @donations = @donator.donations.order(created_at: :desc)
     elsif current_user.asso?
       asso = Asso.find(params[:asso_id])
       # we need to retrieve all donations for an asso collected via all its places
@@ -28,7 +28,7 @@ class DonationsController < ApplicationController
       # writing .includes(:place, :asso) like that, results in two separate joins (which is a solution):
       # join 'donation' to 'place'
       # join 'donation' to 'asso' (which give error because it requires a direct association)
-      @donations = Donation.includes(place: :asso).where(places: { asso_id: asso.id })
+      @donations = Donation.includes(place: :asso).where(places: { asso_id: asso.id }).order(created_at: :desc)
     else
       render plain: "role not identified"
     end
