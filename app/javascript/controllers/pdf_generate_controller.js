@@ -36,6 +36,8 @@ export default class extends Controller {
       .then(response => {
         console.log('response cerfa', response)
         if (response.ok) {
+          console.log(response.url);
+
           let status = 'loading'
           this.loadAnimation(status)
 
@@ -53,13 +55,15 @@ export default class extends Controller {
     const spin = document.querySelector(`.spinner-${this.donIdValue}`)
 
     if (status === 'loading') {
-      this.btnTarget.classList.toggle('hidden')
+      this.btnTarget.children[0].classList.toggle('hidden')
       spin.classList.toggle('hidden')
+      spin.classList.toggle('flex')
     } else {
       setTimeout(() => {
         // code executes sec before pfd opening so i set a timeout to cope with it
         spin.classList.toggle('hidden')
-        this.btnTarget.classList.toggle('hidden')
+        spin.classList.toggle('flex')
+        this.btnTarget.children[0].classList.toggle('hidden')
       }, 1000)
     }
   }

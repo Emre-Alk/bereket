@@ -1,45 +1,17 @@
 <%# modal qr code %>
-<div id="modal" data-controller="qrcode-modal" class="fixed z-50 bg-neutral-100 flex justify-center items-center inset-x-0 h-screen -bottom-full transition transform delay-0 duration-500 ease-in-out">
-  <button class="absolute top-7 left-7" data-action="qrcode-modal#toggle">
-    <%= svg_tag('cross_icon') %>
-  </button>
-
-  <div class="w-4/5 h-fit bg-neutral-100 flex flex-col items-center justify-center gap-y-3  ">
-    <div class="flex flex-col items-center justify-center w-full gap-y-8 pb-8 pt-10 rounded-3xl bg-white">
-      <%# qr code %>
-      <%= qr_generate(@place.qr_code, class:'size-48') %>
-      <%# place name upcase %>
-      <h1 class="text-xl font-medium tracking-wide align-bottom"><%= @place.name.split(' ').map(&:upcase).join(' ') %></h1>
-    </div>
-
-    <div data-controller="share clipboard" class="w-full flex justify-between items-center gap-x-2">
-      <%# share link  %>
-      <button class="flex flex-col items-center justify-center w-1/2 rounded-lg py-2 bg-white"
-              data-action="share#share"
-              data-share-payload-param='{"url": "<%= @place.qr_code %>", "place":"<%= @place.name.split(' ').map(&:capitalize).join(' ') %>"}'>
-        <%= svg_tag('share') %>
-        <p class="text-sm tracking-wide">Partager</p>
-      </button>
-
-      <%# copy link  %>
-      <button class="flex flex-col items-center justify-center w-1/2 rounded-lg py-2 bg-white"
-              value="<%= @place.qr_code %>"
-              data-action="clipboard#copy"
-              data-clipboard-target="source">
-
-        <%= svg_tag('link', class: "size-6", data: {clipboard_target:"defaultIcon"}) %>
-        <%= svg_tag('check', class:'hidden size-6 stroke-2 stroke-black', data: {clipboard_target:"successIcon"}) %>
-        <p class="text-sm tracking-wide">Copier le lien</p>
-      </button>
-
-    </div>
-
-  </div>
-</div>
+<%= render partial:'qrcode', locals: { place: @place } %>
 
 <%# en tete %>
 <div class="mb-5">
   <div class="relative flex justify-center items-center">
+    <% if user_signed_in? %>
+      <div class="absolute left-4">
+        <%= link_to :back do %>
+          <%= svg_tag('chevron-left', class:'size-6 stroke-2') %>
+        <% end %>
+      </div>
+    <% end %>
+
     <h1 class="text-lg font-medium tracking-wide"><%= @place.name.split(' ').map(&:capitalize).join(' ') %></h1>
     <span class="fa-stack fa-2xs scale-75" style="vertical-align: baseline;" >
       <%= icon('fa-solid', 'certificate', class:'fa-stack-2x', style:'color: #0471FF;') %>

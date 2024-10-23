@@ -1,18 +1,33 @@
 <% donations.first(size).each do |don|%>
-  <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
-    <div class="bg-white">
-      <% if don.place.place_image.attached? %>
-        <%= image_tag(don.place.place_image, class:'size-14 rounded-full') %>
-      <% else %>
-        <%= image_tag("default_avatar.png", class:"size-14 rounded-full") %>
-      <% end %>
+  <% if current_user.donator? %>
+    <%= link_to place_path(don.place) do %>
+      <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
+
+        <div class="bg-white">
+          <%= image_tag( don.place.place_image.attached? ? don.place.place_image : "default_avatar.png" , class:'size-14 rounded-full')  %>
+        </div>
+
+        <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+          <p><%= don.place.name %></p>
+          <p><%= number_to_currency(don.amount.to_f / 100, locale: :fr, strip_insignificant_zeros: true) %></p>
+          <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
+        </div>
+
+      </div>
+    <% end %>
+  <% else %>
+
+    <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
+      <div class="bg-white">
+        <%= image_tag( don.donator.profile_image.attached? ? don.donator.profile_image : "default_avatar.png" , class:'size-14 rounded-full') %>
+      </div>
+
+      <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+        <p><%= don.place.name %></p>
+        <p><%= number_to_currency(don.amount_net.to_f / 100, locale: :fr, strip_insignificant_zeros: true) %></p>
+        <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
+      </div>
     </div>
 
-    <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
-      <p><%= don.place.name %></p>
-      <p><%= number_to_currency(don.amount_net.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %></p>
-      <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
-    </div>
-  </div>
+  <% end %>
 <% end %>
-<!-- TODO: case when donator check donations & asso check donations -->

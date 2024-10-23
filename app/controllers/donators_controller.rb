@@ -15,7 +15,9 @@ class DonatorsController < ApplicationController
     @donations_per_place = @donations.group_by(&:place)
     # array: [[obj_placeA, somme des dons à ce lieu], [x, y], ...]
     @sum_per_place = @donations_per_place.map { |place, dons| [place, dons.sum(&:amount)] }
-    @sum_all_donations = @donations_per_place.sum { |_place, dons| dons.sum(&:amount) }
+    @total = @donations_per_place.sum { |_place, dons| dons.sum(&:amount) }
+    @total_discount = @total * 0.66
+    @total_net = @total - @total_discount
     # --- ses 10 derniers dons ---
     @sorted_donations = @donations.order(occured_on: :desc)
     # --- ses favoris ---

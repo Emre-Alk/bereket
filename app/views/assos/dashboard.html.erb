@@ -1,16 +1,13 @@
+<%= render partial: "assos/navbar", locals: { asso: @my_asso, place: @my_place, donations: @donations, top_donators: @top_donators }%>
+
+
 <div class="fixed top-0 inset-x-0 bg-neutral-100"> <!-- fixed top page start -->
   <div class="pt-4">
-    <div class="flex flex-row justify-between items-center px-5 py-2">
-      <p>ici mon logo</p>
+    <div class="flex flex-row justify-end items-center px-5 py-2">
       <!-- nav - start -->
-      <div data-controller="navbar"> <!-- stimulus ctrl to toggle button -->
-        <button data-action="click->navbar#toggle">
-          <%= icon("fa-solid", "bars", class:"fa-lg")%>
-        </button>
-        <div>
-          <%= render partial: "assos/navbar", locals: { asso: @my_asso, place: @my_place, donations: @donations, top_donators: @top_donators }%>
-        </div>
-      </div>
+      <button data-controller="navbar" data-action="click->navbar#ouvre">
+        <%= icon("fa-solid", "bars", class:"fa-lg")%>
+      </button>
       <!-- nav - end -->
     </div>
 
@@ -54,6 +51,7 @@
         <div class="flex flex-row w-full">
 
           <p class="text-base text-neutral-500 flex-auto w-fit"> Solde disponible </p>
+          <!--
           <button class="rounded-lg p-1 shadow-sm active:shadow-inner bg-neutral-100">
             <%= link_to new_assos_payout_path do %>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -61,6 +59,7 @@
               </svg>
             <% end %>
           </button>
+          -->
 
         </div>
 
