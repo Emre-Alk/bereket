@@ -38,7 +38,6 @@ Rails.application.routes.draw do
     end
     resource :payout, only: %i[new create]
     resources :donators, only: %i[index]
-    resources :donations, only: %i[index]
     # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
 
