@@ -1,0 +1,2 @@
+module Assos::DonatorsHelper
+end

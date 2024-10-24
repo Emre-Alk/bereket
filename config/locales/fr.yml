@@ -1,4 +1,4 @@
-fr-FR:
+fr:
   date:
     abbr_day_names:
     - dim
@@ -100,6 +100,31 @@ fr-FR:
       day: Jour
       month: Mois
       year: Année
+  devise:
+    confirmations:
+      send_instructions: "Des instructions pour confirmer votre compte ont été envoyées à votre adresse e-mail."
+      confirmed: "Votre compte a été confirmé avec succès."
+    failure:
+        unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+        unconfirmed: "Vous devez confirmer votre compte avant de pouvoir vous connecter."
+        locked: "Votre compte est verrouillé."
+        invalid: "Nom d'utilisateur ou mot de passe incorrect."
+        invalid_token: "Le jeton est invalide."
+        timeout: "Votre session a expiré. Veuillez vous reconnecter."
+        already_authenticated: "Vous êtes déjà connecté."
+        not_found_in_database: "Utilisateur inconnu"
+    passwords:
+      send_instructions: "Vous allez recevoir un e-mail avec les instructions pour réinitialiser votre mot de passe dans quelques minutes."
+      updated: "Votre mot de passe a été changé avec succès."
+      updated_not_active: "Votre mot de passe a été changé avec succès, mais votre compte est désactivé."
+    registrations:
+      signed_up: "Bienvenue! Vous vous êtes inscrit avec succès."
+      updated: "Votre compte a été mis à jour avec succès."
+      destroyed: "Votre compte a été supprimé avec succès."
+    sessions:
+      user:
+        signed_in: "Connexion réussie."
+        signed_out: "Déconnexion réussie."
   errors:
     format: "%{attribute} %{message}"
     messages:
@@ -120,6 +145,9 @@ fr-FR:
       model_invalid: 'Validation échouée : %{errors}'
       not_a_number: n'est pas un nombre
       not_an_integer: doit être un nombre entier
+      not_saved:
+        one: "Il y a 1 erreur :"
+        other: "Il y a %{count} erreurs :"
       odd: doit être impair
       other_than: doit être différent de %{count}
       present: doit être vide

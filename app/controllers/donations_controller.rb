@@ -2,7 +2,7 @@ class DonationsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:new]
   # skip auth (only new), apply auth by redirection inside new
   before_action :redirect_if_asso, only: [:new]
-  before_action :store_user_location!
+  before_action :store_user_location!, only: [:new]
 
   def index
     # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])

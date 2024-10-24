@@ -11,7 +11,7 @@ class AssosController < ApplicationController
     return @place = Place.new unless @my_place
 
     @donations = @my_place.donations # array of all donations instances
-    table = @donations.map { |i| [i.donator, i.amount] }
+    table = @donations.map { |i| [i.donator, i.amount_net] }
     # ===== somme des dons à date ===== start
     @sum = 0
     table.each do |e|

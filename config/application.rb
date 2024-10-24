@@ -26,6 +26,7 @@ module Bereket
 
     # Add this line to ensure :fr is an available locale
     config.i18n.available_locales = [:en, :fr]
+    config.i18n.default_locale = :fr
 
     # add this line to configure activeJob to use sidekiq as adapter (ie, scheduller)
     config.active_job.queue_adapter = :sidekiq
