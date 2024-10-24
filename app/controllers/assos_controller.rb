@@ -45,7 +45,7 @@ class AssosController < ApplicationController
     # creer un hash dont 'key' sera 1 jour du mois (ex: Thu, 27, Jun 2024), et la 'value' sera un array d'instances de dons qui auront la meme "occured_on"
     @donations_per_day_current_month = @donations_current_month.group_by { |don| don.occured_on.to_date }
     # creer un array avec jour du mois (key) en numéro de jour (ex 27) et la 'value' egale à la somme des 'ammout' des dons dans l'array de dons précédent
-    @revenue_per_day_current_month = @donations_per_day_current_month.map { |date, dons| [date.strftime('%d'), dons.sum(&:amount)] }
+    @revenue_per_day_current_month = @donations_per_day_current_month.map { |date, dons| [date.strftime('%d'), dons.sum(&:amount_net)] }
     # The &: syntax is shorthand for converting a symbol to a proc (a block of code). It is equivalent to "dons.sum { |don| don.amount }"
     # if is necessary for the case where no donation occured on a day. This would led to the absence of this day in the above revenue array.
     if @revenue_per_day_current_month.length < @current_month.to_a.length

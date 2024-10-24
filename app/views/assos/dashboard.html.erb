@@ -80,7 +80,7 @@
 
     <!-- chart - start -->
     <div>
-      <div class="roboto-thin text-slate-800 text-sm"><%= @start_month.strftime("%B") %></div>
+      <div class="roboto-thin text-slate-800 text-sm"><%= I18n.l(@start_month, format: "%B", locale: :fr).capitalize %></div>
       <div class="bg-white py-2 px-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]" data-controller="line-chart" data-line-chart-revenue-value= "<%= @revenue_per_day_current_month.to_json %>" data-line-chart-timeframe-value="<%= @array_complete_days_current_month.to_json %>">
         <div class="w-full">
           <canvas data-line-chart-target="revenueChart" id="revenueChart" aria-label="courbe" role="revenu" >
