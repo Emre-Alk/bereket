@@ -94,7 +94,7 @@ class StripeAccount
       {
         account: account.stripe_id,
         refresh_url: assos_account_url, # url for asso to go if refresh (not path because stripe will use it)
-        return_url: assos_account_url, # 'http://192.168.1.168:3000/assos/account', # # url for asso to return to (not path because stripe will use it)
+        return_url: asso_root_url, # 'http://192.168.1.168:3000/assos/account', # # url for asso to return to (not path because stripe will use it)
         type: 'account_onboarding',
         collection_options: { # collect is deprecated (obsolète. must use this now)
           fields: 'eventually_due'

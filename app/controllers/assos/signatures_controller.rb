@@ -52,9 +52,9 @@ class Assos::SignaturesController < AssosController
       #   content_type: "image/png"
       # )
 
-      flash[:success] = "Signature saved successfully."
+      flash[:success] = "Signature enregistrée avec success."
     else
-      flash[:error] = "Invalid or too large signature."
+      flash[:error] = "Signature invalide ou trop large. Veuillez réessayer."
     end
     redirect_to asso_root_path
   end

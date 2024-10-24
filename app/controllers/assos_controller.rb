@@ -61,11 +61,13 @@ class AssosController < ApplicationController
     # ===== revenue of the current month ===== end
     # ===== connected account balance (available money on the stripe account) ===== start
     @account = Account.find_by(asso: current_user.asso)
-    account_balance = StripeAccount.new(@account).account_balance
-    @balance_available = account_balance.available.first.amount
-    @money_pending = account_balance.pending.first.amount
-    @balance_future = @balance_available + @money_pending
-    # ===== connected account balance (available money on the stripe account) ===== end
+    if @account
+      account_balance = StripeAccount.new(@account).account_balance
+      @balance_available = account_balance.available.first.amount
+      @money_pending = account_balance.pending.first.amount
+      @balance_future = @balance_available + @money_pending
+      # ===== connected account balance (available money on the stripe account) ===== end
+    end
   end
 
   def new

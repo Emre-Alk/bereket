@@ -42,7 +42,7 @@ class Assos::PlacesController < AssosController
       # ----------if want Qr code in PNG--------------------
       # attach_qr_code_png(@place, @place.qr_code)
 
-      redirect_to assos_place_path(@place)
+      redirect_to asso_root_path()
     else
       render :new, status: :unprocessable_entity
     end

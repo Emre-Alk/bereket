@@ -69,4 +69,4 @@
 </nav>
 
 <%# qrcode (sits at -bottom-full) %>
-<%= render partial:'places/qrcode', locals: { place: place } %>
+<%= render partial:'places/qrcode', locals: { place: place } if place %>
