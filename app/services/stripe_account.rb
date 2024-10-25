@@ -118,4 +118,14 @@ class StripeAccount
       stripe_account: account.stripe_id
     )
   end
+
+  def transfers_lifetime
+    Stripe::Transfer.list(destination: account.stripe_id)
+  end
+
+  def transfers_span(date_begin, date_end)
+    lte = date_begin
+    Stripe::Transfer.list(destination: account.stripe_id)
+
+  end
 end

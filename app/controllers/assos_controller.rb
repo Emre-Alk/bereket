@@ -68,6 +68,10 @@ class AssosController < ApplicationController
       @balance_future = @balance_available + @money_pending
       # ===== connected account balance (available money on the stripe account) ===== end
     end
+
+    @transfers = StripeAccount.new(@account).transfers_lifetime
+    @transfers_sum = @transfers.data.sum(&:amount)
+
   end
 
   def new

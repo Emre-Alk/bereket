@@ -38,17 +38,17 @@
 
   <div class="flex flex-col pt-48 gap-y-4"> <!-- scrolled page start -->
     <!-- total - start -->
-    <div class="bg-white flex flex-col gap-y-4 divide-y justify-center items-center roboto-medium text-4xl py-2 sm:pr-4 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+    <div class="bg-white flex flex-col divide-y justify-center items-center roboto-medium text-4xl py-2 sm:pr-4 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
       <!--
         <div>
           <%= number_to_currency(@sum.to_f / 100, unit: "€", format: "%n %u") %>
         </div>
       -->
-      <div class="flex flex-col w-11/12 gap-y-4">
+      <div class="flex flex-col w-11/12 gap-y-1 mb-2">
 
         <div class="flex flex-row w-full">
 
-          <p class="text-base text-neutral-500 flex-auto w-fit"> Solde disponible </p>
+          <p class="text-base text-neutral-500 flex-auto w-fit"> Collecte <%= I18n.l(@start_month, format: "%B", locale: :fr).capitalize %> </p>
           <!--
           <button class="rounded-lg p-1 shadow-sm active:shadow-inner bg-neutral-100">
             <%= link_to new_assos_payout_path do %>
@@ -62,14 +62,14 @@
         </div>
 
         <div class="flex-auto w-fit self-center">
-          <%= number_to_currency(@balance_available.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
+          <%= number_to_currency(@transfers_sum.fdiv(100), locale: :fr, strip_insignificant_zeros: true) %>
         </div>
       </div>
 
-      <div class="flex flex-row w-11/12 gap-x-4 pt-1">
-        <p class="text-sm text-neutral-500 flex-auto w-fit flex items-end">Solde à venir </p>
-        <div class="flex-auto w-fit self-end text-lg text-right text-neutral-500">
-          <%= number_to_currency(@balance_future.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
+      <div class="flex flex-col w-11/12 gap-x-4 pt-1">
+        <p class="text-sm text-neutral-500 flex-auto flex self-start whitespace-pre w-2/3 ">Solde en transfert vers <span class="before:content-['IBAN_****']"><%= @account.last_four %></span> </p>
+        <div class="flex-auto w-1/3 self-end text-lg text-right text-neutral-500 ">
+          <%= number_to_currency(@balance_future.fdiv(100), locale: :fr, strip_insignificant_zeros: true ) %>
         </div>
       </div>
 

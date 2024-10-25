@@ -20,9 +20,20 @@ class HandleEventJob < ApplicationJob
       handle_account_updated(stripe_event)
     when 'checkout.session.completed'
       handle_checkout_session_completed(stripe_event)
+    when 'transfer.created'
+      handle_transfer_created(stripe_event)
     end
     # when 'capability.updated' # Useful if goal is to create/check financial account as external account
     # handle_capability_updated(stripe_event)
+  end
+
+  def handle_transfer_created
+    # to finish later.
+    # possible 'issue' if later change type of charge from destination to direct for instance
+    # transfer = stripe_event.data.object
+    puts '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢'
+    puts stripe_event
+    puts '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢'
   end
 
   def handle_checkout_session_completed(stripe_event)
