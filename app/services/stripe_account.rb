@@ -124,8 +124,14 @@ class StripeAccount
   end
 
   def transfers_span(date_begin, date_end)
-    lte = date_begin
-    Stripe::Transfer.list(destination: account.stripe_id)
-
+    gte = date_begin.beginning_of_day.to_i
+    lte = date_end.end_of_day.to_i
+    Stripe::Transfer.list(
+      destination: account.stripe_id,
+      created: {
+        gte:,
+        lte:
+      }
+    )
   end
 end
