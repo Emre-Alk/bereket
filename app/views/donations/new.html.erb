@@ -1,7 +1,7 @@
 
 <%# go :back or :root link %>
 <div class="fixed top-7 left-7">
-    <%= link_to :back || place_path(@place) do %>
+    <%= link_to (request.referer || place_path(@place)) do %>
       <%= svg_tag('chevron-left', class:'size-6 stroke-2') %>
     <% end %>
   <!--
