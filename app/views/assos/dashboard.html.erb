@@ -136,7 +136,9 @@
         <%= cl_image_tag(asso.signature.key) %>
       <% end %>
 
-      <%= render partial:'assos/accounts/form_onboarding', locals: { action: 'Activer mon portefeuille' } %>
+      <% if !@account %>
+        <%= render partial:'assos/accounts/form_onboarding', locals: { action: 'Activer mon portefeuille' } %>
+      <% end %>
 
     </div>
   </div>
