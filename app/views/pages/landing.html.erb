@@ -24,6 +24,7 @@
   </p>
 
   <p><%= link_to "edit", edit_user_registration_path(current_user) unless !current_user %></p>
+
 </div>
 
 <div class="fixed bottom-0 inset-x-0 w-full px-5 py-10 rounded-t-3xl flex flex-col items-center justify-center space-y-5 bg-black">
@@ -32,7 +33,7 @@
   -->
 
   <% if user_signed_in? %>
-    <%= link_to new_user_session_path, class:'w-full py-2 rounded-lg flex justify-center items-center space-x-4 text-lg tracking-wide bg-white text-black' do %>
+    <%= link_to dashboard(current_user), class:'w-full py-2 rounded-lg flex justify-center items-center space-x-4 text-lg tracking-wide bg-white text-black' do %>
       <%= icon('fa-solid', 'circle-user') %>
       <p>Home</p>
     <% end %>

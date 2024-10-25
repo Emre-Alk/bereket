@@ -61,4 +61,14 @@ module ApplicationHelper
 
     raw svg_content
   end
+
+  def dashboard(resource)
+    if resource.donator?
+      donator_root_path
+    elsif resource.asso?
+      asso_root_path
+    else
+      root_path # Fallback path to landing page if the user doesn't have a role or role is not recognized
+    end
+  end
 end

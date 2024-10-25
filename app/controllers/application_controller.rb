@@ -33,9 +33,12 @@ class ApplicationController < ActionController::Base
     @devise_mapping ||= Devise.mappings[:user]
   end
 
+  # method to custom routing after a user has signed in
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || first_time_sign(resource)
   end
+
+  protected
 
   # here i create callbacks to set authorization on user to access dedicated dashboard according their role
   # defining them in the application controller, render them available in any controller that inherits from this application controller
@@ -47,8 +50,6 @@ class ApplicationController < ActionController::Base
   def is_donator?
     redirect_to asso_root_path unless current_user.donator?
   end
-
-  protected
 
   # a callback method that i call as 'before action' in the application controller here.
   # It enables to overwrite the params permitted by devise.
