@@ -2,7 +2,7 @@ class DonationsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:new]
   # skip auth (only new), apply auth by redirection inside new
   before_action :redirect_if_asso, only: [:new]
-  before_action :store_user_location!, only: [:new]
+  # before_action :store_user_location!, only: [:new], if: :storable_location?
 
   def index
     # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])
@@ -85,10 +85,6 @@ class DonationsController < ApplicationController
       redirect_to asso_root_path
     end
   end
-
-  # def set_params_donation
-  #   params.require(:donation).permit(:amount, :occured_on)
-  # end
 
   def storable_location?
     request.get? == false && !devise_controller? && !request.xhr?
