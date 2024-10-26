@@ -1,5 +1,5 @@
 // service-worker.js
-const CACHE_NAME = 'your-app-cache-v1';
+const CACHE_NAME = 'goodify-v2';
 
 // List of assets to cache
 const ASSETS_TO_CACHE = [
