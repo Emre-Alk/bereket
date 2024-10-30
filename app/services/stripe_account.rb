@@ -79,7 +79,7 @@ class StripeAccount
             interval: 'daily'
           },
           # statement_descriptor: "DoGood - #{account.asso.name}"
-          statement_descriptor: "DoGood service"
+          statement_descriptor: "Goodify"
         }
       },
       account_token: account_token,
