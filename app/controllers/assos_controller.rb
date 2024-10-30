@@ -67,12 +67,12 @@ class AssosController < ApplicationController
       @money_pending = account_balance.pending.first.amount
       @balance_future = @balance_available + @money_pending
       # ===== connected account balance (available money on the stripe account) ===== end
-    end
 
-    @transfers_all = StripeAccount.new(@account).transfers_lifetime
-    @transfers_all_sum = @transfers_all.data.sum(&:amount)
-    @transfers_span = StripeAccount.new(@account).transfers_span(@start_month, end_month)
-    @transfers_span_sum = @transfers_span.data.sum(&:amount)
+      @transfers_all = StripeAccount.new(@account).transfers_lifetime
+      @transfers_all_sum = @transfers_all.data.sum(&:amount)
+      @transfers_span = StripeAccount.new(@account).transfers_span(@start_month, end_month)
+      @transfers_span_sum = @transfers_span.data.sum(&:amount)
+    end
 
   end
 

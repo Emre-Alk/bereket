@@ -126,7 +126,7 @@
   </div>
   <!-- scrolled page end -->
 <% elsif @my_asso && @my_place %>
-  <div class= "mt-48 w-full">
+  <div class= "w-full">
     <div class="flex flex-col justify-center items-start gap-y-8 py-4">
       <p>
         Vous devez créer un portefeuille monétaire pour recevoir et transférer des fonds.
@@ -137,7 +137,7 @@
           <%= render partial: 'assos/signatures/form_signature', locals: { asso: @my_asso } %>
         </div>
       <% else %>
-        <%= cl_image_tag(asso.signature.key) %>
+        <%= cl_image_tag(@my_asso.signature.key) %>
       <% end %>
 
       <% if !@account %>

@@ -36,7 +36,8 @@ export default class extends Controller {
               postal_code: form.get('postal_code'),
               city: form.get('city'),
               country: form.get('country')
-            }
+            },
+            tax_id: form.get('tax_id') ? form.get('tax_id') : '000000000'
           },
           tos_shown_and_accepted: true
         }
@@ -44,10 +45,8 @@ export default class extends Controller {
 
 
       if (accountToken.token) {
-
         const field = document.getElementById('token_account')
         field.value = accountToken.token.id
-
         myForm.submit()
 
       } else {

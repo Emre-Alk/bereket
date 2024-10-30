@@ -1,6 +1,9 @@
 <div data-controller="toggle-button" class="space-y-4">
-  <input data-action="toggle-button#toggle" class="focus:" type="checkbox" id="tos">
-  <label for="tos">J'accepte <a href="#" class="text-blue-600 visited:text-purple-800">les Conditions Générales d'Utilisation</a> ainsi que les <a href="https://stripe.com/connect-account/legal" target="_blanck" class="text-blue-600 visited:text-purple-800">Conditions d'Utilisation des Comptes Connectés Stripe</a>.</label>
+
+  <div>
+    <input type="checkbox" id="tos">
+    <label for="tos">J'accepte les <a href="https://stripe.com/connect-account/legal" target="_blanck" class="text-blue-600 visited:text-purple-800">Conditions d'Utilisation des Comptes Connectés Stripe</a>.</label>
+  </div>
 
   <form action="/assos/account" method="POST" data-turbo="false" data-controller="stripe" data-stripe-target="form">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -12,7 +15,42 @@
     <input type="hidden" name="structure" value="incorporated_non_profit">
 
     <input type="hidden" name="account[account_token]" id="token_account">
-    <button type="submit" data-toggle-button-target="button" id="submitBtn" disabled class="disabled:opacity-50 px-3 py-2 w-full sm:w-1/3 bg-black rounded-lg text-white">
+
+    <% if current_user.asso.code_siren.nil? %>
+    <!--
+      <div class="mb-5">
+          <input type="checkbox" id="siren_ask" class="peer/draft">
+          <label for="siren_ask">Mon association a un numéro SIREN</label>
+
+          <div class="hidden peer-checked/draft:block relative z-0 w-full mt-3 group">
+            <input type="text" name="code_siren" id="floating_siren" minlength="9" maxlength="9" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer invalid:text-red-500 invalid:focus:border-red-500 invalid:border-red-500" placeholder=" ">
+            <label for="floating_siren" class="after:content-['*'] after:ml-0.5 after:text-red-500 peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">SIREN n°</label>
+            <p class="block pt-1 text-xs italic">Le numéro SIREN est constitué de 9 chiffres. Exemple: 123456789 </p>
+          </div>
+      </div>
+    -->
+      <fieldset>
+        <legend class="text-sm/6 font-semibold text-gray-900">Numéro SIREN</legend>
+        <p class="mt-1 text-sm/6 text-gray-600">9 chiffres, attribué qu'une seule fois (au moment de l'inscription au répertoire) et supprimé au moment de la dissolution de l'association</p>
+        <div class="mt-6 space-y-6">
+
+          <div class="flex items-center gap-x-3">
+            <input required data-action="click->toggle-button#toggleRequire" id="siren_have" name="siren" type="radio" class="peer/siren h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            <label for="siren_have" class="block text-sm/6 font-medium text-gray-900">J'ai un Siren</label>
+            <input data-toggle-button-target="input" type="text" id="siren" name="tax_id" minlength="9" maxlength="9" placeholder="ex. 123456789" pattern="\d{9}" class="hidden peer-checked/siren:block ml-4 py-2.5 px-0 h-4 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer invalid:text-red-500 invalid:focus:border-red-500 invalid:border-red-500">
+          </div>
+
+          <div class="flex items-center gap-x-3">
+            <input required data-action="click->toggle-button#toggleRequire" id="siren_none" name="siren" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            <label for="siren_none" class="block text-sm/6 font-medium text-gray-900">Je n'ai pas de Siren</label>
+          </div>
+
+        </div>
+      </fieldset>
+
+    <% end %>
+
+    <button type="submit" data-toggle-button-target="button" id="submitBtn" disabled class="disabled:opacity-50 mt-6 px-3 py-2 w-full sm:w-1/3 bg-black rounded-lg text-white">
       <p><%= action %></p>
       <span id="spinner" class="hidden">
         <%= icon("fa-solid", "circle-notch", class: "animate-spin", style:"color: white") %>
