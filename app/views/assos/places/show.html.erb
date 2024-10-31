@@ -14,7 +14,7 @@
   <div>
   <p><strong>votre photo de couverture</strong></p>
     <% if @place.place_image.attached? %>
-      <%= image_tag @place.place_image %>
+      <%= cl_image_tag(@place.place_image.key)  %>
     <% else %>
       <%= image_tag("default_avatar.png", class:"size-12") %>
     <% end %>

@@ -4,7 +4,7 @@
       <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
 
         <div class="bg-white">
-          <%= image_tag( don.place.place_image.attached? ? don.place.place_image : "default_avatar.png" , class:'size-14 rounded-full')  %>
+          <%= don.place.place_image.attached? ? cl_image_tag(don.place.place_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full')  %>
         </div>
 
         <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
@@ -19,7 +19,7 @@
 
     <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
       <div class="bg-white">
-        <%= image_tag( don.donator.profile_image.attached? ? don.donator.profile_image : "default_avatar.png" , class:'size-14 rounded-full') %>
+        <%= don.donator.profile_image.attached? ? cl_image_tag(don.donator.profile_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full') %>
       </div>
 
       <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">

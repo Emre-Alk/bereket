@@ -7,14 +7,11 @@
         <div class="flex items-center gap-x-4 justify-start">
           <%# profile img of donator %>
           <% if review.donator.profile_image.attached? %>
-            <%= image_tag(review.donator.profile_image, class:"rounded-full size-12") %>
+            <%= cl_image_tag(review.donator.profile_image.key, class:"rounded-full size-12") %>
           <% else %>
             <div class="size-12 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
               <%= review.donator.first_name[0].capitalize %><%= review.donator.last_name[0].capitalize %>
             </div>
-            <!--
-            <%= image_tag("default_avatar.png", alt:"picture", class:"rounded-full size-12") %>
-            -->
           <% end %>
 
           <%# donator name and date of membership %>

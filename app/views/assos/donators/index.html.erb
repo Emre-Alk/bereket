@@ -11,7 +11,10 @@
 
       <div class="flex flex-row items-center gap-2 grow ">
         <div class="bg-white">
-            <%= image_tag( array[0].profile_image.attached? ? array[0].profile_image : "default_avatar.png" , class:'size-14 rounded-full')  %>
+          <%= array[0].profile_image.attached? ? cl_image_tag(array[0].profile_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full') %>
+          <!--
+          <%= image_tag( array[0].profile_image.attached? ? array[0].profile_image : "default_avatar.png" , class:'size-14 rounded-full')  %>
+          -->
         </div>
 
         <div class="bg-white flex flex-col justify-evenly text-sm gap-y-2 w-3/4 text-nowrap">
