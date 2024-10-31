@@ -19,7 +19,15 @@
 
     <div class="bg-white flex flex-row justify-start items-center px-1 py-2 gap-2  w-full">
       <div class="bg-white">
-        <%= don.donator.profile_image.attached? ? cl_image_tag(don.donator.profile_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full') %>
+
+        <% if don.donator.profile_image.attached? %>
+          <%= cl_image_tag(don.donator.profile_image.key, class:"rounded-full size-14") %>
+        <% else %>
+          <div class="size-14 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
+            <%= don.donator.first_name[0].capitalize %><%= don.donator.last_name[0].capitalize %>
+          </div>
+        <% end %>
+
       </div>
 
       <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">

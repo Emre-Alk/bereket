@@ -59,7 +59,7 @@
         <div>Vous n'avez pas encore ajouter de favori</div>
       <% else %>
         <% @favorites.each do |favorite| %>
-          <div class="bg-white flex flex-col justify-evenly items-center gap-y-1 w-24 h-24 p-0.5">
+          <div class="bg-white flex flex-col justify-evenly items-center gap-y-1 w-24 h-full p-0.5">
             <%= favorite.place.place_image.attached? ? cl_image_tag(favorite.place.place_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:"size-14 rounded-full") %>
             <p class="w-full text-sm truncate"><%= favorite.place.name %></p>
           </div>
