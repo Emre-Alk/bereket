@@ -1,21 +1,19 @@
 // service-worker.js
-const CACHE_NAME = 'goodify-v2';
+const CACHE_NAME = 'goodify-v1.3';
 
 // List of assets to cache
 const ASSETS_TO_CACHE = [
-  '/',                            // Main HTML
-  '/assos',                       // Main HTML file
-  '/donator',                     // Main HTML file
-  '/images/logo.png',             // Essential images
-  '/images/icon-192x192.png',     // Icons
-  '/images/icon-512x512.png',     // Icons
-  '/manifest.json',               // Manifest file
-  '/service-worker.js',
-  'scan_icon.svg',
-  '/assets/tailwind-a6e6b660ecfe4481c6ce578a28986ccd8a1b7468842897188fd96ce1b2ca3580.css',
-  '/assets/inter-font-8c3e82affb176f4bca9616b838d906343d1251adc8408efe02cf2b1e4fcf2bc4.css',
-  '/assets/application-f290d9b5e2569d77b8cedb026d0bbdf32da69a2228e1c8e666c8be271ee2327c.css',
-
+  './',
+  './assos',
+  './donator',
+  './images/logo.png',
+  './assets/images/avatar.jpeg',
+  './assets/config/manifest.json',
+  './service-worker.js',
+  './assets/images/scan_icon.svg',
+  './assets/stylesheets/application.css',
+  './assets/stylesheets/application.tailwind.css',
+  './javascript/application.js'
 ];
 
 // Install event: cache essential assets
