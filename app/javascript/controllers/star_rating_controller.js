@@ -63,8 +63,7 @@ export default class extends Controller {
     // create a new array from main array with all other star above the touched star
     const other = arrayStars.filter((star) => arrayStars.indexOf(star) > indexStar )
 
-
-    // for each star of the rating array, color it to black
+    // for each star of the rating array, color it to black ('*' means all tagsname)
     rating.forEach((star) => this.fill(star.getElementsByTagName("*")[0]))
     // for each star of the other array, remove color
     other.forEach((star) => this.unfill(star.getElementsByTagName("*")[0]))
@@ -85,13 +84,13 @@ export default class extends Controller {
 
   fill(star){
     // remove previous possible colors and color in black
-    star.classList.remove('text-gray-300', 'text-yellow-500')
+    star.classList.remove('text-gray-300', 'text-yellow-300')
     star.classList.add('text-black')
   }
 
   unfill(star){
     // remove previous possible colors and color in default
-    star.classList.remove('text-black', 'text-yellow-500')
+    star.classList.remove('text-black', 'text-yellow-300')
     star.classList.add('text-gray-300')
   }
 

@@ -5,6 +5,7 @@ export default class extends Controller {
   static targets = [ "scanBox", "scanBtn" ]
 
   fetchPlaceDonationNew(path, qrText) {
+
     const details = {
       method: 'GET',
       headers: {
@@ -15,6 +16,7 @@ export default class extends Controller {
         .getAttribute("content"),
       }
     }
+
     fetch(path, details)
     .then(response => {
       if (response.ok) {
