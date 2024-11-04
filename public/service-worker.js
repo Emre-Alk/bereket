@@ -6,8 +6,8 @@ const assetsToCache = [
   '/',
   '/assos',
   '/donator',
-  'https://www.goodify.fr/assets/application-dcd0508af0592a2634000bf6a5ef6d716a1e5a821b80820b65e79a0e0eb78889.css',
-  'https://www.goodify.fr/assets/inter-font-8c3e82affb176f4bca9616b838d906343d1251adc8408efe02cf2b1e4fcf2bc4.css',
+  // 'https://www.goodify.fr/assets/application-dcd0508af0592a2634000bf6a5ef6d716a1e5a821b80820b65e79a0e0eb78889.css',
+  // 'https://www.goodify.fr/assets/inter-font-8c3e82affb176f4bca9616b838d906343d1251adc8408efe02cf2b1e4fcf2bc4.css',
   // '/assets/images/default_avatar.png',
   // '/favicon.ico',
 ];
