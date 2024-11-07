@@ -1,3 +1,5 @@
+<%# typewriter %>
+<!--
 <div class="px-5">
   <div data-controller="typewriter">
     <span data-typewriter-target="text" class="inline-block">landing page here</span>
@@ -6,27 +8,30 @@
       <%= svg_tag('g', class:"text-black size-6") %>
     </span>
   </div>
+</div>
+-->
 
-
-  <!--
-  <h2>Bienvenue</h2>
-  <p>Ce projet a pour but d'être un outils indispensable aux associations ainsi qu'à leurs donateurs</p>
-  <p>Nous croyons très fort que tout le monde peut être mieux encourager à soutenir nos associations</p>
-  <p>Ceci en rassemblant les associations en un seul endroit, en fluidifiant la donation et en récompensant le donateur</p>
-  <p>Découvrer une expérience nouvelle avec 'DoGood' notre plateforme bientôt disponible</p>
-  -->
-  <p>user sign in ?<%= user_signed_in? %></p>
-  <p>
-    <%= link_to  "sign out",  destroy_user_session_path, data: { "turbo-method": :delete, "turbo-confirm": "are you sure ?"}%>
-  </p><br>
-  <p>
-    <%= link_to  "sign in",  new_user_session_path %>
-  </p>
-
-  <p><%= link_to "edit", edit_user_registration_path(current_user) unless !current_user %></p>
-
+<%# header %>
+<div class="space-y-10 ml-5">
+  <h1 class="text-xl font-medium roboto-medium-italic tracking-wider">Goodify</h1>
 </div>
 
+<%# why Goodify %>
+<div class="mt-10 space-y-5">
+  <h1 class="text-3xl tracking-wider text-center font-medium">Votre générosité mérite mieux</h1>
+  <div class="flex justify-center">
+    <ul>
+      <li class="inline-flex justify-start items-center gap-x-4" >
+        <span>
+          <%= svg_tag('check', class:"size-4 stroke-2 text-green-800") %>
+        </span>
+        <p class="text-lg tracking-wide">Faites votre don en 4 clics</p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<%# sticky call to action %>
 <div class="fixed bottom-0 inset-x-0 w-full px-5 py-10 rounded-t-3xl flex flex-col items-center justify-center space-y-5 bg-black">
   <!--
   later to remove link_to and add JS to open pop-up form
