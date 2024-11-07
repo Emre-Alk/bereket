@@ -21,7 +21,7 @@
 #
 class User < ApplicationRecord
   after_create :create_donator
-  after_update :update_donator, if: :donator?
+  after_update :update_donator, if: :should_update_donator?
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -46,6 +46,14 @@ class User < ApplicationRecord
   end
 
   private
+
+  def should_update_donator?
+    self.donator? && self.relevant_changes_for_donator?
+  end
+
+  def relevant_changes_for_donator?
+    %i[email first_name last_name].any? { |attribute| saved_change_to_attribute?(attribute) }
+  end
 
   # custom callback helper to create a donator after sign-up registration by devise if user has set a donator role
   # I do that since at that point donator has the same attributes as user attributes resquested in the registration page
