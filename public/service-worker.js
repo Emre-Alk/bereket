@@ -1,49 +1,49 @@
 // service-worker.js
 const CACHE_NAME = 'goodify-v1.6';
 
-// // List of assets' url to cache
-// const assetsToCache = [
-//   '/',
-//   '/assos',
-//   '/donator',
-// ];
+// List of assets' url to cache
+const assetsToCache = [
+  '/',
+  '/assos',
+  '/donator',
+];
 
-// // Install event: cache essential assets
-// self.addEventListener('install', (event) => {
-//   console.log('installed');
-//   event.waitUntil(
-//     caches.open(CACHE_NAME).then((cache) => {
-//       return cache.addAll(assetsToCache);
-//     })
-//   );
-// });
+// Install event: cache essential assets
+self.addEventListener('install', (event) => {
+  console.log('installed');
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(assetsToCache);
+    })
+  );
+});
 
-// // Activate event: clean up old caches
-// self.addEventListener('activate', (event) => {
-//   console.log('activated');
-//   event.waitUntil(
-//     caches.keys().then((cacheNames) => {
-//       return Promise.all(
-//         cacheNames.map((cache) => caches.delete(cache))
-//         // cacheNames.map((cache) => {
-//         //   if (cache !== CACHE_NAME) {
-//         //     return caches.delete(cache); // Delete old caches
-//         //   }
-//         // })
-//       );
-//     })
-//   );
-// });
+// Activate event: clean up old caches
+self.addEventListener('activate', (event) => {
+  console.log('activated');
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        // cacheNames.map((cache) => caches.delete(cache))
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache); // Delete old caches
+          }
+        })
+      );
+    })
+  );
+});
 
-// // Fetch event: respond with cached resources or fetch from the network
-// self.addEventListener('fetch', (event) => {
-//   console.log('fetch');
+// Fetch event: respond with cached resources or fetch from the network
+self.addEventListener('fetch', (event) => {
+  console.log('fetch');
 
-//   event.respondWith(
-//     caches.match(event.request).then((response) => {
-//       // If there's a cached response, return it
-//       // If not in cache, fetch from the network
-//       return response || fetch(event.request)
-//     })
-//   );
-// });
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      // If there's a cached response, return it
+      // If not in cache, fetch from the network
+      return response || fetch(event.request)
+    })
+  );
+});
