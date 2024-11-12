@@ -29,13 +29,14 @@ class Assos::PlacesController < AssosController
 
     if @place.save
       # next change url to right location once donation path are coded
-      if Rails.env.production?
-        url = new_place_donation_url(@place) # to be checked if DNS manu mano required
-        @place.update!(qr_code: url.to_s)
-      else
-        url = "http://192.168.1.168:3000#{new_place_donation_path(@place)}"
-        @place.update!(qr_code: url)
-      end
+      # instead of hard coding the record with its id to have a working url, I perform it on spot with helper
+      # if Rails.env.production?
+      #   url = new_place_donation_url(@place) # to be checked if DNS manu mano required
+      #   @place.update!(qr_code: url.to_s)
+      # else
+      #   url = "http://192.168.1.168:3000#{new_place_donation_path(@place)}"
+      #   @place.update!(qr_code: url)
+      # end
 
       # ----------if want Qr code in SVG--------------------
       # attach_qr_code_svg(@place, @place.qr_code) # instead generate on the fly (to de-comment otherwise + see show )

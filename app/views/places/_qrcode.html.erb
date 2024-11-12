@@ -7,7 +7,7 @@
   <div class="w-4/5 h-fit bg-neutral-100 flex flex-col items-center justify-center gap-y-3  ">
     <div class="flex flex-col items-center justify-center w-full gap-y-8 pb-8 pt-10 rounded-3xl bg-white">
       <%# qr code %>
-      <%= qr_generate(place.qr_code, class:'size-48') %>
+      <%= qr_generate(place, class:'size-48') %>
       <%# place name upcase %>
       <h1 class="text-xl font-medium tracking-wide align-bottom"><%= place.name.split(' ').map(&:upcase).join(' ') %></h1>
     </div>
@@ -16,14 +16,14 @@
       <%# share link  %>
       <button class="flex flex-col items-center justify-center w-1/2 rounded-lg py-2 bg-white"
               data-action="share#share"
-              data-share-payload-param='{"url": "<%= place.qr_code %>", "place":"<%= place.name.split(' ').map(&:capitalize).join(' ') %>"}'>
+              data-share-payload-param='{"url": "<%= new_place_donation_url(place) %>", "place":"<%= place.name.split(' ').map(&:capitalize).join(' ') %>"}'>
         <%= svg_tag('share') %>
         <p class="text-sm tracking-wide">Partager</p>
       </button>
 
       <%# copy link  %>
       <button class="flex flex-col items-center justify-center w-1/2 rounded-lg py-2 bg-white"
-              value="<%= place.qr_code %>"
+              value="<%= new_place_donation_url(place) %>"
               data-action="clipboard#copy"
               data-clipboard-target="source">
 
