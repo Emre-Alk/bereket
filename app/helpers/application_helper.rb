@@ -2,7 +2,7 @@ module ApplicationHelper
   def qr_generate(place, options = {})
     # create an instance of rqrcode  with 'url'
     url = Rails.env.production? ? new_place_donation_url(place) : "http://192.168.1.168:3000#{new_place_donation_path(place)}"
-    qrcode = RQRCode::QRCode.new(new_place_donation_url(url))
+    qrcode = RQRCode::QRCode.new(url)
 
     # qrcode.as_svg(
     #   # Padding around the QR Code in pixels (default 0)
