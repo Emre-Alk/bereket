@@ -89,9 +89,14 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
-    "goodify.fr",     # Allow requests from goodify.fr
-    /.*\.goodify\.fr/ # Allow requests from subdomains like `www.goodify.fr`
+    "goodify.fr",       # Allow primary domain
+    "www.goodify.fr"    # Allow 'www' subdomain
+    # "example.com",     # Allow requests from example.com
+    # /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
   ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Set the default URL options globally in the app for production
+  Rails.application.routes.default_url_options[:host] = 'www.goodify.fr'
 end
