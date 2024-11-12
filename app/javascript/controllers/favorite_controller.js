@@ -16,7 +16,7 @@ export default class extends Controller {
     event.preventDefault()
     const heart = this.heartTarget.querySelector("#heart")
 
-    if (heart.getAttribute("style")) {
+    if (heart.hasAttribute("style")) {
       // scenario: already favorite, I destroy the favorite
       // Change the icon from fill red to hollow (no animation)
       heart.removeAttribute("style")
