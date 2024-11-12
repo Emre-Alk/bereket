@@ -6,6 +6,7 @@ const assetsToCache = [
   '/',
   '/assos',
   '/donator',
+  '/app/assets/stylesheets/application.css',
 ];
 
 // Install event: cache essential assets
@@ -13,6 +14,8 @@ self.addEventListener('install', (event) => {
   console.log('installed');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      console.log('cache name to open:', cache);
+
       return cache.addAll(assetsToCache);
     })
   );
@@ -27,7 +30,9 @@ self.addEventListener('activate', (event) => {
         // cacheNames.map((cache) => caches.delete(cache))
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
+            console.log('cache name to delete', cache);
             return caches.delete(cache); // Delete old caches
+
           }
         })
       );
@@ -41,6 +46,8 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith(
     caches.match(event.request).then((response) => {
+      console.log('response if exist', response);
+
       // If there's a cached response, return it
       // If not in cache, fetch from the network
       return response || fetch(event.request)
