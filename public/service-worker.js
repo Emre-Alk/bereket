@@ -1,12 +1,12 @@
 // service-worker.js
-const CACHE_NAME = 'goodify-v1.6';
+const CACHE_NAME = 'goodify-v1.9';
 
 // List of assets' url to cache
 const assetsToCache = [
   '/',
   '/assos',
   '/donator',
-  '/app/assets/stylesheets/application.css',
+  '/assets/application.css',
 ];
 
 // Install event: cache essential assets
