@@ -10,52 +10,82 @@
   </div>
 </div>
 -->
-
-<%# header %>
-<div class="space-y-10 ml-5">
-  <h1 class="text-xl font-medium roboto-medium-italic tracking-wider">Goodify</h1>
-</div>
-
-<%# why Goodify %>
-<div class="mt-10 flex flex-col items-center space-y-5">
-  <h1 class="text-3xl tracking-wider text-center font-medium">Collectez des dons sans aucun effort</h1>
-  <div class="flex flex-col items-center p-2 rounded-lg gap-y-4">
-    <p class="flex text-center medium text-sm text-wrap">Un service complet pour récompenser la générosité de vos donateurs:</p>
-
-    <ul class="flex flex-col items-center gap-y-2 text-sm roboto-light ">
-      <li class="inline-flex gap-x-4 items-start" >
-        <span>
-          <%= svg_tag('check', class:"size-4 stroke-2 text-green-800") %>
-        </span>
-        <div>
-          <p class="tracking-wide">Don en 4 clics depuis son smartphone</p>
-          <p class="text-xs italic text-center font-thin">Plus besoin de terminal de paiment</p>
-        </div>
-      </li>
-
-      <li class="inline-flex gap-x-4 items-start" >
-        <span>
-          <%= svg_tag('check', class:"size-4 stroke-2 text-green-800") %>
-        </span>
-        <div>
-          <p class="tracking-wide">Le cerfa N°11580 est généré automatiquement </p>
-          <p class="text-xs italic text-center font-thin">Finis les cerfa à completer manuellement pour chaque don </p>
-        </div>
-      </li>
-
-      <li class="inline-flex gap-x-4 items-start" >
-        <span>
-          <%= svg_tag('check', class:"size-4 stroke-2 text-green-800") %>
-        </span>
-        <p class="tracking-wide">Faites votre don en 4 clics</p>
-      </li>
-
-    </ul>
-
-    <%= link_to 'Essayer Goodify', new_user_registration_path, class:'w-full py-2 rounded-lg text-center text-base tracking-wide bg-orange-400 text-white shadow-lg active:shadow-inner' %>
-
+<div class="mb-52">
+  <%# header %>
+  <div class="space-y-10 ml-5">
+    <h1 class="text-2xl font-medium roboto-medium-italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-orange-400 from-35% via-orange-500 to-55% to-orange-600 text-center ">G o o d i f y</h1>
   </div>
+
+  <%# why Goodify %>
+  <div class="mt-10 flex flex-col items-center space-y-5">
+    <h1 class="text-3xl tracking-wider text-center font-bold">Collectez des dons sans aucun effort</h1>
+    <div class="flex flex-col items-center p-2 rounded-lg gap-y-4 w-11/12">
+      <p class="flex text-start medium text-sm text-wrap">Un service complet pour récompenser la générosité de vos donateurs:</p>
+
+      <ul class="flex flex-col items-start gap-y-2 text-sm medium text-neutral-600">
+        <li class="inline-flex gap-x-4 items-start" >
+          <span>
+            <%= svg_tag('check', class:"size-4 stroke-2 text-orange-400") %>
+          </span>
+          <div>
+            <p class="tracking-wide">Don en 4 clics depuis son smartphone 24h/7j</p>
+            <p class="text-xs italic text-start font-thin">Plus besoin de terminal de paiment</p>
+          </div>
+        </li>
+
+        <li class="inline-flex gap-x-4 items-start" >
+          <span>
+            <%= svg_tag('check', class:"size-4 stroke-2 text-orange-400") %>
+          </span>
+          <div>
+            <p class="tracking-wide">Le cerfa N°11580 est généré automatiquement </p>
+            <p class="text-xs italic text-start font-thin">Finis les cerfa à completer manuellement pour chaque don </p>
+          </div>
+        </li>
+
+        <li class="inline-flex gap-x-4 items-start" >
+          <span>
+            <%= svg_tag('check', class:"size-4 stroke-2 text-orange-400") %>
+          </span>
+          <div>
+            <p class="tracking-wide">Suivez votre collecte en temps réelle </p>
+            <p class="text-xs italic text-start font-thin">Solde mis à jour sans délais, visualisez votre collecte au jour, à la semaine, au mois etc...</p>
+          </div>
+        </li>
+
+        <li class="inline-flex gap-x-4 items-start" >
+          <span>
+            <%= svg_tag('check', class:"size-4 stroke-2 text-orange-400") %>
+          </span>
+          <div>
+            <p class="tracking-wide">Analyser votre trafic</p>
+            <p class="text-xs italic text-start font-thin">Découvrez votre meilleur jour, les montants fréquents, vos meilleurs donateurs et plus encore</p>
+          </div>
+        </li>
+
+      </ul>
+
+      <%= link_to 'Essayer Goodify maintenant', new_user_registration_path, class:'w-full py-2 rounded-lg text-center text-base tracking-wide bg-orange-400 text-white shadow-lg active:shadow-inner' %>
+
+    </div>
+  </div>
+
+  <%# screenshots %>
+  <div class="mt-10">
+    <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
+      <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
+      <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
+      <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
+      <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
+      <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
+          <%= image_tag('screen_asso.png', class:"mt-2 w-[172px] h-[362px]") %>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+
 
 <%# sticky call to action %>
 <div class="fixed bottom-0 inset-x-0 w-full px-5 py-10 rounded-t-3xl flex flex-col items-center justify-center space-y-5 bg-black">
