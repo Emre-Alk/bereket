@@ -24,10 +24,9 @@
   <% @donations.each do |don| %>
     <% if current_user.donator? %>
 
-      <%= link_to place_path(don.place) do %>
         <div class="bg-white flex flex-row px-2 pt-2 items-center gap-x-5">
 
-          <div class="flex flex-auto flex-row items-center gap-4 w-3/4">
+          <%= link_to place_path(don.place), class:'flex flex-row items-center gap-4 w-3/4' do %>
             <div class="bg-white">
               <%= don.place.place_image.attached? ? cl_image_tag(don.place.place_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full') %>
             </div>
@@ -37,8 +36,7 @@
                 <p><%= number_to_currency(don.amount.to_f / 100, locale: :fr, strip_insignificant_zeros: true) %></p>
                 <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
             </div>
-          </div>
-
+          <% end %>
 
           <div data-controller="pdf-generate" data-pdf-generate-don-id-value="<%= don.id %>" data-pdf-generate-donator-id-value="<%= @donator.id %>" class="flex-none">
 
@@ -52,7 +50,6 @@
           </div>
 
         </div>
-      <% end %>
 
     <% else %>
       <div class="bg-white flex flex-row px-2 pt-2 items-center">

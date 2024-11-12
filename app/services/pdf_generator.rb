@@ -57,7 +57,7 @@ class PdfGenerator
     # Prawn to generate (library method) a pdf that will be used as a 'calque'
     Prawn::Document.generate("temporary.pdf") do |pdf|
       # for each data entry, the coordinates of the corresponding placeholder to be filled is passed.
-      pdf.text_box @data[:receipt], at: [423, 692]
+      pdf.text_box @data[:receipt], at: [403, 692]
       pdf.text_box @data[:asso][:identity][:name], at: [130, 645]
       pdf.text_box @data[:asso][:identity][:nra], at: [159, 625]
       pdf.text_box @data[:asso][:place][:street_no], at: [14, 598]

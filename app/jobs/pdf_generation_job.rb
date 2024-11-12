@@ -36,7 +36,7 @@ class PdfGenerationJob < ApplicationJob
         occured_on: donation.occured_on.to_date.strftime('%d     %m     %Y') # whitespace to fit template
       },
       today: Date.today.strftime('%d  %m  %Y'), # whitespace to fit template
-      receipt: '1234567890' # create a table to store receipt id and donation id. Legaly following order during the year (to be checked)
+      receipt: "#{donation.id}-#{donation.created_at.to_i}"
     }
 
     pdf_compiled = PdfGenerator.new(data).generate
@@ -68,6 +68,6 @@ class PdfGenerationJob < ApplicationJob
 
     donator.save
 
-    puts '✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅'
+    # puts '✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅'
   end
 end

@@ -8,6 +8,8 @@
 #  updated_at :datetime         not null
 #
 class AssoType < ApplicationRecord
+  has_many :asso
+
   VALUES = [
     "organismes d'intérêt général ou reconnu d'utilité publique établis en France",
     "organismes d'aide aux personnes en difficulté",
