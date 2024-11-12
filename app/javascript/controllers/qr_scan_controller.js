@@ -39,7 +39,7 @@ export default class extends Controller {
 
   scan() {
     this.qrReader = new Html5Qrcode("scanBox")
-    const camera = { facingMode: "user" } // choose a camera by applying a constrain (other value 'user' for front)
+    const camera = { facingMode: "environment" } // choose a camera by applying a constrain (other value 'user' for front)
     const config = {
       fps: 10, // frames per second
       qrbox: { width: 150, height: 150 } // scanning box size
