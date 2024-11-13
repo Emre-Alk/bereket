@@ -79,10 +79,10 @@ class HandleEventJob < ApplicationJob
           # So the CS will generate a cus id to a registered donator with already a valid cus id
           # and donation will have a CS id referencing a wrong cus-id
           # which can be ambiguous: donator have a donation where the CS don't reference his cus-id
-          Stripe::Checkout::Session.update(
-            checkout_session.id,
-            { metadata: { registered_customer: donator.customer.stripe_id } }
-          )
+          # Stripe::Checkout::Session.update(
+          #   checkout_session.id,
+          #   { metadata: { registered_customer: donator.customer.stripe_id } }
+          # )
 
           puts '🟪🟪🟪🟪🟪🟪🟪🟪'
         else
