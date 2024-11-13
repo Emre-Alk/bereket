@@ -24,7 +24,7 @@ class Assos::PlacesController < AssosController
   def create
     # save to the db the place filled from the form
     # associate the current asso id to the new place
-    @place = Place.new(set_place_params)
+    @place = Place.new(place_params)
     @place.asso = current_user.asso
 
     if @place.save
@@ -43,7 +43,7 @@ class Assos::PlacesController < AssosController
       # ----------if want Qr code in PNG--------------------
       # attach_qr_code_png(@place, @place.qr_code)
 
-      redirect_to asso_root_path()
+      redirect_to asso_root_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -56,8 +56,18 @@ class Assos::PlacesController < AssosController
 
   private
 
-  def set_place_params
-    params.require(:place).permit(:name, :address, :street_no, :city, :country, :place_type_id, :qr_code, :place_image)
+  def place_params
+    params.require(:place).permit(
+      :name,
+      :address,
+      :street_no,
+      :zip_code,
+      :city,
+      :country,
+      :place_type_id,
+      :qr_code,
+      :place_image
+    )
   end
 
   # if don't generate qr on the fly (comment method and un comment attach_qr_code_svg)

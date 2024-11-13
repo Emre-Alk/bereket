@@ -8,6 +8,7 @@
 #  code_siret   :string
 #  email        :string
 #  name         :string
+#  objet        :text             not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  asso_type_id :bigint           not null
@@ -33,7 +34,7 @@ class Asso < ApplicationRecord
 
   # validation presence pour asso_type_id ?
   # validations sur siret et siren à faire si necessaire sinon voir si peut supprimer ces deux attributs
-  validates :name, :email, :code_nra, presence: true
+  validates :name, :email, :code_nra, :objet, presence: true
   validates :name, :code_nra, uniqueness: true
   validates :email, uniqueness: true, unless: -> { email == user.email }
   validates :code_siret, :code_siren, uniqueness: true, allow_nil: true

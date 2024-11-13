@@ -82,7 +82,7 @@ class AssosController < ApplicationController
   end
 
   def create
-    @asso = Asso.new(set_asso_params)
+    @asso = Asso.new(asso_params)
     @asso.user = current_user
     if @asso.save
       redirect_to asso_root_path
@@ -93,7 +93,7 @@ class AssosController < ApplicationController
 
   private
 
-  def set_asso_params
-    params.require(:asso).permit(:name, :code_nra, :email, :asso_type_id)
+  def asso_params
+    params.require(:asso).permit(:name, :objet, :code_nra, :email, :asso_type_id)
   end
 end

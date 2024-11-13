@@ -14,14 +14,14 @@ class PdfGenerationJob < ApplicationJob
         identity: {
           name: donation.place.asso.name,
           nra: donation.place.asso.code_nra,
-          object: 'association a but non lucratif', # to be added in the asso table 'donation.place.asso.objet'
-          regime: AssoType.find(donation.place.asso.asso_type_id).name,
+          object: donation.place.asso.objet,
+          regime: donation.place.asso.asso_type.name,
           signature: donation.place.asso.signature
         },
         place: {
           street_no: donation.place.street_no,
           address: donation.place.address,
-          zip_code: donation.place.zip_code || '69000',
+          zip_code: donation.place.zip_code,
           city: donation.place.city,
           country: donation.place.country
         }

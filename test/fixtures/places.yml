@@ -9,7 +9,7 @@
 #  name          :string
 #  qr_code       :string
 #  street_no     :string
-#  zip_code      :string
+#  zip_code      :string           not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  asso_id       :bigint           not null

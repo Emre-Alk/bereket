@@ -7,7 +7,7 @@
 #  last_four                :string
 #  payouts_enabled          :boolean
 #  requirements             :enum             default("clear"), not null
-#  status                   :enum             default("clear"), not null
+#  status                   :enum             default("active"), not null
 #  stripe_deadline          :datetime
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null

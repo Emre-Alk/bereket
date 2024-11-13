@@ -8,6 +8,7 @@
 #  code_siret   :string
 #  email        :string
 #  name         :string
+#  objet        :text             not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  asso_type_id :bigint           not null

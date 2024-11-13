@@ -65,7 +65,12 @@ class PdfGenerator
       pdf.text_box @data[:asso][:place][:zip_code], at: [71, 584]
       pdf.text_box @data[:asso][:place][:city], at: [204, 584]
       pdf.text_box @data[:asso][:place][:country], at: [38, 572]
-      pdf.text_box @data[:asso][:identity][:object], at: [34, 560]
+      pdf.text_box @data[:asso][:identity][:object],
+        at: [34, 560],
+        width: 487,
+        height: 30,
+        overflow: :shrink_to_fit,
+        min_font_size: nil
       # tick some boxes
       pdf.fill_rectangle [-1, 413], 6, 6.2 # table select row
       pdf.fill_circle [31.5, 460.7], 3 # 1st row, 'Association loi 1901'
