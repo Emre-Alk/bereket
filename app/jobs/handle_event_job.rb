@@ -177,8 +177,8 @@ class HandleEventJob < ApplicationJob
     account.update!(
       charges_enabled: stripe_account.charges_enabled,
       payouts_enabled: stripe_account.payouts_enabled,
-      external_bank_account_id: stripe_account.external_accounts.data.first.id,
-      last_four: stripe_account.external_accounts.data.first.last4,
+      external_bank_account_id: stripe_account.details_submitted ? stripe_account.external_accounts.data.first.id : nil,
+      last_four: stripe_account.details_submitted ? stripe_account.external_accounts.data.first.last4 : nil,
       requirements:,
       stripe_deadline: stripe_account.requirements.current_deadline ? Time.at(stripe_account.requirements.current_deadline).to_datetime : nil,
       status: stripe_account.requirements.disabled_reason ? 'disabled' : 'active'
