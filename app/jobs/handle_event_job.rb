@@ -50,7 +50,7 @@ class HandleEventJob < ApplicationJob
       if checkout_session.customer_creation
         # case visitor not converted yet (cus created by CS but not a user yet) || user not logged in
         email = checkout_session.customer_details.email
-        name = checkout_session.customer_details.name.presence || 'visiteur visiteur'
+        name = checkout_session.customer_details.name.nil? ? 'visiteur visiteur' : checkout_session.customer_details.name
 
         # this will find already existing visitor or an already registered user that is not logged in
         # or initiate a new one based on email and role
