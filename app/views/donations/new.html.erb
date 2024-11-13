@@ -14,9 +14,19 @@
   <%# place identification %>
   <div class="flex flex-col justify-center items-center gap-2">
 
-    <div class="flex justify-center items-center size-20 rounded-full bg-gray-300">
-      <%= svg_tag('image_empty', class:'size-8 bg-inherit text-gray-100') %>
-    </div>
+    <% if @place.place_image.attached? %>
+      <div class="flex justify-center items-center">
+          <%= cl_image_tag(@place.place_image.key, transformation: [
+              {gravity: "auto", height: 120, width: 120, crop: "thumb"},
+              {radius: "max"},
+              {fetch_format: "auto"}
+              ]) %>
+      </div>
+    <% else %>
+      <div class="flex justify-center items-center size-20 rounded-full bg-gray-300">
+        <%= svg_tag('image_empty', class:'size-8 bg-inherit text-gray-100') %>
+      </div>
+    <% end %>
 
     <div class="flex justify-center items-center ps-1">
       <h1 class="text-lg font-medium tracking-wide"><%= @place.name.split(' ').map(&:capitalize).join(' ') %></h1>

@@ -20,8 +20,8 @@ class HandleEventJob < ApplicationJob
       handle_account_updated(stripe_event)
     when 'checkout.session.completed'
       handle_checkout_session_completed(stripe_event)
-    when 'transfer.created'
-      handle_transfer_created(stripe_event)
+    # when 'transfer.created'
+    #   handle_transfer_created(stripe_event)
     end
     # when 'capability.updated' # Useful if goal is to create/check financial account as external account
     # handle_capability_updated(stripe_event)
@@ -31,9 +31,6 @@ class HandleEventJob < ApplicationJob
     # to finish later.
     # possible 'issue' if later change type of charge from destination to direct for instance
     # transfer = stripe_event.data.object
-    puts '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢'
-    puts stripe_event
-    puts '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢'
   end
 
   def handle_checkout_session_completed(stripe_event)
@@ -53,7 +50,7 @@ class HandleEventJob < ApplicationJob
       if checkout_session.customer_creation
         # case visitor not converted yet (cus created by CS but not a user yet) || user not logged in
         email = checkout_session.customer_details.email
-        name = checkout_session.customer_details.name # || checkout_session.customer_details.email
+        name = checkout_session.customer_details.name.presence || email.presence || 'visiteur'
 
         # this will find already existing visitor or an already registered user that is not logged in
         # or initiate a new one based on email and role
@@ -82,10 +79,10 @@ class HandleEventJob < ApplicationJob
           # So the CS will generate a cus id to a registered donator with already a valid cus id
           # and donation will have a CS id referencing a wrong cus-id
           # which can be ambiguous: donator have a donation where the CS don't reference his cus-id
-          # Stripe::Checkout::Session.update(
-          #   checkout_session.id,
-          #   { metadata: { registered_customer: donator.customer.stripe_id } }
-          # )
+          Stripe::Checkout::Session.update(
+            checkout_session.id,
+            { metadata: { registered_customer: donator.customer.stripe_id } }
+          )
 
           puts '🟪🟪🟪🟪🟪🟪🟪🟪'
         else
