@@ -20,7 +20,7 @@
             <% if review.donator.visitor? %>
               <p class="text-xs text-gray-600 font-normal">Visiteur</p>
             <% else %>
-              <p class="text-xs text-gray-600 font-normal">DoGooder depuis <%= distance_of_time_in_words_to_now(review.donator.created_at, scope: 'datetime.distance_in_words') %></p>
+              <p class="text-xs text-gray-600 font-normal">Goodify depuis <%= distance_of_time_in_words_to_now(review.donator.created_at, scope: 'datetime.distance_in_words') %></p>
             <% end %>
           </div>
 

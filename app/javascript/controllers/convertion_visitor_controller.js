@@ -83,7 +83,7 @@ export default class extends Controller {
         const line_one = document.createElement('p')
         const line_two = document.createElement('p')
         line_one.innerText = `${username}, votre compte a été crée avec succès ! Vous pouvez dès maintenant éditer un reçu fiscal pour votre don.`
-        line_two.innerText = "Utiliser DoGood pour vos bonnes actions ! Suivez et gérez vos dons depuis votre tabelau de bord."
+        line_two.innerText = "Utiliser Goodify pour vos bonnes actions ! Suivez et gérez vos dons depuis votre tabelau de bord."
 
         // create the container of the message
         const successDiv = document.createElement('div')
