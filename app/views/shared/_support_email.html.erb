@@ -1,0 +1,4 @@
+<%= link_to "mailto:emrealkan.m@gmail.com?subject=Reference-#{user.id}&body=Merci de ne pas effacer le numéro de référence en objet. #{ user.user.donator? ? user.first_name.capitalize : user.name.capitalize } , comment puis-je vous aidez ?", class:"flex justify-center items-center gap-x-2 border border-black text-center px-3 py-1.5 rounded-lg text-black" do %>
+  <p>Nous contactez </p>
+  <%= svg_tag('message_box', class:'size-5') %>
+<% end %>
