@@ -1,33 +1,25 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 
-<div data-controller="qr-scan" class="flex flex-col justify-center h-full w-full">
 
-  <button data-action="click->qr-scan#toggleScanWindow" data-qr-scan-target="scanBtn" class="flex flex-row justify-center items-center gap-x-4 px-2 py-2 bg-black rounded-2xl">
-    <%= image_tag("scan_icon.svg") %>
-    <p class="tracking-wider text-white text-xl">Faire un don</p>
-  </button>
+  <div data-controller="qr-scan" class="fixed z-40 bottom-8 end-8">
 
-  <div id="bbox" class="hidden fixed flex flex-col justify-center items-center gap-y-12 bg-black transition transform delay-0 duration-500 ease-in-out">
+    <button data-action="click->qr-scan#toggleScanWindow" data-qr-scan-target="scanBtn" class="rounded-full size-14 bg-black p-2">
+      <%= svg_tag('scan_icon') %>
+      <!--
+      <p class="tracking-wider text-white text-xl">Faire un don</p>
+      -->
+    </button>
 
-    <div class="absolute top-7 left-7">
-      <button data-action="click->qr-scan#toggleScanWindow">
-        <%= image_tag("cross_icon_white.svg", class:"scale-125") %>
-      </button>
-    </div>
+    <div id="bbox" class="hidden fixed flex-col justify-center items-center gap-y-12 bg-black transition transform delay-0 duration-500 ease-in-out">
 
-    <div id="scanBox" data-qr-scan-target="scanBox" class="w-60"></div>
-
-    <!-- following div for flashlight and keyboard are hidden until decided if feature to be added -->
-    <div class="hidden flex flex-row w-60 justify-between items-center px-5">
-      <div class="flex justify-center items-center size-14 rounded-full p-2 bg-white">
-        <%= icon("fa-regular", "keyboard", class:"fa-2xl", style:"color: black") %>
+      <div class="absolute top-7 left-7">
+        <button data-action="click->qr-scan#toggleScanWindow">
+          <%= image_tag("cross_icon_white.svg", class:"scale-125") %>
+        </button>
       </div>
 
-      <div class="flex justify-center items-center size-14 rounded-full p-2 bg-white">
-        <%= image_tag("flashlight.svg")%>
-      </div>
+      <div id="scanBox" data-qr-scan-target="scanBox" class="w-60"></div>
+
     </div>
 
   </div>
-
-</div>

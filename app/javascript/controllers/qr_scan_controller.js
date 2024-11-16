@@ -82,16 +82,20 @@ export default class extends Controller {
   }
 
   toggleScanWindow() {
-    console.log('open window now')
+    console.log(' window toggle')
     // toggle scan btn
     this.toggleScanBtn()
     const scanWindow = document.getElementById("bbox")
+    console.log(scanWindow)
+
     if (!scanWindow.classList.contains('hidden')) {
       scanWindow.classList.remove('inset-0')
+      scanWindow.classList.remove('flex')
       scanWindow.classList.add('hidden')
       this.qrReader.stop() // stop scanning
     } else {
       scanWindow.classList.remove('hidden')
+      scanWindow.classList.add('flex')
       scanWindow.classList.add('inset-0')
       this.scan()
        // how to lauch animation as same time as start() promise succeeds ? ( start().then( this.toggleScanWindow() ) don't do it )
