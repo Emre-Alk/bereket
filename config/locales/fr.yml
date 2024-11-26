@@ -1,4 +1,13 @@
 fr:
+  activerecord:
+    attributes:
+      user:
+        first_name: 'Prénom'
+        last_name: 'Nom'
+        password: 'Mot de passe'
+        password_confirmation: 'Confirmation du mot de passe'
+        remember_me: "Se souvenir de moi"
+        role: 'Rôle'
   date:
     abbr_day_names:
     - dim
@@ -147,7 +156,7 @@ fr:
       not_an_integer: doit être un nombre entier
       not_saved:
         one: "Il y a 1 erreur :"
-        other: "Il y a %{count} erreurs :"
+        other: "%{count} erreurs ont empêchées la sauvegarde :"
       odd: doit être impair
       other_than: doit être différent de %{count}
       present: doit être vide
@@ -237,3 +246,7 @@ fr:
       long: "%A %d %B %Y %Hh%M"
       short: "%d %b %Hh%M"
     pm: pm
+  wording:
+    log_in: 'Se connecter'
+    sign_up: "S'inscrire"
+    forgot_password: "Mot de passe oublié ?"
