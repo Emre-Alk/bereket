@@ -1,17 +1,17 @@
 <div class="sticky top-0 flex justify-end">
-  <%= link_to I18n.t('wording.sign_up'), new_registration_path(resource_name), class:"border border-black rounded-lg text-sm px-4 py-2 text-center active:bg-black active:text-white hover:text-white hover:bg-black " %>
+  <%= link_to I18n.t('wording.sign_up'), new_registration_path(resource_name), class:"border border-black rounded-lg text-base px-4 py-2 text-center active:bg-black active:text-white " %>
 </div>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class:'max-w-md mx-auto p-4' }) do |f| %>
 
   <div class="field relative z-0 w-full mb-5 group">
-    <%= f.email_field :email, class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer invalid:text-red-500 invalid:focus:border-red-500 invalid:border-red-500", placeholder:" "%>
-    <%= f.label :email, autofocus: true, autocomplete: "email", class: "after:content-['*'] after:ml-0.5 after:text-red-500 peer-focus:font-medium absolute text-sm text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" %>
+    <%= f.email_field :email, class: "block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer invalid:text-red-500 invalid:focus:border-red-500 invalid:border-red-500", placeholder:" "%>
+    <%= f.label :email, autofocus: true, autocomplete: "email", class: "after:content-['*'] after:ml-0.5 after:text-red-500 peer-focus:font-medium absolute text-base text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" %>
   </div>
 
   <div class="field relative z-0 w-full mb-5 group">
-    <%= f.password_field :password, autocomplete: "current-password", class: "peer block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black invalid:text-red-600 invalid:border-red-500 invalid:focus:border-red-500", placeholder: ' ' %>
-    <%= f.label :password, class: "after:content-['*'] after:ml-0.5 after:text-red-500 peer-focus:font-medium absolute text-sm text-black  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" %>
+    <%= f.password_field :password, autocomplete: "current-password", class: "peer block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black invalid:text-red-600 invalid:border-red-500 invalid:focus:border-red-500", placeholder: ' ' %>
+    <%= f.label :password, class: "after:content-['*'] after:ml-0.5 after:text-red-500 peer-focus:font-medium absolute text-base text-black  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" %>
   </div>
 
   <% if devise_mapping.rememberable? %>
@@ -22,8 +22,8 @@
   <% end %>
 
   <div class="actions w-full mb-5">
-    <%= f.submit I18n.t('wording.log_in'), class:"text-white tracking-wider bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center" %>
+    <%= f.submit I18n.t('wording.log_in'), class:"text-white tracking-wider bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-base w-full px-5 py-2.5 text-center" %>
   </div>
 
-  <%= link_to I18n.t('wording.forgot_password'), new_password_path(resource_name), class:'text-sm' %>
+  <%= link_to I18n.t('wording.forgot_password'), new_password_path(resource_name), class:'text-base' %>
 <% end %>
