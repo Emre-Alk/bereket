@@ -39,12 +39,10 @@
       </li>
 
       <li>
-        <%= link_to "#" do %>
           <div class="flex flex-row justify-center items-baseline gap-x-2" data-controller="qrcode-modal" data-action="click->qrcode-modal#toggle">
             <%= icon("fa-solid", "qrcode") %>
             <p>Mon QR code</p>
           </div>
-        <% end %>
       </li>
 
       <li>
@@ -57,9 +55,7 @@
       </li>
 
       <li>
-        <%= link_to "#" do %>
-          <%= render partial: "assos/signatures/signature", locals: { asso: asso } %>
-        <% end %>
+        <%= render partial: "assos/signatures/signature", locals: { asso: asso } %>
       </li>
 
     </ul>
