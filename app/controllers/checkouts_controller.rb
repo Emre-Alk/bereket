@@ -73,7 +73,7 @@ class CheckoutsController < ApplicationController
     # TODO: how to change dynamically with card origin (need to retrieve card origin. how ?)
     stripe_fee_amount = ((amount * stripe_fee[:eu][:percent].fdiv(100)) + stripe_fee[:eu][:fixed])
     # set my cut
-    app_fee_percent = 1.5
+    app_fee_percent = 0
     app_fee_amount = amount * app_fee_percent.fdiv(100)
     # calculate total amount to substract from funds to transfer to the connected account
     total_fee_amount = app_fee_amount + stripe_fee_amount
