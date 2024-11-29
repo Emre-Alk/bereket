@@ -77,6 +77,7 @@ export default class extends Controller {
       .then(response => response.blob())
       .then(blob => {
         console.log(blob);
+
         setTimeout(() => {
 
           const a = document.createElement('a');
@@ -91,7 +92,7 @@ export default class extends Controller {
           let status = 'reset'
           this.loadAnimation(status)
           this.toggleAllButtons()
-        }, 5000)
+        }, 7000)
       })
       .catch(error => {
         console.error('Error downloading the file:', error);
