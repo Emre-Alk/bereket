@@ -99,7 +99,7 @@ class PdfsController < ApplicationController
       @cerfa.download,
       filename: @cerfa.filename.to_s,
       type: @cerfa.content_type.to_s,
-      disposition: 'inline'
+      disposition: 'attachment'
     )
 
     # render layout: 'profile'
