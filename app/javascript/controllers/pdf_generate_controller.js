@@ -93,6 +93,7 @@ export default class extends Controller {
           this.loadAnimation(status)
           this.toggleAllButtons()
         }, 7000)
+
       })
       .catch(error => {
         console.error('Error downloading the file:', error);
