@@ -112,12 +112,17 @@ class PdfsController < ApplicationController
 
   def download_pdf
     cerfa = @donator.cerfa
-    send_data(
-      cerfa.download,
-      filename: cerfa.filename.to_s,
-      type: cerfa.content_type.to_s,
-      disposition: 'attachment'
-    )
+
+    respond_to do |format|
+      format.pdf {
+        send_data(
+          cerfa.download,
+          filename: cerfa.filename.to_s,
+          type: cerfa.content_type.to_s,
+          disposition: 'attachment'
+        )
+      }
+    end
   end
 
   private

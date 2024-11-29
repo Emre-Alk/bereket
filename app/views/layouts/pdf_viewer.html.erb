@@ -27,15 +27,9 @@
     comment render flash
     -->
     <%= render partial: "shared/flash" %>
-    <div data-controller="share" class="sticky z-50 top-0 inset-x-0 bg-white flex justify-around items-center py-4">
+    <div class="sticky z-50 top-0 inset-x-0 bg-white flex justify-around items-center py-4">
       <%= link_to 'download', download_donator_donation_path(@donator, @donation), download: true, class:"border border-black rounded-lg px-3 py-1.5" %>
-
-      <button class="flex flex-col items-center justify-center w-1/2 rounded-lg py-2 bg-white"
-              data-action="share#share"
-              data-share-payload-param='{"url": "hello", "place":"world"}'>
-        <%= svg_tag('share') %>
-        <p class="text-sm tracking-wide">Partager</p>
-      </button>
+      <%= button_to "Download PDF", download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)), data: {turbo: :false} %>
     </div>
 
     <main>

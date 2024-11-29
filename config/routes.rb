@@ -65,7 +65,7 @@ Rails.application.routes.draw do
         get 'pdf', to: 'pdfs#generate', as: :pdf_generate
         get 'cerfa', to: 'pdfs#view_pdf'
         get 'cerfa_inline', to: 'pdfs#cerfa_inline'
-        get 'download', to: 'pdfs#download_pdf'
+        post 'download', to: 'pdfs#download_pdf'
       end
     end
   end
