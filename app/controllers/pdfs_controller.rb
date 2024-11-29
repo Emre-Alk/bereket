@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class PdfsController < ApplicationController
   before_action :set_donator
   before_action :set_donation
@@ -112,9 +114,11 @@ class PdfsController < ApplicationController
 
   def download_pdf
     cerfa = @donator.cerfa
+    cerfa_path = Cloudinary::Utils.cloudinary_url(cerfa.url)
+    pdf_file = URI.parse(cerfa_path).open
 
     respond_to do |format|
-      format.pdf { send_data(cerfa.download, filename: cerfa.filename.to_s, type: cerfa.content_type.to_s, disposition: 'attachment')}
+      format.pdf { send_data(pdf_file, filename: cerfa.filename.to_s, type: cerfa.content_type.to_s, disposition: 'attachment')}
     end
   end
 
