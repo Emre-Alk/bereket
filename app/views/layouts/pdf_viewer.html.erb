@@ -30,6 +30,9 @@
     <div class="sticky z-50 top-0 inset-x-0 bg-white flex justify-around items-center py-4">
       <%= link_to 'download', download_donator_donation_path(@donator, @donation), download: true, class:"border border-black rounded-lg px-3 py-1.5" %>
       <%= button_to "Download PDF", download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)), data: {turbo: :false} %>
+      <a href="<%= @pdf_inline %>" download class="bg-green-500 text-white px-4 py-2 rounded">
+      Download PDF
+    </a>
     </div>
 
     <main>

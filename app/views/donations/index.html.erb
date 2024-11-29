@@ -38,9 +38,6 @@
             </div>
           <% end %>
 
-          <div class="space-y-2">
-            <%= button_to "Download PDF", download_donator_donation_path(@donator, don, request.params.merge(format: :pdf)), data: {turbo: :false} %>
-
             <div data-controller="pdf-generate" data-pdf-generate-don-id-value="<%= don.id %>" data-pdf-generate-donator-id-value="<%= @donator.id %>" class="flex-none">
 
               <button data-action="click->pdf-generate#generate" data-pdf-generate-target="btn" class="bg-neutral-100 text-black text-center min-w-28 min-h-8 rounded-lg ">
@@ -51,8 +48,6 @@
               </button>
 
             </div>
-
-          </div>
 
         </div>
 
