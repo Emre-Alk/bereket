@@ -27,12 +27,14 @@ export default class extends Controller {
   }
 
   fetchCerfa(data) {
-    const details = {
-      headers: {
-        "Accept" : "application/pdf"
-      }
-    }
-    fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`, details)
+    // const details = {
+    //   headers: {
+    //     "Accept" : "application/pdf"
+    //   }
+    // }
+    // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`, details)
+    // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`)
+    fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa_inline`)
       .then(response => {
         console.log('response cerfa', response)
         if (response.ok) {

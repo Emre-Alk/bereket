@@ -92,13 +92,31 @@ class PdfsController < ApplicationController
     # donator = current_user.donator unless params[:donator_id] # case if use the non nested route
     # donator = Donator.find(params[:donator_id]) if params[:donator_id] # refacto into before action
 
-    cerfa = @donator.cerfa
+    @cerfa = @donator.cerfa
+    @pdf = @cerfa.url
 
     send_data(
-      cerfa.download,
-      filename: "#{cerfa.filename}_#{@donation.place.asso.id}_#{@donation.occured_on.to_date.strftime('%d%m%Y')}",
-      type: cerfa.content_type.to_s,
+      @cerfa.download,
+      filename: @cerfa.filename.to_s,
+      type: @cerfa.content_type.to_s,
       disposition: 'inline'
+    )
+
+    # render layout: 'profile'
+  end
+
+  def cerfa_inline
+    @pdf_inline = cerfa_donator_donation_path(donator_id: @donator, id: @donation)
+    render layout: 'pdf_viewer'
+  end
+
+  def download_pdf
+    cerfa = @donator.cerfa
+    send_data(
+      cerfa.download,
+      filename: cerfa.filename.to_s,
+      type: cerfa.content_type.to_s,
+      disposition: 'attachment'
     )
   end
 

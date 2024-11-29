@@ -36,6 +36,6 @@ export default class extends Controller {
     document.body.appendChild(circle);
 
     // Remove the circle after animation
-    setTimeout(() => circle.remove(), 500);
+    setTimeout(() => circle.remove(), 400);
   }
 }

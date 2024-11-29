@@ -62,7 +62,7 @@ class PdfGenerationJob < ApplicationJob
 
     donator.cerfa.attach(
       io: file,
-      filename: "cerfa_11580_05_donator_#{donator.id}.pdf",
+      filename: "cerfa_11580_05_000#{donator.id}000#{donation.id}.pdf",
       content_type: 'application/pdf'
     )
 

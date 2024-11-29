@@ -20,15 +20,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   </head>
 
-  <body class="bg-neutral-100 roboto-regular" data-controller="touch-indicator">
+  <body class="bg-white">
     <!--
     <p class="notice absolute top-0 z-50"><%= notice %></p>
     <p class="alert absolute top-0 z-50"><%= alert %></p>
     comment render flash
     -->
     <%= render partial: "shared/flash" %>
+    <div class="sticky z-50 top-0 inset-x-0 bg-white flex justify-around items-center py-4">
+      <%= link_to :back %>
+      <%= link_to 'download', download_donator_donation_path(@donator, @donation), download: true, class:"border border-black rounded-lg px-3 py-1.5" %>
+    </div>
 
-    <main class="mx-5 lg:mx-52 my-5">
+    <main>
       <%= yield %>
     </main>
   </body>
