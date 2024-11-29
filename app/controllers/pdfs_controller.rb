@@ -99,7 +99,7 @@ class PdfsController < ApplicationController
       @cerfa.download,
       filename: @cerfa.filename.to_s,
       type: @cerfa.content_type.to_s,
-      disposition: 'attachment'
+      disposition: 'inline'
     )
 
     # render layout: 'profile'
@@ -107,21 +107,14 @@ class PdfsController < ApplicationController
 
   def cerfa_inline
     @pdf_inline = cerfa_donator_donation_path(donator_id: @donator, id: @donation)
-    render layout: 'pdf_viewer'
+    # render layout: 'pdf_viewer'
   end
 
   def download_pdf
     cerfa = @donator.cerfa
 
     respond_to do |format|
-      format.pdf {
-        send_data(
-          cerfa.download,
-          filename: cerfa.filename.to_s,
-          type: cerfa.content_type.to_s,
-          disposition: 'attachment'
-        )
-      }
+      format.pdf { send_data(cerfa.download, filename: cerfa.filename.to_s, type: cerfa.content_type.to_s, disposition: 'attachment')}
     end
   end
 
