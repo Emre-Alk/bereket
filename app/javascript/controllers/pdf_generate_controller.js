@@ -72,32 +72,31 @@ export default class extends Controller {
   downloadFile(url, filename) {
     console.log('url next:', url)
     console.log('filename next:', filename)
+    setTimeout(() => {
 
-    fetch(url)
-      .then(response => response.blob())
-      .then(blob => {
-        console.log(blob);
+      fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+          console.log(blob);
 
-        setTimeout(() => {
+            const a = document.createElement('a');
+            const objectUrl = URL.createObjectURL(blob);
+            a.href = objectUrl;
+            a.download = filename || 'file.pdf';
+            document.body.appendChild(a); // Required for some mobile browsers
+            a.click();
+            document.body.removeChild(a); // Clean up
+            URL.revokeObjectURL(objectUrl); // Release memory
 
-          const a = document.createElement('a');
-          const objectUrl = URL.createObjectURL(blob);
-          a.href = objectUrl;
-          a.download = filename || 'file.pdf';
-          document.body.appendChild(a); // Required for some mobile browsers
-          a.click();
-          document.body.removeChild(a); // Clean up
-          URL.revokeObjectURL(objectUrl); // Release memory
-
-          let status = 'reset'
-          this.loadAnimation(status)
-          this.toggleAllButtons()
-        }, 7000)
-
-      })
+            let status = 'reset'
+            this.loadAnimation(status)
+            this.toggleAllButtons()
+        })
       .catch(error => {
         console.error('Error downloading the file:', error);
       });
+    }, 5000)
+
   }
 
   fetchCerfa(data) {
