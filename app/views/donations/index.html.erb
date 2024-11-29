@@ -24,32 +24,45 @@
   <% @donations.each do |don| %>
     <% if current_user.donator? %>
 
-        <div class="bg-white flex flex-row px-2 pt-2 items-center gap-x-5">
+      <div class="bg-white flex flex-row px-2 pt-2 items-center gap-x-5">
 
-          <%= link_to place_path(don.place), class:'flex flex-row items-center gap-4 w-3/4' do %>
-            <div class="bg-white">
-              <%= don.place.place_image.attached? ? cl_image_tag(don.place.place_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full') %>
-            </div>
+        <%= link_to place_path(don.place), class:'flex flex-row items-center gap-4 w-3/4' do %>
+          <div class="bg-white">
+            <%= don.place.place_image.attached? ? cl_image_tag(don.place.place_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full') %>
+          </div>
 
-            <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
-                <p><%= don.place.name %></p>
-                <p><%= number_to_currency(don.amount.to_f / 100, locale: :fr, strip_insignificant_zeros: true) %></p>
-                <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
-            </div>
-          <% end %>
+          <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+              <p><%= don.place.name %></p>
+              <p><%= number_to_currency(don.amount.to_f / 100, locale: :fr, strip_insignificant_zeros: true) %></p>
+              <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
+          </div>
+        <% end %>
 
-            <div data-controller="pdf-generate" data-pdf-generate-don-id-value="<%= don.id %>" data-pdf-generate-donator-id-value="<%= @donator.id %>" class="flex-none">
+        <div data-controller="pdf-generate" data-pdf-generate-don-id-value="<%= don.id %>" data-pdf-generate-donator-id-value="<%= @donator.id %>" class="flex-none">
 
-              <button data-action="click->pdf-generate#generate" data-pdf-generate-target="btn" class="bg-neutral-100 text-black text-center min-w-28 min-h-8 rounded-lg ">
-                <p>Reçu Fiscal</p>
-                <span class="hidden items-center justify-center min-w-28 min-h-8 rounded-lg bg-black spinner-<%= don.id %>">
-                  <%= icon("fa-solid", "circle-notch", class: "animate-spin", style:"color: white") %>
-                </span>
-              </button>
-
-            </div>
+          <button
+            id="<%= don.id %>"
+            class="button bg-neutral-100 text-black text-center min-w-28 min-h-8 rounded-lg"
+            data-pdf-generate-target="btn"
+            data-action="click->pdf-generate#download"
+            data-pdf-generate-payload-param='{"url": "<%= download_donator_donation_path(@donator, don, request.params.merge(format: :pdf)) %>", "filename": "cerfa_11580_05_000<%= @donator.id %>000<%= don.id %>.pdf"}'>
+            <p>Reçu Fiscal</p>
+            <span id="spinner-<%= don.id %>" class="hidden items-center justify-center min-w-28 min-h-8 rounded-lg bg-black">
+              <%= icon("fa-solid", "circle-notch", class: "animate-spin", style:"color: white") %>
+            </span>
+          </button>
+          <!--
+          <button data-action="click->pdf-generate#generate" data-pdf-generate-target="btn" class="bg-neutral-100 text-black text-center min-w-28 min-h-8 rounded-lg ">
+            <p>Reçu Fiscal</p>
+            <span class="hidden items-center justify-center min-w-28 min-h-8 rounded-lg bg-black spinner-<%= don.id %>">
+              <%= icon("fa-solid", "circle-notch", class: "animate-spin", style:"color: white") %>
+            </span>
+          </button>
+          -->
 
         </div>
+
+      </div>
 
     <% else %>
       <div class="bg-white flex flex-row px-2 pt-2 items-center">

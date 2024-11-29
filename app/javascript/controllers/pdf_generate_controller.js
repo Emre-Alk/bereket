@@ -11,6 +11,7 @@ export default class extends Controller {
   connect() {
     this.loadAnimation = this.loadAnimation.bind(this)
   }
+
   generate() {
     const url = `/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`
 
@@ -24,6 +25,77 @@ export default class extends Controller {
           console.log('donator id', data.donator_id);
         }
       })
+  }
+
+  download({params}) {
+    this.toggleAllButtons('disable')
+    let status = 'loading'
+    this.loadAnimation(status)
+    console.log('donator', this.donatorIdValue);
+    console.log('donID', this.donIdValue);
+
+
+
+    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`)
+    .then(response => response.json())
+    .then((data) => {
+      if (data.message === "job enqueued") {
+        const url = params.payload.url
+        console.log('url', url);
+
+        const filename = params.payload.filename
+        this.downloadFile(url, filename);
+      }
+    })
+  }
+
+  toggleAllButtons(message) {
+    const buttons = document.querySelectorAll('.button')
+
+    if (message === 'disable') {
+      buttons.forEach((btn) => {
+        btn.setAttribute("disabled", "")
+        if (btn.id !== this.donIdValue.toString()) {
+          btn.classList.toggle('opacity-50')
+        }
+      })
+    } else {
+      buttons.forEach((btn) => {
+        btn.removeAttribute("disabled")
+        if (btn.id !== this.donIdValue.toString()) {
+          btn.classList.toggle('opacity-50')
+        }
+      })
+    }
+  }
+
+  downloadFile(url, filename) {
+    console.log('url next:', url)
+    console.log('filename next:', filename)
+
+    fetch(url)
+      .then(response => response.blob())
+      .then(blob => {
+        console.log(blob);
+        setTimeout(() => {
+
+          const a = document.createElement('a');
+          const objectUrl = URL.createObjectURL(blob);
+          a.href = objectUrl;
+          a.download = filename || 'file.pdf';
+          document.body.appendChild(a); // Required for some mobile browsers
+          a.click();
+          document.body.removeChild(a); // Clean up
+          URL.revokeObjectURL(objectUrl); // Release memory
+
+          let status = 'reset'
+          this.loadAnimation(status)
+          this.toggleAllButtons()
+        }, 5000)
+      })
+      .catch(error => {
+        console.error('Error downloading the file:', error);
+      });
   }
 
   fetchCerfa(data) {
@@ -54,13 +126,17 @@ export default class extends Controller {
   }
 
   loadAnimation(status) {
-    const spin = document.querySelector(`.spinner-${this.donIdValue}`)
+    // const spin = document.querySelector(`.spinner-${this.donIdValue}`)
+    const spin = document.getElementById(`spinner-${this.donIdValue}`)
+    console.log('spinner', spin);
 
     if (status === 'loading') {
+      console.log('animation loading');
       this.btnTarget.children[0].classList.toggle('hidden')
       spin.classList.toggle('hidden')
       spin.classList.toggle('flex')
     } else {
+      console.log('animation reset');
       setTimeout(() => {
         // code executes sec before pfd opening so i set a timeout to cope with it
         spin.classList.toggle('hidden')
