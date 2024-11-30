@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="pdf-download"
 export default class extends Controller {
+  // used it with cerfa_inline view. to be deleted if cerfa_inline view is deleted
   download() {
     const url = this.data.get('url'); // PDF URL from data attribute
     const filename = this.data.get('filename'); // Optional filename

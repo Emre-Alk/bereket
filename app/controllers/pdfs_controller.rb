@@ -91,11 +91,12 @@ class PdfsController < ApplicationController
   end
 
   def view_pdf
+    # not used. see comment JS controller
     # donator = current_user.donator unless params[:donator_id] # case if use the non nested route
     # donator = Donator.find(params[:donator_id]) if params[:donator_id] # refacto into before action
 
     @cerfa = @donator.cerfa
-    @pdf = @cerfa.url
+    # @pdf = @cerfa.url
 
     send_data(
       @cerfa.download,
@@ -103,19 +104,18 @@ class PdfsController < ApplicationController
       type: @cerfa.content_type.to_s,
       disposition: 'inline'
     )
-
-    # render layout: 'profile'
   end
 
   def cerfa_inline
+    # not used. see comment JS controller
     @pdf_inline = cerfa_donator_donation_path(donator_id: @donator, id: @donation)
     # render layout: 'pdf_viewer'
   end
 
   def download_pdf
     cerfa = @donator.cerfa
-    cerfa_path = Cloudinary::Utils.cloudinary_url(cerfa.url)
-    pdf_file = URI.parse(cerfa_path).open
+    # cerfa_path = Cloudinary::Utils.cloudinary_url(cerfa.url)
+    # pdf_file = URI.parse(cerfa_path).open
 
     respond_to do |format|
       # format.pdf { send_file(pdf_file, filename: cerfa.filename.to_s, type: cerfa.content_type.to_s, disposition: 'attachment')}
