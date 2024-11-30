@@ -20,8 +20,8 @@ export default class extends Controller {
       btns.forEach((btn) => {
         if (btn.classList.contains('active')) {
           btn.classList.remove('active')
-          btn.classList.remove('bg-black', 'text-white')
-          btn.classList.add('bg-neutral-300', 'text-black')
+          btn.classList.remove('bg-black', 'text-white', 'border-black')
+          btn.classList.add('bg-white', 'text-black', 'border-gray-400')
 
           const indexOld = btns.indexOf(btn)
           prompts[indexOld].classList.toggle('hidden')
@@ -30,8 +30,8 @@ export default class extends Controller {
       })
 
       event.target.classList.add('active')
-      event.target.classList.remove('bg-neutral-300', 'text-black')
-      event.target.classList.add('bg-black', 'text-white')
+      event.target.classList.remove('bg-white', 'text-black', 'border-gray-400')
+      event.target.classList.add('bg-black', 'text-white', 'border-black')
 
       const indexNew = btns.indexOf(event.target)
       prompts[indexNew].classList.toggle('hidden')

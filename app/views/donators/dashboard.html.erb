@@ -13,7 +13,7 @@
 <!--header - end -->
 
 <!--section - start -->
-<div class="flex flex-col pt-10 pb-4 gap-y-4">
+<div class="flex flex-col pt-10 pb-4 gap-y-8">
 
   <!--welcoming - start -->
   <div class="flex justify-start">
@@ -41,18 +41,19 @@
       </div>
     </div>
 
-    <div class="flex flex-row rounded-md text-sm w-full divide-x divide-white font-medium tracking-wide">
-      <button data-action="carousel#toggle" id="total" data class="active w-full rounded-l-md px-4 py-2 bg-black text-white">Total</button>
-      <button data-action="carousel#toggle" id="net" class="w-full px-4 py-2 bg-neutral-300 text-black">Net</button>
-      <button data-action="carousel#toggle" id="reduction" class="w-full px-4 py-2 rounded-r-md bg-neutral-300 text-black">Réductions</button>
+    <%# <div class="flex flex-row rounded-md text-sm w-full divide-x divide-gray-400 font-medium tracking-wide border border-gray-400"> %>
+    <div class="flex flex-row text-sm w-full font-medium tracking-wide">
+      <button data-action="carousel#toggle" id="total" class="active w-full px-4 py-2 bg-black text-white border border-black rounded-l-md">Total</button>
+      <button data-action="carousel#toggle" id="net" class="w-full px-4 py-2 text-black border-y border-gray-400">Net</button>
+      <button data-action="carousel#toggle" id="reduction" class="w-full px-4 py-2 text-black border border-gray-400 rounded-r-md">Réductions</button>
     </div>
 
   </div>
   <!--indicateur - end -->
 
   <!--favoris - start -->
-  <div>
-    <p class="roboto-thin text-slate-800 text-base">Mes Favoris</p>
+  <div class="space-y-2">
+    <p class="text-gray-500 font-medium text-sm">Mes favoris</p>
     <div class="bg-white flex flex-row justify-start items-center h-32 gap-x-2 p-1 rounded-lg overflow-x-auto text-center shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
       <!--start-->
       <% if @favorites.empty? %>
@@ -73,8 +74,8 @@
   <!--favoris - end -->
 
   <!--derniers dons - start -->
-    <div>
-      <p class="roboto-thin text-slate-800 text-base">Derniers dons</p>
+    <div class="space-y-2">
+      <p class="text-gray-500 font-medium text-sm">Derniers dons</p>
       <div class="bg-white flex flex-col h-64 gap-2 divide-y divide-black/30 rounded-lg p-1 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
         <!--start-->
         <%= render partial: "shared/donations", locals: {donations: @sorted_donations, size: 10} %>

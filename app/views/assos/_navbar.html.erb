@@ -1,4 +1,4 @@
-<nav data-controller="navbar" id="menu" data-navbar-target="menu" class="flex flex-col items-center fixed z-50 inset-y-0 -right-64 h-dvh w-64 gap-y-12 py-20 px-10 bg-white transition transform delay-0 duration-500 ease-in-out">
+<nav data-controller="navbar" id="menu" data-navbar-target="menu" class="flex flex-col items-center fixed z-50 inset-y-0 -right-64 h-dvh w-64 gap-y-12 py-20 px-6 bg-white transition transform delay-0 duration-500 ease-in-out">
   <!--indicateurs - start -->
   <div class="flex flex-row gap-x-6">
     <!--indicateur box 1 -->
@@ -17,59 +17,76 @@
 
   <!--menu items - start -->
 <% if asso %>
-  <div>
-    <ul class="flex flex-col justify-center items-start gap-y-12">
+  <div class="w-full space-y-10 text-sm">
 
-      <li>
-        <%= link_to asso_donations_path(asso) do %>
-          <div class="flex flex-row justify-center items-baseline gap-x-2">
-            <%= icon("fa-solid", "gift") %>
-            <p>Mes donations</p>
-          </div>
-        <% end %>
-      </li>
+    <%# general menu items %>
+    <div class="space-y-2">
+      <p class="font-medium">General</p>
+      <ul class="flex flex-col justify-center items-start gap-y-6 w-full">
 
-      <li>
-        <%= link_to assos_donators_path() do %>
-          <div class="flex flex-row justify-center items-baseline gap-x-2">
-            <%= icon("fa-solid", "users") %>
-            <p>Mes donateurs</p>
-          </div>
-        <% end %>
-      </li>
+        <li class="w-full px-4 py-2 border border-gray-200 rounded-md">
+          <%= link_to asso_donations_path(asso) do %>
+            <div class="flex flex-row justify-start items-center gap-x-4">
+              <%= icon("fa-solid", "gift") %>
+              <p>Mes donations</p>
+            </div>
+          <% end %>
+        </li>
 
-      <li>
-          <div class="flex flex-row justify-center items-baseline gap-x-2" data-controller="qrcode-modal" data-action="click->qrcode-modal#toggle">
-            <%= icon("fa-solid", "qrcode") %>
-            <p>Mon QR code</p>
-          </div>
-      </li>
+        <li class="w-full px-4 py-2 border border-gray-200 rounded-md">
+          <%= link_to assos_donators_path() do %>
+            <div class="flex flex-row justify-start items-center gap-x-4">
+              <%= icon("fa-solid", "users") %>
+              <p>Mes donateurs</p>
+            </div>
+          <% end %>
+        </li>
 
-      <li>
-        <%= link_to assos_account_path do %>
-          <div class="flex flex-row justify-center items-baseline gap-x-2">
-            <%= icon("fa-solid", "gear") %>
-            <p>Mon compte</p>
-          </div>
-        <% end %>
-      </li>
+        <li class="w-full px-4 py-2 border border-gray-200 rounded-md">
+            <div class="flex flex-row justify-start items-center gap-x-4" data-controller="qrcode-modal" data-action="click->qrcode-modal#toggle">
+              <%= icon("fa-solid", "qrcode") %>
+              <p>Mon QR code</p>
+            </div>
+        </li>
 
-      <li>
-        <%= render partial: "assos/signatures/signature", locals: { asso: asso } %>
-      </li>
+        <li class="w-full px-4 py-2 border border-gray-200 rounded-md">
+          <%= link_to assos_account_path do %>
+            <div class="flex flex-row justify-start items-center gap-x-4">
+              <%= icon("fa-solid", "gear") %>
+              <p>Mon compte</p>
+            </div>
+          <% end %>
+        </li>
+      </ul>
+    </div>
 
-    </ul>
+    <%# support menu items %>
+    <div class="space-y-2">
+      <p class="font-medium">Support</p>
+      <ul>
+        <li class="w-full px-4 py-2 border border-gray-200 rounded-md">
+          <%= link_to "mailto:emrealkan.m@gmail.com?subject=Reference-#{asso.id}:&body=Merci de ne pas effacer le numéro de référence en objet. #{asso.name.capitalize} , comment puis-je vous aidez ?" do %>
+            <div class="flex flex-row justify-start items-center gap-x-4">
+              <%= svg_tag('message_box', class:'size-4 stroke-2') %>
+              <p>Nous contactez </p>
+            </div>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <p>Signature</p>
+      <ul>
+        <li class="w-full">
+          <%= render partial: "assos/signatures/signature", locals: { asso: asso } %>
+        </li>
+      </ul>
+    </div>
+
   </div>
 <% end %>
   <!--menu items - end -->
-
-  <div class="absolute bottom-16 flex justify-center w-11/12">
-  <!--
-    <%= render partial: 'shared/support_link', locals: { bg: '' } %>
-  -->
-    <%= render partial:"shared/support_email", locals: { user: asso } %>
-  </div>
-
 </nav>
 
 <%# qrcode (sits at -bottom-full) %>

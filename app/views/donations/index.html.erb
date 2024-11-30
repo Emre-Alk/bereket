@@ -2,15 +2,15 @@
 <div class="mb-7">
   <% if current_user.donator? %>
     <%= link_to donator_root_path do %>
-      <%= svg_tag('chevron-left', class:'size-6 stroke-2') %>
+      <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
     <% end %>
   <% elsif current_user.asso? %>
     <%= link_to asso_root_path do %>
-      <%= svg_tag('chevron-left', class:'size-6 stroke-2') %>
+      <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
     <% end %>
   <% else %>
     <%= link_to root_path do %>
-      <%= svg_tag('chevron-left', class:'size-6 stroke-2') %>
+      <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
     <% end %>
   <% end %>
 
