@@ -82,7 +82,7 @@ class PdfsController < ApplicationController
     # }
     # -------------------
 
-    pdf_job = PdfGenerationJob.perform_later(params[:id])
+    PdfGenerationJob.perform_later(params[:id])
 
     # jid = pdf_job.provider_job_id # code to get the jid of a job from sidekiq
     # Sidekiq::Queue.new.find_job(jid) # code to find a given job in the queue using his jid
