@@ -48,6 +48,8 @@ Rails.application.routes.draw do
   resources :places, only: %i[show] do
     resources :donations, only: %i[new]
     resource :checkout, only: %i[create show]
+    get "/qrcode", to: "places#download_qrcode"
+    get "/qrcodeattach", to: "places#attach_qrcode"
   end
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)

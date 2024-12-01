@@ -21,6 +21,12 @@
         <p class="text-sm tracking-wide">Partager</p>
       </button>
 
+      <%# print link  %>
+      <%= link_to place_qrcodeattach_path(place), class:"border border-black" do %>
+        <%= svg_tag('share') %>
+        <p class="text-sm tracking-wide">Attach</p>
+      <% end %>
+
       <%# copy link  %>
       <button class="flex flex-col items-center justify-center w-1/2 rounded-lg py-2 bg-white"
               value="<%= new_place_donation_url(place) %>"

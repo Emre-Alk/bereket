@@ -48,7 +48,7 @@ class PdfGenerationJob < ApplicationJob
       StringIO.new(pdf_compiled),
       public_id: 'cerfa_11580_05',
       folder: "#{Rails.env}/donator/#{donator.id}/cerfa",
-      resource_type: :auto, # :raw any non-image/video types
+      resource_type: :auto, # :raw any non-image/video types (ex: xls)
       overwrite: true
     )
     # puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
