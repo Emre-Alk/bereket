@@ -1,24 +1,26 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
-// Connects to data-controller="touch-indicator"
 export default class extends Controller {
   connect() {
-    this.handleTouch = this.handleTouch.bind(this); // Bind this for event listeners
+    this.handleTouch = this.handleTouch.bind(this);
 
     // Add touch event listeners
     document.addEventListener("touchstart", this.handleTouch);
-    // document.addEventListener("touchmove", this.handleTouch);
+    document.addEventListener("touchmove", this.handleTouch);
   }
 
   disconnect() {
     // Remove touch event listeners
     document.removeEventListener("touchstart", this.handleTouch);
-    // document.removeEventListener("touchmove", this.handleTouch);
+    document.removeEventListener("touchmove", this.handleTouch);
   }
 
   handleTouch(event) {
     for (let touch of event.touches) {
-      this.createTouchIndicator(touch.clientX, touch.clientY);
+      this.createTouchIndicator(
+        touch.clientX + window.scrollX, // Adjust X position
+        touch.clientY + window.scrollY  // Adjust Y position
+      );
     }
   }
 
@@ -36,6 +38,6 @@ export default class extends Controller {
     document.body.appendChild(circle);
 
     // Remove the circle after animation
-    setTimeout(() => circle.remove(), 400);
+    setTimeout(() => circle.remove(), 500);
   }
 }
