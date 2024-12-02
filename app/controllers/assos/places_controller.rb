@@ -42,19 +42,19 @@ class Assos::PlacesController < AssosController
       # attach_qr_code_svg(@place, @place.qr_code) # instead generate on the fly (to de-comment otherwise + see show )
       # ----------if want Qr code in PNG--------------------
       # attach_qr_code_png(@place, @place.qr_code)
+
       service_qrcode = QrGenerator.new(@place)
 
       qrcode = service_qrcode.qr_generate
 
-      upload_url = service_qrcode.upload_cloud(qrcode)
-
-      file = URI.parse(upload_url['secure_url']).open
-      place_name = @place.name.split(' ').map(&:upcase).join(' ')
+      filename = "qrcode_basic"
 
       @place.qr_image.attach(
-        io: file,
-        filename: "place_#{place_name}_qrcode.png"
-      )
+          io: StringIO.new(qrcode),
+          filename: "#{filename}.svg",
+          content_type: "image/svg+xml",
+          key: "asso/#{@place.asso.id}/places/#{@place.id}/qrcodes/#{filename}"
+        )
 
       redirect_to asso_root_path
     else

@@ -55,15 +55,15 @@ class QrGenerator
     svg = svg.html_safe
   end
 
-  def upload_cloud(svg)
-    upload_url = Cloudinary::Uploader.upload(
-      StringIO.new(svg),
-      public_id: "qr_code_#{place.id}",
-      resource_type: :image,
-      format: 'png',
-      quality: 'auto',
-      asset_folder: "#{Rails.env}/asso/#{place.asso.id}/place/#{place.id}/qrcode",
-      overwrite: true
-    )
-  end
+  # def upload_cloud(svg)
+  #   upload_url = Cloudinary::Uploader.upload(
+  #     StringIO.new(svg),
+  #     public_id: "qr_code_#{place.id}",
+  #     resource_type: :image,
+  #     format: 'png',
+  #     quality: 'auto',
+  #     folder: "#{Rails.env}/asso/#{place.asso.id}/place/#{place.id}/qrcode",
+  #     overwrite: true
+  #   )
+  # end
 end

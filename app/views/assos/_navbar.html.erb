@@ -88,7 +88,7 @@
       <p>Qrcode</p>
       <ul>
         <li class="w-full">
-          <%= cl_image_tag(place.qr_image.key, class: "size-14") %>
+          <%= cl_image_tag(place.qr_image.key, fetch_format: "jpg", class: "size-14") if place.qr_image.attached? %>
         </li>
       </ul>
     </div>

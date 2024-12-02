@@ -31,15 +31,23 @@ class PlacesController < ApplicationController
 
     qrcode = service_qrcode.qr_generate
 
-    upload_url = service_qrcode.upload_cloud(qrcode)
+    # works but download as svg
+    # send_data(
+    #   qrcode,
+    #   type: "image/svg+xml",
+    #   filename: "dynamic-graphic.svg",
+    #   disposition: "attachment"
+    # )
 
-    file = URI.parse(upload_url['secure_url']).open
-    place_name = place.name.split(' ').map(&:upcase).join(' ')
+    filename = "qrcode_basic"
+    # filename = "qrcode_basic_#{Time.now.to_i}"
 
     place.qr_image.attach(
-      io: file,
-      filename: "place_#{place_name}_qrcode.png"
-    )
+        io: StringIO.new(qrcode),
+        filename: "#{filename}.svg",
+        content_type: "image/svg+xml",
+        key: "asso/#{place.asso.id}/places/#{place.id}/qrcodes/#{filename}"
+      )
   end
 
   # private

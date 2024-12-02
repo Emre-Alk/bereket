@@ -39,35 +39,36 @@ class PdfGenerationJob < ApplicationJob
       receipt: "#{donation.id}-#{donation.created_at.to_i}"
     }
 
-    pdf_compiled = PdfGenerator.new(data).generate
-    return unless pdf_compiled
+    service_pdf = PdfGenerator.new(data).generate
+    return unless service_pdf
 
     # puts '👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍'
 
-    upload_response = Cloudinary::Uploader.upload(
-      StringIO.new(pdf_compiled),
-      public_id: 'cerfa_11580_05',
-      folder: "#{Rails.env}/donator/#{donator.id}/cerfa",
-      resource_type: :auto, # :raw any non-image/video types (ex: xls)
-      overwrite: true
-    )
-    # puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
+    # upload_response = Cloudinary::Uploader.upload(
+    #   StringIO.new(service_pdf),
+    #   public_id: 'cerfa_11580_05',
+    #   folder: "#{Rails.env}/donator/#{donator.id}/cerfa",
+    #   resource_type: :auto, # :raw any non-image/video types (ex: xls)
+    #   overwrite: true
+    # )
 
-    # puts upload_response
-    # puts upload_response['secure_url']
+    # file = URI.parse(upload_response['secure_url']).open
 
-    # puts '👊👊👊👊👊👊👊👊👊👊👊👊👊'
+    # donator.cerfa.attach(
+    #   io: file,
+    #   filename: "cerfa_11580_05_000#{donator.id}000#{donation.id}.pdf",
+    #   content_type: 'application/pdf'
+    # )
 
-    file = URI.parse(upload_response['secure_url']).open
+    filename = "cerfa_11580_05_#{Time.now.to_i}"
 
     donator.cerfa.attach(
-      io: file,
-      filename: "cerfa_11580_05_000#{donator.id}000#{donation.id}.pdf",
-      content_type: 'application/pdf'
+      io: StringIO.new(service_pdf),
+      filename: "#{filename}.pdf",
+      content_type: 'application/pdf',
+      metadata: { overwrite: true },
+      key: "donator/#{donator.id}/cerfa/#{filename}"
     )
 
-    donator.save
-
-    # puts '✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅'
   end
 end
