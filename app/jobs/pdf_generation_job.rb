@@ -69,6 +69,5 @@ class PdfGenerationJob < ApplicationJob
       metadata: { overwrite: true },
       key: "donator/#{donator.id}/cerfa/#{filename}"
     )
-
   end
 end

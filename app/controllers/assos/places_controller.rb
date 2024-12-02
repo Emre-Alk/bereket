@@ -43,19 +43,6 @@ class Assos::PlacesController < AssosController
       # ----------if want Qr code in PNG--------------------
       # attach_qr_code_png(@place, @place.qr_code)
 
-      service_qrcode = QrGenerator.new(@place)
-
-      qrcode = service_qrcode.qr_generate
-
-      filename = "qrcode_basic"
-
-      @place.qr_image.attach(
-          io: StringIO.new(qrcode),
-          filename: "#{filename}.svg",
-          content_type: "image/svg+xml",
-          key: "asso/#{@place.asso.id}/places/#{@place.id}/qrcodes/#{filename}"
-        )
-
       redirect_to asso_root_path
     else
       render :new, status: :unprocessable_entity

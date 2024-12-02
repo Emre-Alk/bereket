@@ -8,6 +8,9 @@
     <div class="flex flex-col items-center justify-center w-full gap-y-8 pb-8 pt-10 rounded-3xl bg-white">
       <%# qr code %>
       <%= qr_generate(place, class:'size-48') %>
+      <!--
+      <%= cl_image_tag(place.qr_image.key, width:192, height: 192, format:'png', type: "upload") %>
+      -->
       <%# place name upcase %>
       <h1 class="text-xl font-medium tracking-wide align-bottom"><%= place.name.split(' ').map(&:upcase).join(' ') %></h1>
     </div>
@@ -20,12 +23,6 @@
         <%= svg_tag('share') %>
         <p class="text-sm tracking-wide">Partager</p>
       </button>
-
-      <%# print link  %>
-      <%= link_to place_qrcodeattach_path(place), class:"border border-black" do %>
-        <%= svg_tag('share') %>
-        <p class="text-sm tracking-wide">Attach</p>
-      <% end %>
 
       <%# copy link  %>
       <button class="flex flex-col items-center justify-center w-1/2 rounded-lg py-2 bg-white"

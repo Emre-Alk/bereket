@@ -18,37 +18,37 @@ class PlacesController < ApplicationController
     @score = @reviews.presence ? @reviews.sum(&:rating).fdiv(@reviews.length) : 0
   end
 
-  def attach_qrcode
-    place = Place.find(params[:place_id])
-    # svg = qr_generate(@place)
-    # send_data(
-    #   svg,
-    #   type: "image/svg+xml",
-    #   filename: "dynamic-graphic.svg",
-    #   disposition: "attachment"
-    # )
-    service_qrcode = QrGenerator.new(place)
+  # def attach_qrcode
+  #   place = Place.find(params[:place_id])
+  #   # svg = qr_generate(@place)
+  #   # send_data(
+  #   #   svg,
+  #   #   type: "image/svg+xml",
+  #   #   filename: "dynamic-graphic.svg",
+  #   #   disposition: "attachment"
+  #   # )
+  #   service_qrcode = QrGenerator.new(place)
 
-    qrcode = service_qrcode.qr_generate
+  #   qrcode = service_qrcode.qr_generate
 
-    # works but download as svg
-    # send_data(
-    #   qrcode,
-    #   type: "image/svg+xml",
-    #   filename: "dynamic-graphic.svg",
-    #   disposition: "attachment"
-    # )
+  #   # works but download as svg
+  #   # send_data(
+  #   #   qrcode,
+  #   #   type: "image/svg+xml",
+  #   #   filename: "dynamic-graphic.svg",
+  #   #   disposition: "attachment"
+  #   # )
 
-    filename = "qrcode_basic"
-    # filename = "qrcode_basic_#{Time.now.to_i}"
+  #   filename = "qrcode_basic"
+  #   # filename = "qrcode_basic_#{Time.now.to_i}"
 
-    place.qr_image.attach(
-        io: StringIO.new(qrcode),
-        filename: "#{filename}.svg",
-        content_type: "image/svg+xml",
-        key: "asso/#{place.asso.id}/places/#{place.id}/qrcodes/#{filename}"
-      )
-  end
+  #   place.qr_image.attach(
+  #       io: StringIO.new(qrcode),
+  #       filename: "#{filename}.svg",
+  #       content_type: "image/svg+xml",
+  #       key: "asso/#{place.asso.id}/places/#{place.id}/qrcodes/#{filename}"
+  #     )
+  # end
 
   # private
 
