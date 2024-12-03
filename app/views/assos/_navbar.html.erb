@@ -57,6 +57,16 @@
             </div>
           <% end %>
         </li>
+
+        <li class="w-full px-4 py-2 border border-gray-200 rounded-md">
+          <%= link_to edit_assos_place_path(place) do %>
+            <div class="flex flex-row justify-start items-center gap-x-4">
+              <%= icon("fa-solid", "gear") %>
+              <p>Mes établissements</p>
+            </div>
+          <% end %>
+        </li>
+
       </ul>
     </div>
 

@@ -28,6 +28,7 @@ class Assos::PlacesController < AssosController
     @place.asso = current_user.asso
 
     if @place.save
+      attach_image_organized(@place, params[:place][:place_image])
       # next change url to right location once donation path are coded
       # instead of hard coding the record with its id to have a working url, I perform it on spot with helper
       # if Rails.env.production?
@@ -49,12 +50,52 @@ class Assos::PlacesController < AssosController
     end
   end
 
+  def edit
+    @place = Place.find(params[:id])
+  end
+
+  def update
+    @place = Place.find(params[:id])
+    if @place.update(place_params)
+      attach_image_organized(@place, params[:place][:place_image])
+      redirect_to place_path(@place), notice: 'Profile updated successfully.'
+    else
+      render :edit
+    end
+  end
+
   def destroy
     # later
     # delete one of the place from the current asso's places
   end
 
   private
+
+  def attach_image_organized(place, uploaded_image)
+    # place.place_image.purge
+    filename = uploaded_image.original_filename
+    puts '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢'
+    puts filename
+    puts place.place_image.attached?
+    puts '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢'
+    folder_path = "asso/#{place.asso.id}/places/#{place.id}/images"
+
+    place.place_image.attach(
+      io: uploaded_image,
+      filename:,
+      content_type: uploaded_image.content_type,
+      metadata: { overwrite: true },
+      key: "#{folder_path}/#{filename}"
+    )
+    # blob = ActiveStorage::Blob.create_and_upload!(
+    #   io: uploaded_image,
+    #   filename:,
+    #   content_type: uploaded_image.content_type,
+    #   metadata: { overwrite: true },
+    #   key: "#{folder_path}/#{filename}"
+    # )
+    # place.place_image.attach(blob)
+  end
 
   def place_params
     params.require(:place).permit(
