@@ -41,15 +41,6 @@ module ApplicationHelper
       svg = svg.sub('<svg', "<svg class=\"#{options[:class]}\"")
     end
 
-    puts "🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢"
-    puts "place: #{place}"
-    puts "url: #{url}"
-    puts "qrcode: #{!qrcode.nil?}"
-    puts "qrcode: #{qrcode.inspect}"
-    puts "svg: #{!svg.nil?}"
-    puts "svg: #{svg.inspect}"
-    puts "🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢"
-
     # return a raw SVG to be rendered in views
     svg.html_safe
   end
