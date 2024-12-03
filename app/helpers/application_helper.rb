@@ -2,6 +2,7 @@ module ApplicationHelper
   def qr_generate(place, options = {})
     # create an instance of rqrcode  with 'url'
     url = Rails.env.production? ? new_place_donation_url(place) : "http://192.168.1.168:3000#{new_place_donation_path(place)}"
+
     qrcode = RQRCode::QRCode.new(url)
 
     # qrcode.as_svg(
@@ -42,6 +43,16 @@ module ApplicationHelper
 
     # To render raw SVG in views
     svg.html_safe
+
+    puts "🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢"
+    puts "place: #{place}"
+    puts "url: #{url}"
+    puts "qrcode: #{!qrcode.nil?}"
+    puts "qrcode: #{qrcode.inspect}"
+    puts "svg: #{!svg.nil?}"
+    puts "svg: #{svg.inspect}"
+    puts "🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢"
+
   end
 
   def svg_tag(path, options = {})
