@@ -21,7 +21,7 @@
 #
 class Donator < ApplicationRecord
   after_create :create_customer
-  after_update :update_customer
+  # after_update :update_customer
 
   belongs_to :user
   has_many :donations
