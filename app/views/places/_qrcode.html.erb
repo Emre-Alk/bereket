@@ -9,9 +9,6 @@
       <%# qr code %>
         place: <%= !place.nil? %>
         <%= qr_generate(place, class:'size-48') %>
-        <!--
-        <%= cl_image_tag(place.qr_image.key, width:192, height: 192, format:'png') if place.qr_image.attached?%>
-        -->
       <%# place name upcase %>
       <h1 class="text-xl font-medium tracking-wide align-bottom"><%= place.name.split(' ').map(&:upcase).join(' ') %></h1>
     </div>
