@@ -57,6 +57,11 @@ class Assos::PlacesController < AssosController
   def update
     @place = Place.find(params[:id])
     if @place.update(place_params)
+      # this is not efficient since 2 calls are made to cloud (consumes bandwiths)
+      # another method would be to update keys after activestorage attach uploaded file with:
+      # Cloudinary::Uploader.rename("development/#{old_key}", "development/#{new_key}")
+      # pros: this moves the file from env. root folder to "development/#{new_key}" folder
+      # cons: on purge, activestorage purges attachment but in cloud still there.
       attach_image_organized(@place, params[:place][:place_image])
       redirect_to place_path(@place), notice: 'Profile updated successfully.'
     else
@@ -72,17 +77,16 @@ class Assos::PlacesController < AssosController
   private
 
   def attach_image_organized(place, uploaded_image)
-    # place.place_image.purge
-    filename = uploaded_image.original_filename
-    puts '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢'
-    puts filename
-    puts place.place_image.attached?
-    puts '🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢'
+    # when this method is called, the uploaded image is already attached to the model
+    # thus, place.place_image exists
+    # at the end of the code, the attach method replaces the previous.
+    # not efficient since for each upload, 2 calls to cloudinary are made
+    extension = place.place_image.filename.extension
+    filename = "place.name_#{Time.now.to_i}"
     folder_path = "asso/#{place.asso.id}/places/#{place.id}/images"
-
     place.place_image.attach(
       io: uploaded_image,
-      filename:,
+      filename: "#{filename}.#{extension}",
       content_type: uploaded_image.content_type,
       metadata: { overwrite: true },
       key: "#{folder_path}/#{filename}"

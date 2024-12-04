@@ -28,7 +28,7 @@
 <%# banner of the place %>
 <% if @place.place_image.attached? %>
   <div class="flex justify-center items-center h-40 w-full">
-      <%= cl_image_tag(@place.place_image.key, format: 'auto', width: 390, height: 160, crop: "fill" ) %>
+    <%= cl_image_tag(@place.place_image.key, width: 390, height: 160, crop: "fill" ) %>
   </div>
 <% else %>
   <div class="flex justify-center items-center h-40 w-full bg-gray-300">

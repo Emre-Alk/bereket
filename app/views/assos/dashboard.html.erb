@@ -20,7 +20,7 @@
 
         <div class="flex flex-col items-center text-sm">
           <% if @my_place.place_image.attached? %>
-            <%= cl_image_tag(@my_place.place_image.key, alt:"picture", class:"rounded-full size-20 mb-1") %>
+            <%= cl_image_tag(@my_place.place_image.key, width: 80, height: 80, crop: "fill", alt:"picture", class:"rounded-full size-20 mb-1") %>
           <% else %>
             <div class="flex justify-center items-center rounded-full size-20 bg-gray-300">
               <%= svg_tag('image_empty', class:'size-10 bg-inherit text-gray-200') %>
