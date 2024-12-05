@@ -10,14 +10,15 @@
   </div>
 </div>
 -->
-<div class="mb-52">
-  <%# header %>
-  <div class="space-y-10 ml-5">
-    <h1 class="text-2xl font-medium roboto-medium-italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-orange-400 from-35% via-orange-500 to-55% to-orange-600 text-center ">G o o d i f y</h1>
-  </div>
 
+<%# header %>
+<div class="fixed top-0 inset-x-0 bg-white py-2.5">
+  <h1 class="text-2xl font-medium roboto-medium-italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-orange-400 from-35% via-orange-500 to-55% to-orange-600 text-center ">G o o d i f y</h1>
+</div>
+
+<div class="mt-16 flex flex-col items-center gap-y-14">
   <%# why Goodify %>
-  <div class="mt-10 flex flex-col items-center space-y-5">
+  <div class="flex flex-col items-center space-y-5">
     <h1 class="text-3xl tracking-wider text-center font-bold">Collectez des dons sans aucun effort</h1>
     <div class="flex flex-col items-center p-2 rounded-lg gap-y-4 w-11/12">
       <p class="flex text-start medium text-base text-wrap">Un service complet pour récompenser la générosité de vos donateurs:</p>
@@ -70,17 +71,48 @@
     </div>
   </div>
 
-  <%# screenshots %>
-  <div class="mt-10 skew-y-12">
-    <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
-      <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
-      <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
-      <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
-      <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
-      <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
+  <%# demo %>
+  <div data-controller="landing" data-landing-switch-class="bg-orange-400 text-white scale-105 font-medium" class="flex flex-col justify-start items-center p-2 rounded-lg gap-y-4 w-11/12">
+    <div class="flex flex-row bg-white text-black">
+      <button data-action="click->landing#display" data-landing-name-param="asso" data-landing-target="btnAsso" class="px-4 py-2 rounded-l-md tracking-wide transition-all duration-500 ease-in-out bg-orange-400 text-white scale-105 font-medium ">Goodify pour votre association</button>
+      <button data-action="click->landing#display" data-landing-name-param="donator" data-landing-target="btnDonator" class="px-4 py-2 rounded-r-md tracking-wide transition-all duration-500 ease-in-out ">Goodify pour vos donateurs</button>
+    </div>
+
+    <%# les associations %>
+    <div data-landing-target="demoAsso" class="mt-10">
+      <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
+        <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
+        <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
+        <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
+        <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
+        <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
           <%= image_tag('screen_asso.png', class:"mt-2 w-[172px] h-[362px]") %>
+        </div>
       </div>
     </div>
+
+    <%# les donateurs %>
+    <div data-landing-target="demoDonator" class="hidden mt-10">
+      <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
+        <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
+        <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
+        <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
+        <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
+        <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
+          <iframe
+            id="frame"
+            src="https://player.cloudinary.com/embed/?public_id=samples%2Fdemo-donateur_gluazs&cloud_name=dnnoyjw9r&player[posterOptions][transformation][start_offset]=0&player[autoplay]=true&player[muted]=true&player[loop]=true&player[controls]=false&player[hideContextMenu]=true&player[showLogo]=false&player[fluid]=false&player[width]=172&player[height]=372"
+            width="172"
+            height="372"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            false
+            allowfullscreen
+            frameborder="0"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -88,7 +120,8 @@
 
 
 <%# sticky call to action %>
-<div class="fixed bottom-0 inset-x-0 w-full px-5 py-10 rounded-t-3xl flex flex-col items-center justify-center space-y-5 bg-black">
+
+<div class="hidden fixed bottom-0 inset-x-0 w-full px-5 py-10 rounded-t-3xl flex flex-col items-center justify-center space-y-5 bg-black">
   <!--
   later to remove link_to and add JS to open pop-up form
   -->

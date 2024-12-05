@@ -48,7 +48,16 @@
   <%# subscribe btn (feature for later so people can see posts from this place =/ than add to fav) %>
 
   <%# Donate btn %>
-  <%= link_to "Faire un don", new_place_donation_path(@place), class:"flex justify-center py-2.5 px-5 bg-black text-white rounded-lg tracking-wide text-center"%>
+  <% if current_user.owner?(@place) %>
+    <%= link_to edit_assos_place_path(@place), class:"flex justify-center py-2.5 px-5 bg-black text-white rounded-lg tracking-wide text-center" do %>
+      <div class="inline-flex gap-x-2">
+        <span><%= svg_tag("edit_pen", class:'size-6') %></span>
+        <p>Editer</p>
+      </div>
+    <% end %>
+  <% else %>
+    <%= link_to "Faire un don", new_place_donation_path(@place), class:"flex justify-center py-2.5 px-5 bg-black text-white rounded-lg tracking-wide text-center"%>
+  <% end %>
 
   <%# ajouter en fav %>
   <div class="basis-1/4 flex-none flex justify-end">

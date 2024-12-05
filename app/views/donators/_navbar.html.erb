@@ -4,7 +4,7 @@
     <!--indicateur box 1 -->
     <div class="flex flex-col justify-center items-center">
       <%= icon("fa-solid", "gift") %>
-      <p> <%= @donations.count %> <%= @donations.count == 1 ? 'don' : 'dons' %> </p>
+      <p> <%= @donations.count %> <%= @donations.count <= 1 ? 'don' : 'dons' %> </p>
     </div>
     <!--indicateur box 2 -->
     <div class="flex flex-col justify-center items-center">

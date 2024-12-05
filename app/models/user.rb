@@ -45,6 +45,12 @@ class User < ApplicationRecord
     role == 'asso'
   end
 
+  def owner?(place)
+    return false unless asso
+
+    asso.places.include?(place)
+  end
+
   private
 
   def should_update_donator?

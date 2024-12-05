@@ -1,11 +1,21 @@
 <!-- TODO: review the design maybe use a table element. see if can DRY with a partial withing a table (a pdf btn is needed)-->
 <div class="mb-7">
   <% if current_user.donator? %>
+    <!--
     <%= link_to donator_root_path do %>
       <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
     <% end %>
+    -->
+    <%= link_to :back do %>
+      <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
+    <% end %>
   <% elsif current_user.asso? %>
+  <!--
     <%= link_to asso_root_path do %>
+      <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
+    <% end %>
+  -->
+    <%= link_to :back do %>
       <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
     <% end %>
   <% else %>
@@ -18,7 +28,7 @@
 
 <div class="bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
   <% if @donations.empty? %>
-    <p>Vous n'avez pas encore de dons.</p>
+    <p>Vous n'avez pas encore reçu de dons.</p>
   <% end %>
 
   <% @donations.each do |don| %>
@@ -90,9 +100,5 @@
       </div>
     <% end %>
 
-
   <% end %>
-
-
-
 </div>
