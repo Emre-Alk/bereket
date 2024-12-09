@@ -54,7 +54,7 @@
          <!--
          edit_assos_place_path(place)
          -->
-          <%= link_to place_path(place) do %>
+          <%= link_to assos_places_path do %>
             <div class="flex flex-row justify-start items-center gap-x-4">
               <%= icon("fa-solid", "map-pin") %>
               <p>Mes établissements</p>
@@ -79,7 +79,7 @@
       <p class="font-medium">Support</p>
       <ul>
         <li class="w-full px-4 py-2 border border-gray-200 rounded-md">
-          <%= link_to "mailto:emrealkan.m@gmail.com?subject=Reference-#{asso.id}:&body=Merci de ne pas effacer le numéro de référence en objet. #{asso.name.capitalize} , comment puis-je vous aidez ?" do %>
+          <%= link_to "mailto:support@goodify.fr?subject=Reference-#{asso.id}:&body=Merci de ne pas effacer le numéro de référence en objet. #{asso.name.capitalize} , comment puis-je vous aidez ?" do %>
             <div class="flex flex-row justify-start items-center gap-x-4">
               <%= svg_tag('message_box', class:'size-4 stroke-2') %>
               <p>Nous contactez </p>
