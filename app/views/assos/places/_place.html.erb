@@ -1,0 +1,19 @@
+<%# placer tous les éléments d'un établissement %>
+<%# image de profil %>
+<%# formulaire edition pour les attrbuts %>
+<%# message de remerciement %>
+<%# stats de l'établissement %>
+
+<%# image %>
+<div>
+
+  <% if place.place_image.attached? %>
+    <div class=" flex justify-center items-center h-28 w-full">
+        <%= cl_image_tag(place.place_image.key, crop: 'fill', class:'h-28 w-full rounded-lg') %>
+    </div>
+  <% else %>
+    <div class="flex justify-center items-center h-28 w-full rounded-lg bg-gray-300">
+      <%= svg_tag('image_empty', class:'size-20 bg-inherit text-gray-200') %>
+    </div>
+  <% end %>
+</div>
