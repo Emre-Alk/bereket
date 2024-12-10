@@ -6,7 +6,6 @@
 
 <%# image %>
 <div>
-
   <% if place.place_image.attached? %>
     <div class=" flex justify-center items-center h-28 w-full">
         <%= cl_image_tag(place.place_image.key, crop: 'fill', class:'h-28 w-full rounded-lg') %>
