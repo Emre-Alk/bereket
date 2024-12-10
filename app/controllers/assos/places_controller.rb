@@ -2,9 +2,7 @@ class Assos::PlacesController < AssosController
   def index
     # list all the current asso's places
     @places = current_user.asso.places.includes(donations: :donator)
-    # rename variable
-    @donators_per_place = @places.map { |place| [place, place.donations.sum(&:amount_net), place.donations.group_by(&:donator)] }
-    # @donator_count_per_place = @donators_per_place.
+    @stats_per_place = @places.map { |place| [place, place.donations.sum(&:amount_net), place.donations.group_by(&:donator)] }
   end
 
   def show
