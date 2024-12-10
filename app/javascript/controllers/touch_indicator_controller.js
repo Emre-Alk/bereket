@@ -6,13 +6,13 @@ export default class extends Controller {
 
     // Add touch event listeners
     document.addEventListener("touchstart", this.handleTouch);
-    document.addEventListener("touchmove", this.handleTouch);
+    // document.addEventListener("touchmove", this.handleTouch);
   }
 
   disconnect() {
     // Remove touch event listeners
     document.removeEventListener("touchstart", this.handleTouch);
-    document.removeEventListener("touchmove", this.handleTouch);
+    // document.removeEventListener("touchmove", this.handleTouch);
   }
 
   handleTouch(event) {
