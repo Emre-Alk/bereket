@@ -79,16 +79,80 @@
     </div>
 
     <%# les associations %>
-    <div data-landing-target="demoAsso" class="mt-10">
-      <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
-        <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
-        <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
-        <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
-        <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
-        <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
-          <%= image_tag('screen_asso.png', class:"mt-2 w-[172px] h-[362px]") %>
+    <div data-landing-target="demoAsso" class="mt-5 flex flex-row items-center w-full overflow-x-auto whitespace-nowrap scroll-smooth">
+      <%# feature_1 %>
+      <div class="bg-yellow-100 inline-block w-[80%] h-fit rounded-md m-2 shadow-md">
+        <%# screen_1 %>
+        <div class="scale-75">
+          <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
+            <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
+            <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
+            <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
+            <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
+            <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
+              <%#= image_tag('screen_asso.png', class:"mt-2 w-[172px] h-[362px]") %>
+            </div>
+          </div>
+        </div>
+        <%# benefice_1 %>
+        <div class="space-y-2 px-4 break-all">
+          <h2 class="text-2xl text-center font-medium mb-4">Augmentez votre collecte de +30% en moyenne</h2>
+          <div class="text-gray-600 text-lg text-center space-y-2">
+            <p>Fini le besoin d'acheter ou de louer de plus en plus de terminal de paiement et trouver des bénévoles pour les équiper afin d'augmenter votre collecte.</p>
+            <p>Optez pour l'efficacité, chaque donateur peut utiliser son smartphone comme un moyen de paiement. En 3 cliques, votre donateur effectue son don quand il le souhaite et depuis n'importe où dans le monde.</p>
+          </div>
         </div>
       </div>
+
+      <%# feature_2 %>
+      <div class="bg-purple-100 inline-block w-[80%] h-fit rounded-md m-2 shadow-md">
+        <%# screen_1 %>
+        <div class="scale-75">
+          <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
+            <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
+            <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
+            <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
+            <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
+            <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
+              <%#= image_tag('screen_asso.png', class:"mt-2 w-[172px] h-[362px]") %>
+            </div>
+          </div>
+        </div>
+        <%# benefice_1 %>
+        <div class="space-y-2 px-4">
+          <h2 class="text-2xl text-center font-medium mb-4">Ne stresser plus à faire les comptes</h2>
+          <div class="text-gray-600 text-lg text-center space-y-2">
+            <p>Fini le temps perdu à courir dernière chaque bénévole/TPE pour récupérer les tickets de paiment et faire les comptes. Ne faites plus d'erreurs de comptage grâce à l'automatisation.</p>
+            <p>Visualiser en temps réel la somme de vos dons collectés. La somme est automatiquement transférée sur votre compte bancaire à la fin de chaque journée.</p>
+          </div>
+        </div>
+      </div>
+
+      <%# feature_3 %>
+      <div class="bg-pink-100 inline-block w-[80%] h-fit rounded-md m-2 shadow-md">
+        <%# screen_1 %>
+        <div class="scale-75">
+          <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
+            <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
+            <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
+            <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
+            <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
+            <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
+              <%#= image_tag('screen_asso.png', class:"mt-2 w-[172px] h-[362px]") %>
+            </div>
+          </div>
+        </div>
+        <%# benefice_1 %>
+        <div class="space-y-2 px-4">
+          <h2 class="text-2xl text-center font-medium mb-4">Ne vous limitez pas à la surface, gagner une meilleur compréhension de votre impact</h2>
+          <div class="text-gray-600 text-lg text-center space-y-2">
+            <p>Mesurez votre performance à l'aide de graphiques clairs. Identifier vos périodes de hausse et de baisse afin d'avoir une meilleur compréhension de votre activité et prendre de meilleurs décision.</p>
+            <p>Découvrez qui sont vos donateurs et entretenez une relation privilégiée avec vos plus importants contributeurs.</p>
+            <p>Restez connecté avec vos donateurs et leurs attentes.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <%# les donateurs %>
@@ -121,7 +185,7 @@
 
 <%# sticky call to action %>
 
-<div class="fixed bottom-0 inset-x-0 w-full px-5 py-10 rounded-t-3xl flex flex-col items-center justify-center space-y-5 bg-black">
+<div class="hidden fixed bottom-0 inset-x-0 w-full px-5 py-10 rounded-t-3xl flex flex-col items-center justify-center space-y-5 bg-black">
   <!--
   later to remove link_to and add JS to open pop-up form
   -->

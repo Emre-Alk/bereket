@@ -70,8 +70,12 @@ class AssosController < ApplicationController
 
       @transfers_all = StripeAccount.new(@account).transfers_lifetime
       @transfers_all_sum = @transfers_all.data.sum(&:amount)
-      @transfers_span = StripeAccount.new(@account).transfers_span(@start_month, end_month)
-      @transfers_span_sum = @transfers_span.data.sum(&:amount)
+      # tous les transferts y compris les refund toujours inclus dans la somme
+      # @transfers_span = StripeAccount.new(@account).transfers_span(@start_month, end_month)
+      # @transfers_span_sum = @transfers_span.data.sum(&:amount)
+      # tous les transferts hors les refund
+      @transfers_span = StripeAccount.new(@account).transfers_span(@start_month, end_month).select { |transfer| !transfer.reversed}
+      @transfers_span_sum = @transfers_span.sum(&:amount)
     end
 
   end
