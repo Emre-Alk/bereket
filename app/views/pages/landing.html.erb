@@ -79,33 +79,28 @@
     </div>
 
     <%# les associations %>
-    <div data-landing-target="demoAsso" class="mt-5 flex flex-row items-center w-full overflow-x-auto whitespace-nowrap scroll-smooth">
-      <%# feature_1 %>
-      <div class="bg-yellow-100 inline-block w-[80%] h-fit rounded-md m-2 shadow-md">
-        <%# screen_1 %>
-        <div class="scale-75">
-          <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
-            <div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
-            <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[83px] rounded-s-lg"></div>
-            <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[137px] rounded-s-lg"></div>
-            <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[95px] rounded-e-lg"></div>
-            <div class="rounded-[2rem] overflow-hidden w-[172px] h-[372px] bg-white">
-              <%#= image_tag('screen_asso.png', class:"mt-2 w-[172px] h-[362px]") %>
-            </div>
-          </div>
+    <%# cards %>
+    <div data-landing-target="demoAsso" class="w-full">
+      <%# card_feature_1 %>
+      <div class="w-[90%]">
+        <%# image_1 %>
+        <div class="h-80">
+          <%= image_tag('asso_4.png', class:'rounded-md h-full') %>
         </div>
         <%# benefice_1 %>
-        <div class="space-y-2 px-4 break-all">
-          <h2 class="text-2xl text-center font-medium mb-4">Augmentez votre collecte de +30% en moyenne</h2>
+
+        <div class="space-y-2">
+          <h2 class="text-2xl text-center font-medium">Augmentez votre collecte de +30% en moyenne</h2>
           <div class="text-gray-600 text-lg text-center space-y-2">
             <p>Fini le besoin d'acheter ou de louer de plus en plus de terminal de paiement et trouver des bénévoles pour les équiper afin d'augmenter votre collecte.</p>
             <p>Optez pour l'efficacité, chaque donateur peut utiliser son smartphone comme un moyen de paiement. En 3 cliques, votre donateur effectue son don quand il le souhaite et depuis n'importe où dans le monde.</p>
           </div>
         </div>
+
       </div>
 
       <%# feature_2 %>
-      <div class="bg-purple-100 inline-block w-[80%] h-fit rounded-md m-2 shadow-md">
+      <div class="hidden bg-purple-100 inline-block w-[80%] h-fit rounded-md m-2 shadow-md">
         <%# screen_1 %>
         <div class="scale-75">
           <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
@@ -129,7 +124,7 @@
       </div>
 
       <%# feature_3 %>
-      <div class="bg-pink-100 inline-block w-[80%] h-fit rounded-md m-2 shadow-md">
+      <div class="hidden bg-pink-100 inline-block w-[80%] h-fit rounded-md m-2 shadow-md">
         <%# screen_1 %>
         <div class="scale-75">
           <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[400px] w-[200px] shadow-xl">
