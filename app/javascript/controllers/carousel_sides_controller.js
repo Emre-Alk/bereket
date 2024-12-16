@@ -9,13 +9,18 @@ export default class extends Controller {
     this.active = 1
     this.items = this.containerTarget.children
     this.startX = 0
-
   }
 
   connect(){
     this.load()
     this.containerTarget.addEventListener('touchstart', this.startSwipe.bind(this))
     this.containerTarget.addEventListener('touchend', this.endSwipe.bind(this))
+  }
+
+  disconnect() {
+    this.containerTarget.removeEventListener('touchstart', this.startSwipe())
+    this.containerTarget.removeEventListener('touchend', this.endSwipe())
+
   }
 
   startSwipe(event){
@@ -60,6 +65,7 @@ export default class extends Controller {
       // this.items[index].style.transform = `translateX(${208*stt}px) scale(${1 - 0.2*stt}) perspective(16px) rotateY(1deg)`
       this.items[index].style.transform = `translateX(${208*stt}px) scale(${1 - 0.2*stt}) perspective(16px)`
       this.items[index].style.zIndex = -stt
+      this.items[index].classList.remove(...this.activeClasses)
       this.items[index].classList.add(...this.inactiveClasses)
       // this.items[index].style.filter = "blur(5px)"
       this.items[index].style.opacity = stt > 2 ? 0 : 0.6
@@ -74,6 +80,7 @@ export default class extends Controller {
       // this.items[index].style.transform = `translateX(${-208*stt}px) scale(${1 - 0.2*stt}) perspective(16px) rotateY(-1deg)`
       this.items[index].style.transform = `translateX(${-208*stt}px) scale(${1 - 0.2*stt}) perspective(16px)`
       this.items[index].style.zIndex = -stt
+      this.items[index].classList.remove(...this.activeClasses)
       this.items[index].classList.add(...this.inactiveClasses)
       // this.items[index].style.filter = "blur(5px)"
       this.items[index].style.opacity = stt > 2 ? 0 : 0.6
