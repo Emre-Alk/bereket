@@ -10,18 +10,20 @@ export default class extends Controller {
     this.items = this.containerTarget.children
     this.startX = 0
     this.indicators = this.indicatorsTarget.children
+    this.delay = 3000
+    this.intervalID;
   }
 
   connect(){
     this.load()
     this.containerTarget.addEventListener('touchstart', this.startSwipe.bind(this))
     this.containerTarget.addEventListener('touchend', this.endSwipe.bind(this))
+    this.resetTimeout()
   }
 
   disconnect() {
     this.containerTarget.removeEventListener('touchstart', this.startSwipe())
     this.containerTarget.removeEventListener('touchend', this.endSwipe())
-
   }
 
   startSwipe(event){
@@ -32,10 +34,22 @@ export default class extends Controller {
     const endX = event.changedTouches[0].clientX
     const diff = endX - this.startX
     if (diff > 80) {
+      this.delay = 6000
       this.prev()
     } else if (diff < -80) {
+      this.delay = 6000
       this.next()
     }
+  }
+
+  resetTimeout() {
+    if (this.intervalID) {
+      clearInterval(this.intervalID)
+    }
+
+    this.intervalID = setInterval(() => {
+      this.next()
+    }, this.delay)
   }
 
   prev(){
@@ -49,6 +63,7 @@ export default class extends Controller {
   }
 
   load(){
+    this.resetTimeout()
     let stt = 0 // stepper
 
     this.items[this.active].style.transform = 'none'
@@ -75,7 +90,6 @@ export default class extends Controller {
       // this.items[index].style.filter = "blur(5px)"
       this.items[index].style.opacity = stt > 2 ? 0 : 0.6
       this.items[index].dataset.active = 'inactive'
-
     }
 
     stt = 0 // reset stepper
@@ -94,6 +108,7 @@ export default class extends Controller {
       this.items[index].dataset.active = 'inactive'
 
     }
+    this.delay = 3000
   }
 
 }
