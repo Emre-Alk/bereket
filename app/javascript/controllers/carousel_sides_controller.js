@@ -37,10 +37,10 @@ export default class extends Controller {
     const endX = event.changedTouches[0].clientX
     const diff = endX - this.startX
     if (diff > 80) {
-      this.delay = 6000
+      this.delay = 15000
       this.prev()
     } else if (diff < -80) {
-      this.delay = 6000
+      this.delay = 15000
       this.next()
     }
   }

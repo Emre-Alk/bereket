@@ -29,12 +29,12 @@
 
       <ul class="flex flex-col items-start gap-y-8 text-base medium text-neutral-600">
         <li class="inline-flex gap-x-4 items-start" >
-          <span>
+          <span class="pt-1">
             <%= svg_tag('check', class:"size-4 stroke-2 text-orange-400") %>
           </span>
           <div>
-            <h2 class="tracking-wide font-medium text-lg">Collectez des dons à grande échelle</h2>
-            <p>focus on sheer number of donations that you can collect vs collect by hand</p>
+            <h2 class="tracking-wide font-medium text-lg">Augmentez de <span class="inline-block before:content-['+'] after:content-['*'] after:font-light after:text-sm after:align-top">40%</span> le nombre de dons collectés</h2>
+            <p>Collectez des dons à grande échelle grâce à notre promesse en 3 clics et notre capacité à traiter +12 millions de transactions par mois.</p>
           <!--
             <p class="tracking-wide font-medium">Don en 4 clics depuis son smartphone 24h/7j</p>
             <p class="text-xs italic text-start text-neutral-500">Plus besoin de terminal de paiment</p>
@@ -43,12 +43,12 @@
         </li>
 
         <li class="inline-flex gap-x-4 items-start" >
-          <span>
+          <span class="pt-1">
             <%= svg_tag('check', class:"size-4 stroke-2 text-orange-400") %>
           </span>
           <div>
-            <h2 class="tracking-wide font-medium text-lg">Augmentez de +30% la valeur en euros de votre collecte</h2>
-            <p>providing cerfa increase your average donation amount per donator by +30%</p>
+            <h2 class="tracking-wide font-medium text-lg">Augmentez de <span class="inline-block before:content-['+'] after:content-['*'] after:font-light after:text-sm after:align-top">30%</span> la valeur en euros de votre collecte</h2>
+            <p>En activant les reçus fiscaux, vos donateurs reçoivent automatiquement un cerfa complété et signé. Cela sans jamais devoir intervenir.</p>
             <!--
             <p class="tracking-wide font-medium">Le cerfa N°11580 est généré automatiquement </p>
             <p class="text-xs italic text-start text-neutral-500">Finis les cerfa à completer manuellement pour chaque don </p>
@@ -57,7 +57,7 @@
         </li>
 
         <li class="inline-flex gap-x-4 items-start" >
-          <span>
+          <span class="pt-1">
             <%= svg_tag('check', class:"size-4 stroke-2 text-orange-400") %>
           </span>
           <div>
@@ -67,12 +67,16 @@
         </li>
 
         <li class="inline-flex gap-x-4 items-start" >
-          <span>
+          <span class="pt-1">
             <%= svg_tag('check', class:"size-4 stroke-2 text-orange-400") %>
           </span>
           <div>
+            <h2 class="tracking-wide font-medium text-lg">Atteignez vos objectifs avec la data</h2>
+            <p>Profiter de plusieurs indicateurs et mesures pour prendre les bonnes décisions pour votre association.</p>
+          <!--
             <p class="tracking-wide font-medium">Analyser votre trafic</p>
             <p class="text-xs italic text-start text-neutral-500 ">Découvrez votre meilleur jour, les montants fréquents, vos meilleurs donateurs et plus encore</p>
+          -->
           </div>
         </li>
 
@@ -95,7 +99,7 @@
     </div>
 
     <%# les associations %>
-    <div class="relative h-[80vh] w-dvw flex justify-center items-center"
+    <div class="relative h-[85vh] w-dvw flex justify-center items-center"
       data-landing-target="demoAsso"
       data-controller="carousel-sides"
       data-carousel-sides-active-class="top-0"
@@ -179,7 +183,7 @@
           </div>
           <%# benefice_1 %>
           <div class="min-h-2/3 hidden group-data-[active=active]:block space-y-6 text-pretty">
-            <h2 class="text-xl text-center font-medium antialiased tracking-wide">Retours de vos contributeurs</h2>
+            <h2 class="text-xl text-center font-medium antialiased tracking-wide">Avis de vos contributeurs</h2>
             <div class="text-gray-600 antialiased text-md text-center space-y-2">
               <p><strong>Soyez à l'écoute</strong> de vos donateurs et de leurs attentes.</p>
               <p>Continuez à échanger avec eux par message, e-mail, notification...</p>
