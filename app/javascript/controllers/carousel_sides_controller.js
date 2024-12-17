@@ -18,13 +18,14 @@ export default class extends Controller {
     this.load()
     this.containerTarget.addEventListener('touchstart', this.startSwipe.bind(this))
     this.containerTarget.addEventListener('touchend', this.endSwipe.bind(this))
-    document.addEventListener('DOMContentLoaded', this.resetTimeout.bind(this))
+    this.resetTimeout()
+    // document.addEventListener('DOMContentLoaded', this.resetTimeout.bind(this))
   }
 
   disconnect() {
     this.containerTarget.removeEventListener('touchstart', this.startSwipe())
     this.containerTarget.removeEventListener('touchend', this.endSwipe())
-    document.removeEventListener('DOMContentLoaded', this.resetTimeout.bind(this))
+    // document.removeEventListener('DOMContentLoaded', this.resetTimeout.bind(this))
 
   }
 
