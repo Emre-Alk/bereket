@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'qr_codes/new' # is this still useful ?
-  get 'qr_codes/create' # is this still useful ?
 
   devise_for :users
 
@@ -17,6 +15,7 @@ Rails.application.routes.draw do
   # ======== Pages ========
   # this line sends any user to the landing page
   root to: "pages#landing"
+  get "/members", to:"pages#members"
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
   # ======== assos ========

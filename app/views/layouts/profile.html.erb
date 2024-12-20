@@ -20,21 +20,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   </head>
 
-  <body class="bg-white roboto-regular">
+  <body class="bg-neutral-100 roboto-regular">
     <!--
     <p class="notice absolute top-0 z-50"><%= notice %></p>
     <p class="alert absolute top-0 z-50"><%= alert %></p>
     comment render flash
     -->
     <%= render partial: "shared/flash" %>
-    <header>
-      <nav>
-        <div class="fixed z-50 top-0 inset-x-0 bg-white py-2.5">
-          <h1 class="text-2xl font-medium roboto-medium-italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-orange-400 from-35% via-orange-500 to-55% to-orange-600 text-center ">G o o d i f y</h1>
-        </div>
-      </nav>
-    </header>
-    <main>
+
+    <main class="my-5">
       <%= yield %>
     </main>
   </body>

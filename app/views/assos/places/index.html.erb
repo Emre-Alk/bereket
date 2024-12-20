@@ -14,11 +14,23 @@
   <% @stats_per_place.each do |place| %>
   <%# to be replace with partial place %>
   <%# [ #<place>, sum_dons_net, {donator: [#<dons>]} ] %>
+
     <div class="relative">
       <%# edit %>
-      <%= link_to edit_assos_place_path(place[0]), class:"absolute top-2 right-2 m-2 p-px rounded-full bg-white" do %>
+      <div class="absolute top-2 right-2 m-2 p-px rounded-full bg-white">
         <%= svg_tag('ellipsis_vertical', class:'size-6 text-black stroke-1.5') %>
-      <% end %>
+      </div>
+
+      <!--
+     <%= link_to edit_assos_place_path(place[0]), class:"relative" do %>
+          <%= svg_tag('ellipsis_vertical', class:'size-6 text-black stroke-1.5') %>
+          <div class="absolute bottom-0 left-0 scale-0 peer-clicked">
+            <%= link_to 'Editer',  edit_assos_place_path(place[0]), class:"px-3 py-1.5 rounded-md bg-black text-white" %>
+            <%= link_to 'Mes membres',  members_path(place: place[0]), class:"px-3 py-1.5 rounded-md bg-black text-white" %>
+          </div>
+
+        <% end %>
+      -->
 
       <%# place card %>
       <div class="rounded-lg w-full shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
@@ -52,6 +64,7 @@
             </div>
 
           </div>
+        <% end %>
 
           <%# quick stats %>
           <div class="flex flex-row justify-between items-center p-2 rounded-b-lg bg-black text-white text-sm">
@@ -67,12 +80,14 @@
             </div>
             <%# nbr donator %>
             <div class="space-x-2">
+              <%= link_to members_path(place: place[0]) do %>
               <%= icon("fa-solid", "users") %>
                <span class="inline-flex"><%= place[2].length%></span>
+               <% end %>
             </div>
           </div>
 
-        <% end %>
+
       </div>
     </div>
 

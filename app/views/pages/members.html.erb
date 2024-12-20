@@ -1,0 +1,44 @@
+<div class="mb-5">
+  <%= link_to asso_root_path do %>
+    <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
+  <% end %>
+</div>
+
+<%# title %>
+<div class="mb-5 flex flex-row justify-between items-center">
+  <h1 class="font-medium">Membres de <%= @place.name.capitalize %></h1>
+  <span class="font-medium"><%= @place.donators.count %></span>
+</div>
+
+<div class="bg-white flex flex-col items-start justify-center py-4 pl-2 gap-y-4 divide-y divide-neutral-100 divide-black/30">
+  <% @place.donations.each do |don| %>
+
+    <div class="bg-white flex flex-row justify-start items-center gap-x-4 px-1 py-2 w-full">
+      <div class="bg-white">
+
+        <% if don.donator.profile_image.attached? %>
+          <%= cl_image_tag(don.donator.profile_image.key, class:"rounded-full size-14") %>
+        <% else %>
+          <div class="size-14 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
+            <%= don.donator.first_name[0].capitalize %><%= don.donator.last_name[0].capitalize %>
+          </div>
+        <% end %>
+
+      </div>
+
+      <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+        <p><%= don.donator.first_name.capitalize %></p>
+        <p><%= don.donator.last_name.capitalize %></p>
+      </div>
+
+      <div class="px-5 py-2.5 rounded-lg ">
+        <% if don.id.odd? %>
+          <span class="px-3 py-1.5 rounded-lg bg-green-500 text-white">Payé</span>
+        <% else %>
+            <span class="px-3 py-1.5 rounded-lg bg-orange-500 text-white">En attente</span>
+        <% end %>
+      </div>
+    </div>
+
+  <% end %>
+</div>
