@@ -17,12 +17,11 @@
   <div class="pt-20 pb-10 min-h-screen flex flex-col items-center gap-y-10 bg-indigo-50">
     <%# catch phrase %>
     <div class="h-1/5 flex justify-center items-center">
-      <h1 class=" text-3xl tracking-wider align-middle text-center font-bold antialiased">Collectez vos dons sans efforts 24h/7j</h1>
+      <h1 class="text-4xl leading-normal tracking-wider align-middle text-center antialiased">Collectez vos dons sans efforts 24h/7j</h1>
     </div>
     <%# benefits %>
     <div class="flex flex-col items-center rounded-lg gap-y-10 w-11/12">
       <%# <p class="flex text-start medium text-base text-wrap">Un service complet pour récompenser la générosité de vos donateurs:</p> %>
-
       <ul class="text-pretty sm:w-3/5 flex flex-col items-start gap-y-4 sm:gap-y-6 text-base medium text-neutral-600">
         <li class="inline-flex gap-x-4 items-start rounded-md bg-white p-2" >
           <span class="pt-1">
@@ -77,9 +76,11 @@
         </li>
 
       </ul>
-
-      <%= link_to 'Essayer gratuitement', new_user_registration_path, class:'w-full py-2 rounded-lg text-center text-base tracking-wide bg-orange-400 text-white shadow-lg active:shadow-inner' %>
-
+    </div>
+    <%# CTA %>
+    <div class="w-11/12 flex flex-col items-center gap-y-4">
+      <%= link_to 'Commencer', new_user_registration_path, class:'w-full py-2 rounded-lg text-center text-base tracking-wide bg-indigo-900 text-white' %>
+      <%= link_to 'Nous contacter', new_user_registration_path, class:'w-full py-2 rounded-lg text-center text-base tracking-wide border border-indigo-900 text-indigo-900' %>
     </div>
   </div>
 </section>
