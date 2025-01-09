@@ -120,13 +120,13 @@ class StripeAccount
   end
 
   def transfers_lifetime
-    Stripe::Transfer.list(destination: account.stripe_id)
+    @transfers_lifetime ||= Stripe::Transfer.list(destination: account.stripe_id)
   end
 
   def transfers_span(date_begin, date_end)
     gte = date_begin.beginning_of_day.to_i
     lte = date_end.end_of_day.to_i
-    Stripe::Transfer.list(
+    @transfers_span ||= Stripe::Transfer.list(
       destination: account.stripe_id,
       created: {
         gte:,

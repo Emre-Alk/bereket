@@ -7,7 +7,7 @@ class AssosController < ApplicationController
     @my_asso = current_user.asso
     return @asso = Asso.new, @asso.email = current_user.email unless @my_asso
 
-    @my_place = @my_asso.places.first # "first" afin de faire simple pour l'exemple mais reprendre pour carousselle
+    @my_place = @my_asso.places.includes(:donations).first # "first" afin de faire simple pour l'exemple mais reprendre pour carousselle
     return @place = Place.new unless @my_place
 
     @donations = @my_place.donations # array of all donations instances
@@ -60,7 +60,7 @@ class AssosController < ApplicationController
     end
     # ===== revenue of the current month ===== end
     # ===== connected account balance (available money on the stripe account) ===== start
-    @account = Account.find_by(asso: current_user.asso)
+    @account = Account.find_by(asso: @my_asso)
     if @account
       account_balance = StripeAccount.new(@account).account_balance
       @balance_available = account_balance.available.first.amount
