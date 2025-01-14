@@ -33,7 +33,8 @@ class PdfGenerationJob < ApplicationJob
       donation: {
         amount: ,
         amount_human: amount.humanize(locale: :fr),
-        occured_on: donation.occured_on.to_date.strftime('%d     %m     %Y') # whitespace to fit template
+        occured_on: donation.occured_on.to_date.strftime('%d     %m     %Y'), # whitespace to fit template
+        mode: donation.mode
       },
       today: Date.today.strftime('%d  %m  %Y'), # whitespace to fit template
       receipt: "#{donation.id}-#{donation.created_at.to_i}"

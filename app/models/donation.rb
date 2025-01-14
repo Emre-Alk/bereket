@@ -5,6 +5,7 @@
 #  id                  :bigint           not null, primary key
 #  amount              :integer
 #  amount_net          :integer
+#  mode                :string           default("virement, prélèvement, carte bancaire"), not null
 #  occured_on          :datetime
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
@@ -30,4 +31,8 @@ class Donation < ApplicationRecord
 
   validates :amount, presence: true
   validates :amount, numericality: true
+  validates :mode, presence: true
+
+  MODES = ['virement, prélèvement, carte bancaire', 'chèque', 'espèce']
+  validates :mode, inclusion: { in: MODES }
 end
