@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # ======== Pages ========
   # this line sends any user to the landing page
   root to: "pages#landing"
-  get "/members", to:"pages#members"
+  get "/members", to:"pages#members" # feature in working (static)
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
   # ======== assos ========
