@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   root to: "pages#landing"
   get "/members", to: "pages#members" # feature in working (static)
   get '/tools', to: 'pages#tools' # feature in working (static)
-  get 'tools/cerfa', to: 'pages#cerfa'# feature in working (static)
+  get '/tools/cerfa', to: 'pages#cerfa'# feature in working (static)
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
   # ======== assos ========

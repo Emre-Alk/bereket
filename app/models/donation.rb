@@ -24,7 +24,7 @@
 #  fk_rails_...  (place_id => places.id)
 #
 class Donation < ApplicationRecord
-  belongs_to :donator
+  belongs_to :donator #, optional: true # optional for the case 'manual cerfa' feature. null changed via migration
   belongs_to :place
 
   has_one :review
