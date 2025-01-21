@@ -1,3 +1,39 @@
-<div class="text-center">
-  <%= qrcode_svg(edit_place_donation_url(place, donation, token: token), class: 'size-48') %>
+<!--
+<div class="w-full h-dvh flex flex-col items-center justify-around gap-y-10">
+
+  <div class="flex flex-col items-center justify-center w-full gap-y-8 pb-8 pt-10 rounded-3xl bg-white">
+    <%= qrcode_svg(edit_place_donation_url(place, donation, token: token), class: 'size-48') %>
+    <p class="text-xl font-medium tracking-wide align-bottom"><%= number_to_currency(donation.amount_net.fdiv(100), locale: :fr, strip_insignificant_zeros: true)%></p>
+  </div>
+
+  <%= link_to new_assos_place_donation_path(place), class:"w-11/12 rounded-lg py-2 bg-black text-white text-center font-medium tracking-wide antialiased" do %>
+    Fermer
+  <% end %>
+</div>
+-->
+
+<%# modal qr code %>
+<div class="fixed z-50 bg-neutral-100 flex justify-center items-center inset-x-0 h-dvh">
+
+  <div class="w-4/5 h-fit bg-neutral-100 flex flex-col items-center justify-center gap-y-20  ">
+    <div class="flex flex-col items-center justify-center w-full gap-y-8 pb-8 pt-10 rounded-3xl bg-white">
+      <%# qr code %>
+      <%= qrcode_svg(edit_place_donation_url(place, donation, token: token), class:'size-48') %>
+      <%# place name upcase %>
+      <h1 class="text-xl font-medium tracking-wide align-bottom"><%= place.name.split(' ').map(&:upcase).join(' ') %></h1>
+    </div>
+
+    <div class="w-full flex flex-col items-center gap-y-6">
+      <%# done link  %>
+      <button class="flex flex-col items-center justify-center w-11/12 rounded-lg py-2 bg-black text-white tracking-wide">
+        <p class="tracking-wide">Faire un nouveau don</p>
+      </button>
+
+      <%# cancel link  %>
+      <button class="flex flex-col items-center justify-center w-11/12 py-2 tracking-wide">
+        <p class="tracking-wide">Annuler</p>
+      </button>
+    </div>
+
+  </div>
 </div>

@@ -28,7 +28,7 @@ class Donation < ApplicationRecord
     updated_at.to_i
   end
 
-  belongs_to :donator #, optional: true # optional for the case 'manual cerfa' feature. null changed via migration
+  belongs_to :donator, optional: true # optional for the case 'manual cerfa' feature. null changed via migration
   belongs_to :place
 
   has_one :review

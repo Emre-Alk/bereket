@@ -7,10 +7,8 @@ class Assos::DonationsController < AssosController
   def create
     @place = Place.find(params[:place_id])
     @donation = Donation.new(donation_params)
-    # amount = params[:donation][:amount].to_i
-    # @donation.amount = amount * 1000 # update to formatted to cents (as expected format)
-    @donation.amount_net = @donation.amount
     @donation.place = @place
+    @donation.amount_net = @donation.amount
     token = @donation.generate_token_for(:donation_link)
 
     respond_to do |format|
@@ -18,7 +16,7 @@ class Assos::DonationsController < AssosController
       format.json do
         if @donation.save
           render json: {
-            message: 'created',
+            message: 'successful',
             token:,
             html_donation_qrcode: render_to_string(
               partial: 'assos/donations/donation',
