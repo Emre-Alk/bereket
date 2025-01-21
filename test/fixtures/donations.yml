@@ -10,7 +10,7 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  checkout_session_id :string
-#  donator_id          :bigint           not null
+#  donator_id          :bigint
 #  place_id            :bigint           not null
 #
 # Indexes

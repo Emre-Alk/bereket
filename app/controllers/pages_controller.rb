@@ -11,8 +11,4 @@ class PagesController < ApplicationController
   def tools # créer un controller outils sous namespace asso pour CRUD tools ?
     @place = Place.find(params[:place])
   end
-
-  def cerfa
-
-  end
 end

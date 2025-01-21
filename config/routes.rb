@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   root to: "pages#landing"
   get "/members", to: "pages#members" # feature in working (static)
   get '/tools', to: 'pages#tools' # feature in working (static)
-  get '/tools/cerfa', to: 'pages#cerfa'# feature in working (static)
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
   # ======== assos ========
@@ -30,7 +29,9 @@ Rails.application.routes.draw do
 
   # this line is to create a portal dedicated to the asso users
   namespace :assos do
-    resources :places, only: %i[index show new create edit update destroy]
+    resources :places, only: %i[index show new create edit update destroy] do
+      resources :donations, only: %i[new create] # feature under working
+    end
     resource :signature, only: %i[new create]
     resource :account, only: %i[create show] do
       member do
@@ -39,7 +40,6 @@ Rails.application.routes.draw do
     end
     resource :payout, only: %i[new create]
     resources :donators, only: %i[index]
-    # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
 
   # ======== places ========
@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   # we need a show page of the places for the donators to reach (create fav, see place etc...)
   # this route don't interfer with the one in the asso namespace since it is nested inside asso namespace
   resources :places, only: %i[show] do
-    resources :donations, only: %i[new]
+    resources :donations, only: %i[new edit update]
     resource :checkout, only: %i[create show]
   end
 

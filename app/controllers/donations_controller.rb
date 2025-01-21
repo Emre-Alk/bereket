@@ -76,6 +76,17 @@ class DonationsController < ApplicationController
     end
   end
 
+  def edit
+    # the donation record is create by asso (assos::donations#create), scanned by visitor (token: secured link) and comes here to edit his personal info
+    # finally, donation record is updated with visitor information
+    @donation = Donation.find(params[:id]) # to test qrcode
+    @place = Place.find(params[:place_id]) # to test qrcode
+  end
+
+  def update
+    # save the edited donation
+  end
+
   private
 
   def redirect_if_asso
