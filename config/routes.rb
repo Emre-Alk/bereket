@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   # this line is to create a portal dedicated to the asso users
   namespace :assos do
     resources :places, only: %i[index show new create edit update destroy] do
-      resources :donations, only: %i[new create] # feature under working
+      resources :donations, only: %i[new create destroy] # feature under working
     end
     resource :signature, only: %i[new create]
     resource :account, only: %i[create show] do

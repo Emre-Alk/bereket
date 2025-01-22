@@ -1,7 +1,7 @@
 class DonationsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:new]
+  skip_before_action :authenticate_user!, only: %i[new edit]
   # skip auth (only new), apply auth by redirection inside new
-  before_action :redirect_if_asso, only: [:new]
+  before_action :redirect_if_asso, only: %i[new edit]
   # before_action :store_user_location!, only: [:new], if: :storable_location?
 
   def index
@@ -79,11 +79,13 @@ class DonationsController < ApplicationController
   def edit
     # the donation record is create by asso (assos::donations#create), scanned by visitor (token: secured link) and comes here to edit his personal info
     # finally, donation record is updated with visitor information
-    @donation = Donation.find(params[:id]) # to test qrcode
-    @place = Place.find(params[:place_id]) # to test qrcode
+    token = params[:token]
+    @donation = Donation.find_by_token_for(:donation_link, token)
   end
 
   def update
+    # create a find or initialize a new user with info inputs
+    # retrieve second time visitor or registered but not logged in user or create first time visitor account
     # save the edited donation
   end
 

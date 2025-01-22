@@ -31,6 +31,16 @@ class Assos::DonationsController < AssosController
     end
   end
 
+  def destroy
+    @donation = Donation.find(params[:id])
+    @place = Place.find(params[:place_id])
+    if @donation.destroy
+      redirect_to new_assos_place_donation_path(@place), notice: "Don supprimé avec succès."
+    else
+      redirect_to new_assos_place_donation_path(@place), alert: "Erreur. Le don n'a pas pu être supprimé."
+    end
+  end
+
   private
 
   def donation_params

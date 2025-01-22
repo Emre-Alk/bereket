@@ -9,14 +9,14 @@
       <%# qr code %>
         <%= qrcode_svg(new_place_donation_url(place), class:'size-48') %>
       <%# place name upcase %>
-      <h1 class="text-xl font-medium tracking-wide align-bottom"><%= place.name.split(' ').map(&:upcase).join(' ') %></h1>
+      <h1 class="text-xl font-medium tracking-wide align-bottom"><%= place.name.titleize%></h1>
     </div>
 
     <div data-controller="share clipboard" class="w-full flex justify-between items-center gap-x-2">
       <%# share link  %>
       <button class="flex flex-col items-center justify-center w-1/2 rounded-lg py-2 bg-white"
               data-action="share#share"
-              data-share-payload-param='{"url": "<%= new_place_donation_url(place) %>", "place":"<%= place.name.split(' ').map(&:capitalize).join(' ') %>"}'>
+              data-share-payload-param='{"url": "<%= new_place_donation_url(place) %>", "place":"<%= place.name.titleize %>"}'>
         <%= svg_tag('share') %>
         <p class="text-sm tracking-wide">Partager</p>
       </button>

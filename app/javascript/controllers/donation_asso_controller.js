@@ -19,7 +19,7 @@ export default class extends Controller {
     // get the user's amount
     const amount = donationForm.get("donation[amount]")
     // format it to cents
-    const amountFormated = amount * 1000
+    const amountFormated = amount * 100
     // overwrite the user's amount with the formated value
     donationForm.set("donation[amount]", amountFormated)
 
