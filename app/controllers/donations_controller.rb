@@ -87,6 +87,66 @@ class DonationsController < ApplicationController
     # create a find or initialize a new user with info inputs
     # retrieve second time visitor or registered but not logged in user or create first time visitor account
     # save the edited donation
+
+    # retrieve the donation submited
+    @donation = Donation.find_by_token_for(:donation_link, token)
+
+    if @donation.nil?
+      redirect_to root_path, alert: "Le lien invalide ou expiré. Merci de contacter l'association sinon le support Goodify."
+      return
+    end
+
+    # retrieve a donator
+    if current_user
+      # if donator (logged in) => retrieve registered donator (see stripe job)
+      donator = current_user.donator
+      puts '🟪🟪🟪🟪🟪🟪🟪🟪'
+
+    else
+      # find or initialize the visitor by email and role
+      visitor = User.find_or_initialize_by(
+        email: params[:email],
+        role: 'donator'
+      )
+
+      if visitor.donator&.visitor?
+        # if nth time visitor & register_me false => retrieve same visitor account (see stripe job)
+        donator = visitor.donator
+        puts '⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️'
+
+      elsif visitor.donator&.enrolled?
+        # if visitor is registered user but not logged_in => retrieve registered donator (see stripe job)
+        donator = visitor.donator
+        puts '🟧🟧🟧🟧🟧🟧🟧🟧'
+      else
+        # if 1st time visitor & register_me is false => create a visitor account (see stripe job)
+        visitor.password = '123456'
+        visitor.first_name = params[:first_name]
+        visitor.last_name = params[:last_name]
+        visitor.save!
+
+        donator = visitor.donator
+        # update the status to visitor
+        donator.visitor!
+        puts '🟦🟦🟦🟦🟦🟦🟦🟦'
+      end
+    end
+
+    # update the donation with donator_id
+    @donation.donator = donator
+
+    # redirect to same view as checkout#show to be consistent (using partial with locals), Or
+    respond_to do |format|
+      format.html
+      format.json do
+        if @donation.save
+          # redirect to cerfa dispo:inline (AJAX)
+          redirect_to place_checkout_path(@donation.place)
+        else
+          redirect_to root_path, alert: "Le lien invalide ou expiré. Merci de contacter l'association sinon le support Goodify."
+        end
+      end
+    end
   end
 
   private

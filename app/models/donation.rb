@@ -24,7 +24,7 @@
 #  fk_rails_...  (place_id => places.id)
 #
 class Donation < ApplicationRecord
-  generates_token_for :donation_link, expires_in: 30.minutes do
+  generates_token_for :donation_link, expires_in: 1.day do
     updated_at.to_i
   end
 

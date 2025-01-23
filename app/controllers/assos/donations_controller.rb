@@ -9,12 +9,12 @@ class Assos::DonationsController < AssosController
     @donation = Donation.new(donation_params)
     @donation.place = @place
     @donation.amount_net = @donation.amount
-    token = @donation.generate_token_for(:donation_link)
 
     respond_to do |format|
       format.html
       format.json do
         if @donation.save
+          token = @donation.generate_token_for(:donation_link)
           render json: {
             message: 'successful',
             token:,
