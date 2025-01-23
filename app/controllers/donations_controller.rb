@@ -81,6 +81,7 @@ class DonationsController < ApplicationController
     # finally, donation record is updated with visitor information
     token = params[:token]
     @donation = Donation.find_by_token_for(:donation_link, token)
+    @donator = current_user.donator
   end
 
   def update
@@ -97,7 +98,7 @@ class DonationsController < ApplicationController
     end
 
     # retrieve a donator
-    if current_user
+    if current_user&.donator
       # if donator (logged in) => retrieve registered donator (see stripe job)
       donator = current_user.donator
       puts '🟪🟪🟪🟪🟪🟪🟪🟪'
