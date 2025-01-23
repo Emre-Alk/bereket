@@ -119,6 +119,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_23_210400) do
     t.string "address"
     t.string "zip_code"
     t.string "country"
+    t.string "city"
     t.index ["user_id"], name: "index_donators_on_user_id"
   end
 

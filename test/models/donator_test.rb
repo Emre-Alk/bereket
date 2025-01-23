@@ -4,6 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  address    :string
+#  city       :string
 #  country    :string
 #  email      :string
 #  first_name :string

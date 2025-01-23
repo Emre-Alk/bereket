@@ -81,7 +81,7 @@ class DonationsController < ApplicationController
     # finally, donation record is updated with visitor information
     token = params[:token]
     @donation = Donation.find_by_token_for(:donation_link, token)
-    @donator = current_user.donator
+    @donator = current_user&.donator
   end
 
   def update
@@ -142,7 +142,7 @@ class DonationsController < ApplicationController
       format.json do
         if @donation.save
           # redirect to cerfa dispo:inline (AJAX)
-          redirect_to place_checkout_path(@donation.place)
+          render json: { message: 'ok', url: pdf_generate_donator_donation_path(donator, donation).to_s }
         else
           redirect_to root_path, alert: "Le lien invalide ou expiré. Merci de contacter l'association sinon le support Goodify."
         end
