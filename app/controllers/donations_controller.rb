@@ -79,8 +79,8 @@ class DonationsController < ApplicationController
   def edit
     # the donation record is create by asso (assos::donations#create), scanned by visitor (token: secured link) and comes here to edit his personal info
     # finally, donation record is updated with visitor information
-    token = params[:token]
-    @donation = Donation.find_by_token_for(:donation_link, token)
+    @token = params[:token]
+    @donation = Donation.find_by_token_for(:donation_link, @token)
     @donator = current_user&.donator
   end
 
@@ -91,11 +91,6 @@ class DonationsController < ApplicationController
 
     # retrieve the donation submited
     @donation = Donation.find_by_token_for(:donation_link, token)
-
-    if @donation.nil?
-      redirect_to root_path, alert: "Le lien invalide ou expiré. Merci de contacter l'association sinon le support Goodify."
-      return
-    end
 
     # retrieve a donator
     if current_user&.donator
