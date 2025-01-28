@@ -1,7 +1,7 @@
 class DonationsController < ApplicationController
-  skip_before_action :authenticate_user!, only: %i[new edit]
+  skip_before_action :authenticate_user!, only: %i[new edit update]
   # skip auth (only new), apply auth by redirection inside new
-  before_action :redirect_if_asso, only: %i[new edit]
+  before_action :redirect_if_asso, only: %i[new edit update]
   # before_action :store_user_location!, only: [:new], if: :storable_location?
 
   def index
@@ -79,6 +79,7 @@ class DonationsController < ApplicationController
   def edit
     # the donation record is create by asso (assos::donations#create), scanned by visitor (token: secured link) and comes here to edit his personal info
     # finally, donation record is updated with visitor information
+    # if donation exists or not managed on the view with if condtion.
     @token = params[:token]
     @donation = Donation.find_by_token_for(:donation_link, @token)
     @donator = current_user&.donator
@@ -90,50 +91,57 @@ class DonationsController < ApplicationController
     # save the edited donation
 
     # retrieve the donation submited
-    @donation = Donation.find_by_token_for(:donation_link, token)
+    @donation = Donation.find_by_token_for(:donation_link, params[:token])
+    # if @donation not found
+    return edit_place_donation_path(params[:place_id], params[:id]) unless @donation
+
+    email = params[:email]
 
     # retrieve a donator
-    if current_user&.donator
-      # if donator (logged in) => retrieve registered donator (see stripe job)
-      donator = current_user.donator
-      puts '🟪🟪🟪🟪🟪🟪🟪🟪'
-
+    if current_user
+      # case 1 - donator exists and logged in
+      @donation.donator = current_user.donator
+      puts '🟧🟧🟧🟧🟧🟧🟧'
     else
-      # find or initialize the visitor by email and role
-      visitor = User.find_or_initialize_by(
-        email: params[:email],
-        role: 'donator'
-      )
+      donator = Donator.find_by(email:)
 
-      if visitor.donator&.visitor?
-        # if nth time visitor & register_me false => retrieve same visitor account (see stripe job)
-        donator = visitor.donator
-        puts '⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️'
-
-      elsif visitor.donator&.enrolled?
-        # if visitor is registered user but not logged_in => retrieve registered donator (see stripe job)
-        donator = visitor.donator
-        puts '🟧🟧🟧🟧🟧🟧🟧🟧'
+      if donator
+        # case 2 - donator exists (enrolled) but Not logged in
+        # case 3 - donator exists as visitor
+        @donation.donator = donator
+        puts '🟩🟩🟩🟩🟩🟩🟩🟩'
       else
-        # if 1st time visitor & register_me is false => create a visitor account (see stripe job)
-        visitor.password = '123456'
-        visitor.first_name = params[:first_name]
-        visitor.last_name = params[:last_name]
-        visitor.save!
+        # case 4 - new visitor (1st visit)
+        new_donator = Donator.new(
+          email:,
+          status: 'visitor',
+          first_name: params[:user][:first_name],
+          last_name: params[:user][:last_name],
+          address: params[:user][:address],
+          city: params[:user][:city],
+          country: params[:user][:country],
+          zip_code: params[:user][:zip_code]
+        )
 
-        donator = visitor.donator
-        # update the status to visitor
-        donator.visitor!
+        # save the new record
+        new_donator.save!
+
+        # update the donation with donator_id
+        @donation.donator = new_donator
+
         puts '🟦🟦🟦🟦🟦🟦🟦🟦'
       end
     end
 
-    # update the donation with donator_id
-    @donation.donator = donator
-
     # redirect to same view as checkout#show to be consistent (using partial with locals), Or
     respond_to do |format|
-      format.html
+      format.html do
+        if @donation.save!
+          redirect_to root_path, notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{params[:email]}"
+        else
+          render 'edit', status: 422
+        end
+      end
       format.json do
         if @donation.save
           # redirect to cerfa dispo:inline (AJAX)

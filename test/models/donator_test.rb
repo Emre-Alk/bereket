@@ -9,11 +9,11 @@
 #  email      :string
 #  first_name :string
 #  last_name  :string
-#  status     :enum             default("visitor"), not null
+#  status     :enum             default("enrolled"), not null
 #  zip_code   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :bigint           not null
+#  user_id    :bigint
 #
 # Indexes
 #

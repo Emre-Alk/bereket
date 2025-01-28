@@ -53,6 +53,13 @@ class User < ApplicationRecord
 
   private
 
+  # def update_visitor
+  #   visitor = Visitor.where(email:)
+  #   return unless visitor
+
+  #   visitor.update!(enrolled: true, user_id: self)
+  # end
+
   def should_update_donator?
     self.donator? && self.relevant_changes_for_donator?
   end
