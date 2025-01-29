@@ -32,7 +32,9 @@ class PdfGenerator
       page << page_stamp if page_stamp
     end
 
-    # Step 5: Save the combined PDF.
+
+
+    # Step 5: return the combined PDF
     template_pdf.to_pdf # string data to pdf
   end
 
@@ -78,8 +80,14 @@ class PdfGenerator
       pdf.start_new_page
       pdf.text_box @data[:donator][:first_name], at: [37, 565]
       pdf.text_box @data[:donator][:last_name], at: [323, 565]
-      pdf.text_box @data[:donation][:amount].to_s, at: [31, 452] # error of text_box when integer/float type
-      pdf.text_box "#{@data[:donation][:amount_human]} euros", at: [322, 452]
+
+      pdf.text_box @data[:donator][:address], at: [98, 535]
+      pdf.text_box @data[:donator][:zip_code], at: [63, 520]
+      pdf.text_box @data[:donator][:city], at: [198, 520]
+      pdf.text_box @data[:donator][:country], at: [50, 505]
+
+      pdf.text_box "*****#{@data[:donation][:amount]}*****", at: [8, 452] # error of text_box when integer/float type
+      pdf.text_box "*****#{@data[:donation][:amount_human]} euros*****", at: [322, 452]
       pdf.text_box @data[:donation][:occured_on], at: [150, 432]
       pdf.text_box @data[:today], at: [274, 176]
       # tick some boxes

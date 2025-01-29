@@ -1,12 +1,13 @@
 class PdfGenerationJob < ApplicationJob
   queue_as :default
 
-  def perform(donation_id)
+  def perform(donation_id, options = {})
     # Do something later
     # cerfa for 1 donation
     donation = Donation.find(donation_id)
-    donator = donation.donator
     return unless donation
+
+    donator = donation.donator
 
     amount = donation.amount.to_f / 100
     data = {
@@ -27,8 +28,12 @@ class PdfGenerationJob < ApplicationJob
         }
       },
       donator: {
-        first_name: donator.first_name,
-        last_name: donator.last_name
+        first_name: options[:content].present? ? options[:content][:first_name] : donator.first_name, # bc if visitor, record is empty
+        last_name: options[:content].present? ? options[:content][:last_name] : donator.last_name, # bc if visitor, record is empty
+        address: options[:content].present? ? options[:content][:address] : donator.address,
+        city: options[:content].present? ? options[:content][:city] : donator.city,
+        country: options[:content].present? ? options[:content][:country] : donator.country,
+        zip_code: options[:content].present? ? options[:content][:zip_code] : donator.zip_code
       },
       donation: {
         amount: ,

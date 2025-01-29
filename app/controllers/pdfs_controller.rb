@@ -3,6 +3,7 @@ require 'open-uri'
 class PdfsController < ApplicationController
   before_action :set_donator
   before_action :set_donation
+
   def generate
     # cerfa for 1 donation
     # 'donator = current_user.donator" no need of this line because donator can be retrieve from donation
@@ -81,8 +82,18 @@ class PdfsController < ApplicationController
     #   }
     # }
     # -------------------
+    if params[:content].present?
+      data = {
+        first_name: params[:content][:first_name].titleize,
+        last_name: params[:content][:last_name].titleize,
+        address: params[:content][:address],
+        zip_code: params[:content][:zip_code],
+        city: params[:content][:city].titleize,
+        country: params[:content][:country].titleize
+      }
+    end
 
-    PdfGenerationJob.perform_later(params[:id])
+    PdfGenerationJob.perform_later(params[:id], content: data)
 
     # jid = pdf_job.provider_job_id # code to get the jid of a job from sidekiq
     # Sidekiq::Queue.new.find_job(jid) # code to find a given job in the queue using his jid

@@ -1,7 +1,7 @@
 class DonationsController < ApplicationController
-  skip_before_action :authenticate_user!, only: %i[new edit update]
+  skip_before_action :authenticate_user!, only: %i[new edit update successful]
   # skip auth (only new), apply auth by redirection inside new
-  before_action :redirect_if_asso, only: %i[new edit update]
+  before_action :redirect_if_asso, only: %i[new edit update successful]
   # before_action :store_user_location!, only: [:new], if: :storable_location?
 
   def index
@@ -92,7 +92,6 @@ class DonationsController < ApplicationController
 
     # retrieve the donation submited
     @donation = Donation.find_by_token_for(:donation_link, params[:token])
-    # if @donation not found
     return edit_place_donation_path(params[:place_id], params[:id]) unless @donation
 
     email = params[:email]
@@ -112,22 +111,22 @@ class DonationsController < ApplicationController
         puts '🟩🟩🟩🟩🟩🟩🟩🟩'
       else
         # case 4 - new visitor (1st visit)
-        new_donator = Donator.new(
+        new_visitor = Donator.new(
           email:,
-          status: 'visitor',
-          first_name: params[:user][:first_name],
-          last_name: params[:user][:last_name],
-          address: params[:user][:address],
-          city: params[:user][:city],
-          country: params[:user][:country],
-          zip_code: params[:user][:zip_code]
+          status: 'visitor'
+          # first_name: params[:user][:first_name],
+          # last_name: params[:user][:last_name],
+          # address: params[:user][:address],
+          # city: params[:user][:city],
+          # country: params[:user][:country],
+          # zip_code: params[:user][:zip_code]
         )
 
         # save the new record
-        new_donator.save!
+        new_visitor.save!
 
         # update the donation with donator_id
-        @donation.donator = new_donator
+        @donation.donator = new_visitor
 
         puts '🟦🟦🟦🟦🟦🟦🟦🟦'
       end
@@ -137,7 +136,7 @@ class DonationsController < ApplicationController
     respond_to do |format|
       format.html do
         if @donation.save!
-          redirect_to root_path, notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{params[:email]}"
+          redirect_to success_place_donation_path(params[:place_id], params[:id]), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{params[:email]}"
         else
           render 'edit', status: 422
         end
@@ -151,6 +150,12 @@ class DonationsController < ApplicationController
         end
       end
     end
+  end
+
+  def successful
+    @donation = Donation.includes(donator: :favorites).find(params[:id])
+    detaxed_rate = 0.66 # logic auto selon type asso à implementer
+    @amount_detaxed = @donation.amount * detaxed_rate
   end
 
   private

@@ -20,8 +20,9 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 class User < ApplicationRecord
-  after_create :create_donator
-  after_update :update_donator, if: :should_update_donator?
+  after_create :create_donator, if: :donator?, unless: :donator_exits_as_visitor?
+  after_create :merge_donator, if: %i[donator? donator_exits_as_visitor?]
+  after_update :update_donator, if: %i[donator? relevant_changes_for_donator?]
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -53,15 +54,13 @@ class User < ApplicationRecord
 
   private
 
-  # def update_visitor
-  #   visitor = Visitor.where(email:)
-  #   return unless visitor
+  def merge_donator
+    donator = Donator.where(email:)
+    donator.update!(first_name:, last_name:, status: 'enrolled', user_id: id)
+  end
 
-  #   visitor.update!(enrolled: true, user_id: self)
-  # end
-
-  def should_update_donator?
-    self.donator? && self.relevant_changes_for_donator?
+  def donator_exits_as_visitor?
+    true if Donator.where(email:)
   end
 
   def relevant_changes_for_donator?
@@ -71,29 +70,17 @@ class User < ApplicationRecord
   # custom callback helper to create a donator after sign-up registration by devise if user has set a donator role
   # I do that since at that point donator has the same attributes as user attributes resquested in the registration page
   def create_donator
-    user = self
-    if user.donator?
-      # here are several methods possible to do the same using usual active record method 'create!' or devise methods
-      # using active record method:
-      # Donator.create!(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
-      # using devise helper methods:
-      user.create_donator!(
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        user_id: user.id,
-        status: 'enrolled'
-      )
-      # does the same as above but using devise method .create_'has_one' (rq: association must exist)
-      # code below does also the same, using another devise method (rq: association must exist)
-      # donator = build_donator(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
-    end
+    # here are several methods possible to do the same using usual active record method 'create!' or devise methods
+    # using active record method:
+    # Donator.create!(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
+    # using devise helper methods:
+    create_donator!(first_name:, last_name:, email:, user_id: id, status: 'enrolled')
+    # does the same as above but using devise method .create_'has_one' (rq: association must exist)
+    # code below does also the same, using another devise method (rq: association must exist)
+    # donator = build_donator(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
   end
 
   def update_donator
-    user = self
-    # return if user.asso? # add if: to callback
-
-    user.donator.update!(first_name: user.first_name, last_name: user.last_name, email: user.email, status: 'enrolled')
+    donator.update!(first_name:, last_name:, email:)
   end
 end

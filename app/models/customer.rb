@@ -17,7 +17,7 @@
 #  fk_rails_...  (donator_id => donators.id)
 #
 class Customer < ApplicationRecord
-  before_destroy :delete_customer_on_stripe
+  before_destroy :delete_customer_on_stripe, if: -> { donator.enrolled? }
 
   belongs_to :donator
 

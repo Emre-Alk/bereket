@@ -70,13 +70,44 @@ export default class extends Controller {
     let status = 'loading'
     this.loadAnimation(status)
 
-    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`)
+    // test
+    const data = {
+      first_name: 'toto',
+      last_name: 'tata',
+      address: '1 rue des totos',
+      city: 'lyon',
+      country: 'france',
+      zip_code: '69006'
+    }
+    const details = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept" : "application/json",
+        "X-CSRF-Token": document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content"),
+      },
+      body: JSON.stringify({content: data})
+    }
+
+    const details2 = {
+      method: 'POST',
+      headers: {
+        "Accept" : "application/json",
+        "X-CSRF-Token": document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content"),
+      }
+    }
+
+    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details)
     .then(response => response.json())
     .then((data) => {
       if (data.message === "job enqueued") {
         const url = params.payload.url
         const filename = params.payload.filename
-        this.downloadFile(url, filename);
+        this.downloadFile(url, filename)
       }
     })
   }

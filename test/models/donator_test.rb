@@ -5,6 +5,7 @@
 #  id         :bigint           not null, primary key
 #  address    :string
 #  city       :string
+#  completed  :boolean          default(FALSE), not null
 #  country    :string
 #  email      :string
 #  first_name :string

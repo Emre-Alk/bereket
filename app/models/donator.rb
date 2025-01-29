@@ -5,6 +5,7 @@
 #  id         :bigint           not null, primary key
 #  address    :string
 #  city       :string
+#  completed  :boolean          default(FALSE), not null
 #  country    :string
 #  email      :string
 #  first_name :string
@@ -24,8 +25,9 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Donator < ApplicationRecord
-  after_create :create_customer
-  after_update :update_customer, if: :stripe_update_needed?
+  after_create :create_customer, if: -> { enrolled? } # No customer object if not a registered user (ie, visitor)
+  after_update :update_customer, if: :stripe_update_needed?, unless: -> { saved_change_to_status?(from: 'visitor') } # unless update triggered by donator changes from visitor to enrolled (ie, new user)
+  after_update :create_customer, if: -> { saved_change_to_status?(from: 'visitor') } # if donator changes from visitor (ie, new user)
 
   belongs_to :user, optional: true # to create a donator as a visitor and bypasing user creation which brings in complexity
 
@@ -45,9 +47,8 @@ class Donator < ApplicationRecord
   }, default: 'enrolled'
 
   validates :status, presence: true
-  validates :first_name, :last_name,
-            format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: 'letttres uniquement' },
-            presence: true
+  # validates :first_name, :last_name,
+  #           format: { with: /[a-zA-Z]/, message: 'letttres uniquement' }
   validates :email,
             presence: true,
             format: { with: URI::MailTo::EMAIL_REGEXP },

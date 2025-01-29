@@ -47,7 +47,11 @@ Rails.application.routes.draw do
   # we need a show page of the places for the donators to reach (create fav, see place etc...)
   # this route don't interfer with the one in the asso namespace since it is nested inside asso namespace
   resources :places, only: %i[show] do
-    resources :donations, only: %i[new edit update]
+    resources :donations, only: %i[new edit update] do
+      member do
+        get 'success', to: 'donations#successful'
+      end
+    end
     resource :checkout, only: %i[create show]
   end
 
@@ -63,7 +67,7 @@ Rails.application.routes.draw do
     resources :favorites, only: %i[create destroy]
     resources :donations, only: %i[index] do
       member do
-        get 'pdf', to: 'pdfs#generate', as: :pdf_generate
+        post 'pdf', to: 'pdfs#generate', as: :pdf_generate
         # get 'cerfa', to: 'pdfs#view_pdf'
         # get 'cerfa_inline', to: 'pdfs#cerfa_inline'
         get 'download', to: 'pdfs#download_pdf'
