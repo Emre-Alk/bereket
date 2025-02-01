@@ -70,7 +70,8 @@ export default class extends Controller {
     }
 
     // perform call and success/failure paths responses
-    fetch("/users", payload)
+    // fetch("/users", payload)
+    fetch("/users/sign_up", payload)
     .then(response => {
       if (response.ok) {
         // success path: display msg to user 'welcome and thank you...' & hide form

@@ -1,12 +1,13 @@
 <%= render partial:'success', locals: {
+  donation: @donation,
   place: @donation.place,
   amount: @donation.amount,
   amount_detaxed: @amount_detaxed,
   amount_net: @donation.amount_net,
-  mode: @donation.mode
+  mode: @donation.mode,
   donator: @donation.donator,
-  favorite: @donation.donator.favorite,
+  favorite: @favorite,
   email: @donation.donator.email,
-  first_name: @donator.first_name,
-  last_name: @donator.last_name
+  first_name: @donation.donator.first_name,
+  last_name: @donation.donator.last_name
 } %>

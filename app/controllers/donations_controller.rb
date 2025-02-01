@@ -154,6 +154,7 @@ class DonationsController < ApplicationController
 
   def successful
     @donation = Donation.includes(donator: :favorites).find(params[:id])
+    @favorite = @donation.place.favorites.where(donator: @donation.donator).take
     detaxed_rate = 0.66 # logic auto selon type asso à implementer
     @amount_detaxed = @donation.amount * detaxed_rate
   end

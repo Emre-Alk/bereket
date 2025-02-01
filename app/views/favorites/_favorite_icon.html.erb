@@ -1,6 +1,6 @@
 <div class="w-fit" data-controller="favorite" data-favorite-donator-id-value="<%= donator.id %>" data-favorite-place-id-value="<%= place.id %>" data-favorite-fav-value="<%= favorite.to_json %>" data-action="click->favorite#actuate" data-favorite-target="heart" >
   <button>
-    <% if place.is_favorite_of?(donator) %>
+    <% if place.favorite_of?(donator) %>
       <%= icon("fa-solid", "bookmark", style:"color: black", class:"fa-xl", id:"heart") %>
     <% else %>
       <%= icon("fa-regular", "bookmark", class:"fa-xl", id:"heart") %>

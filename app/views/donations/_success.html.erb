@@ -28,14 +28,16 @@
 
       <div class="flex flex-row gap-4 items-baseline" >
         <%= icon('fa-solid', 'hand-holding-heart') %>
-        <%= number_to_currency(amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
-        <button data-action=dropdown#toggle>
-          <%= icon('fa-solid', 'chevron-down') %>
-        </button>
+        <%= number_to_currency(amount.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
+        <% if donation.mode == "virement, prélèvement, carte bancaire" %>
+          <button data-action=dropdown#toggle>
+            <%= icon('fa-solid', 'chevron-down') %>
+          </button>
+        <% end %>
       </div>
 
       <%# dropdown fees %>
-      <%= if donation.mode == "virement, prélèvement, carte bancaire" %>
+      <% if donation.mode == "virement, prélèvement, carte bancaire" %>
         <div data-dropdown-target="fees" class="hidden">
           <div class="ml-8 mt-2 mb-4 w-3/4 flex flex-col justify-center content-between gap-y-2 text-xs roboto-light">
             <div class="flex items-center justify-between">
@@ -54,7 +56,6 @@
             </div>
 
           </div>
-
         </div>
       <% end %>
 
@@ -114,13 +115,13 @@
           <tbody>
               <tr class="text-right text-gray-700 bg-white border-b">
                   <td scope="row" class="px-2 py-2 whitespace-nowrap">
-                      <%= number_to_currency(amount.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
+                      <%= number_to_currency(amount.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
                   </td>
                   <td class="px-2 py-2 ">
-                      <%= number_to_currency(amount_detaxed.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
+                      <%= number_to_currency(amount_detaxed.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
                   </td>
                   <td class="px-2 py-2 font-medium text-base text-black">
-                      <%= number_to_currency(amount_net.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
+                      <%= number_to_currency(amount_net.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
                   </td>
               </tr>
           </tbody>
