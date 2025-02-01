@@ -8,7 +8,11 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('hello convertion-visitor');
+    console.log('hello convertion-visitor')
+    const newForm = document.getElementById("form-new-user")
+    console.log('newform', newForm)
+    newForm.addEventListener('submit', (e) => this.newUser(e))
+
     // login works but without a reload after ajax done, the update ajax don't work. an error "can't verify csrf token" pops.
     // when e session is create, rails save a token in the session as well as in the back. so, when user navigate, rails compare session token with back token.
     // I suppose without the reload, the token previously in the DOM is not the same as the one just created in the session after login ajax
@@ -16,6 +20,12 @@ export default class extends Controller {
     // try if from the login ajax response can get a session token ?
     // this.loginUser()
   }
+
+  disconnect(){
+    const newForm = document.getElementById("form-new-user")
+    newForm.removeEventListener('submit', (e) => this.newUser(e))
+  }
+
   scrollTo(event) {
     event.preventDefault()
     const form = document.getElementById('conversionForm')
@@ -59,8 +69,19 @@ export default class extends Controller {
     const userForm = new FormData(event.target)
 
     // build the payload for the call
+    // const payload = {
+    //   method: 'PUT',
+    //   headers: {
+    //     "X-CSRF-Token": document
+    //       .querySelector('meta[name="csrf-token"]')
+    //       .getAttribute("content")
+    //   },
+    //   body: userForm
+    // }
+
+    // test
     const payload = {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         "X-CSRF-Token": document
           .querySelector('meta[name="csrf-token"]')
@@ -70,8 +91,7 @@ export default class extends Controller {
     }
 
     // perform call and success/failure paths responses
-    // fetch("/users", payload)
-    fetch("/users/sign_up", payload)
+    fetch("/users", payload)
     .then(response => {
       if (response.ok) {
         // success path: display msg to user 'welcome and thank you...' & hide form
@@ -103,6 +123,7 @@ export default class extends Controller {
         // TODO(optional): create a <templace> tag arround the favori container to insert it also once new user
 
       } else {
+
         // failure path: display validation to fullfil before submitting
         // test which entry is wrong and display the correction to perform
         const password = userForm.get('user[password]')
@@ -116,7 +137,7 @@ export default class extends Controller {
         // unless, modify the controller devise to respond to json (with header json in ajax)
         // anyway, aside of password, only email could be false.
         // can redirect to devise view but need to modify it then because of current passeword required and field visible
-        if (password != confirmPassword) {
+        if (password != confirmPassword || password == '') {
           div.innerText = 'Le mot de passe doit être identique.'
         } else {
           div.innerText = "Adresse mail déjà enregistrée. Merci d'indiquer une adresse mail valide."
@@ -128,7 +149,7 @@ export default class extends Controller {
 
         const alert = document.getElementById('alert')
         const alertExist = this.element.contains(alert)
-        console.log(alertExist);
+        console.log('alert exist', alertExist);
         if (alertExist) {
           alert.replaceWith(div)
 
@@ -137,7 +158,9 @@ export default class extends Controller {
             div.classList.remove('animate-bounce')
           }, 1000);
         } else {
-          this.formTarget.insertAdjacentElement('beforebegin', div)
+          // this.formTarget.insertAdjacentElement('beforebegin', div)
+          const myForm = document.getElementById("form-new-user")
+          myForm.insertAdjacentElement('beforebegin', div)
         }
       }
     })
