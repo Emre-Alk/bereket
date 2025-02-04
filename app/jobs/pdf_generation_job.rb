@@ -32,8 +32,8 @@ class PdfGenerationJob < ApplicationJob
         last_name: options[:content].present? ? options[:content][:last_name] : donator.last_name, # bc if visitor, record is empty
         address: options[:content].present? ? options[:content][:address] : donator.address,
         city: options[:content].present? ? options[:content][:city] : donator.city,
-        country: options[:content].present? ? options[:content][:country] : donator.country,
-        zip_code: options[:content].present? ? options[:content][:zip_code] : donator.zip_code
+        zip_code: options[:content].present? ? options[:content][:zip_code] : donator.zip_code,
+        country: 'France'
       },
       donation: {
         amount: ,

@@ -3,6 +3,7 @@ class DonationsController < ApplicationController
   # skip auth (only new), apply auth by redirection inside new
   before_action :redirect_if_asso, only: %i[new edit update successful]
   # before_action :store_user_location!, only: [:new], if: :storable_location?
+  after_action :store_user_location!, only: [:successful], if: :storable_location?
 
   def index
     # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])
@@ -132,23 +133,11 @@ class DonationsController < ApplicationController
       end
     end
 
-    # redirect to same view as checkout#show to be consistent (using partial with locals), Or
-    respond_to do |format|
-      format.html do
-        if @donation.save!
-          redirect_to success_place_donation_path(params[:place_id], params[:id]), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{params[:email]}"
-        else
-          render 'edit', status: 422
-        end
-      end
-      format.json do
-        if @donation.save
-          # redirect to cerfa dispo:inline (AJAX)
-          render json: { message: 'ok', url: pdf_generate_donator_donation_path(donator, donation).to_s }
-        else
-          redirect_to root_path, alert: "Le lien invalide ou expiré. Merci de contacter l'association sinon le support Goodify."
-        end
-      end
+    # redirect to same view as checkout#show to be consistent (using partial with locals)
+    if @donation.save!
+      redirect_to success_place_donation_path(params[:place_id], params[:id]), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{params[:email]}"
+    else
+      render 'edit', status: 422
     end
   end
 
@@ -160,6 +149,10 @@ class DonationsController < ApplicationController
   end
 
   private
+
+  def set_donator_params
+    params.require(:donator).permit(:first_name, :last_name, :email, :adress, :zip_code, :country, :city)
+  end
 
   def redirect_if_asso
     if user_signed_in? && current_user.asso?
@@ -174,6 +167,6 @@ class DonationsController < ApplicationController
   end
 
   def store_user_location!
-    store_location_for(:user, request.fullpath)
+    store_location_for(:resource, request.fullpath)
   end
 end

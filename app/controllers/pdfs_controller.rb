@@ -93,12 +93,17 @@ class PdfsController < ApplicationController
       }
     end
 
-    PdfGenerationJob.perform_later(params[:id], content: data)
+    if data || donator.completed?
+      PdfGenerationJob.perform_later(params[:id], content: data)
+      render json: { message: 'job enqueued', donator_id: params[:donator_id], donation_id: params[:id] }
+    else
+      render json: { message: 'profile uncomplete' }
+    end
+
 
     # jid = pdf_job.provider_job_id # code to get the jid of a job from sidekiq
     # Sidekiq::Queue.new.find_job(jid) # code to find a given job in the queue using his jid
 
-    render json: { message: 'job enqueued', donator_id: params[:donator_id], donation_id: params[:id] }
   end
 
   def view_pdf

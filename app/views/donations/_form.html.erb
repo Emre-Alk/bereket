@@ -1,7 +1,7 @@
   <div class="text-center">
     <h2><%= number_to_currency(donation.amount.fdiv(100), locale: :fr, strip_insignificant_zeros: true) %></h2>
     <p><%= donation.mode %></p>
-    <%= current_user.nil? %>
+    <%= current_user.inspect %>
   </div>
 
   <%# edit form %>
@@ -16,7 +16,11 @@
 
     <%# donator identity filled by visitor %>
     <div class="border-b border-gray-900/10 pb-12">
-      <h2 class="text-base/7 font-semibold text-gray-900">Identité du donateur</h2>
+      <div>
+        <h2 class="text-base/7 font-semibold text-gray-900">Mon identité</h2>
+        <p class="mt-1 text-sm/6 text-gray-600">Le reçu fiscal est un document officiel et personnel. Nous avons besoin de vos informations pour vous délivrer un reçu fiscal attitré et unique.</p>
+        <p class="mt-1 text-sm/6 text-gray-600">Vos informations ne seront pas jamais utilisé à d'autres buts.</p>
+      </div>
 
       <div class="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
 
@@ -71,7 +75,7 @@
           </div>
         </div>
 
-        <div class="col-span-2 sm:col-span-3">
+        <div class="hidden col-span-2 sm:col-span-3">
           <label for="country" class="block text-sm/6 font-medium text-gray-900">Pays</label>
           <div class="mt-2 grid grid-cols-1">
             <select id="country" name="user[country]" autocomplete="country-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">

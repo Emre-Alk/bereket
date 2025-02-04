@@ -37,9 +37,34 @@ class DonatorsController < ApplicationController
     end
   end
 
+  def edit
+    @donator = Donator.find(params[:id])
+  end
+
+  def update
+    @donator = Donator.find(params[:id])
+
+    respond_to do |format|
+      format.html do
+        if @donator.update(donator_params)
+          redirect_to  donator_root_path
+        end
+      end
+      format.json do
+        if @donator.update(donator_params)
+          render json: {
+            message: 'success'
+          }
+        else
+          render json: { message: 'failure' }
+        end
+      end
+    end
+  end
+
   private
 
-  def set_donator_params
-    params.require(:donator).permit(:first_name, :last_name, :email, :profile_image)
+  def donator_params
+    params.require(:donator).permit(:first_name, :last_name, :email, :address, :zip_code, :city, :country, :profile_image)
   end
 end

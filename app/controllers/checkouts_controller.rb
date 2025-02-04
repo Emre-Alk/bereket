@@ -32,7 +32,7 @@ class CheckoutsController < ApplicationController
 
     # login user if visitor to allow smooth account update (via JS, login succeeds but requires a reload of page to change state to allow 'put' ajax to work)
     # TODO: find a safer way to login visitor only when he choose to convert (ajax)
-    sign_in(@donator.user) if @donator.visitor?
+    # sign_in(@donator.user) if @donator.visitor?
   end
 
   def create
@@ -132,17 +132,6 @@ class CheckoutsController < ApplicationController
     )
 
     redirect_to checkout_session.url, allow_other_host: true
-  end
-
-  def test
-    @donator = current_user.donator
-    puts 'you are in test'
-    respond_to do |format|
-      format.html
-      format.json do
-        render json: { url: checkout_test_path }
-      end
-    end
   end
 
   private

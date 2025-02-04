@@ -95,6 +95,7 @@ class PdfGenerator
       # pdf.fill_rectangle [-1, 327], 6, 6.2 # 'Acte authentique'
       pdf.fill_rectangle [255, 327], 6, 6.2 # 'don manuel'
       pdf.fill_rectangle [-1, 290], 6, 6.2 # 'Numéraire'
+
       case @data[:donation][:mode]
       when 'espèce'
         pdf.fill_rectangle [-1, 222], 6, 6.2 # 'Espèce'
@@ -103,6 +104,7 @@ class PdfGenerator
       when 'chèque'
         pdf.fill_rectangle [114.8, 222], 6, 6.2 # 'Chèque'
       end
+
       # To do: add all data required as well as a 'cachet' and 'scaned signature' of the asso
       signature = @data[:asso][:identity][:signature]
       if signature.attached? # signature is used only if it is attached to the model (ie, it exists)

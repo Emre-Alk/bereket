@@ -9,9 +9,10 @@ export default class extends Controller {
 
   connect() {
     console.log('hello convertion-visitor')
-    const newForm = document.getElementById("form-new-user")
-    console.log('newform', newForm)
-    newForm.addEventListener('submit', (e) => this.newUser(e))
+    // test new feature
+    // const newForm = document.getElementById("form-new-user")
+    // console.log('newform', newForm)
+    // newForm.addEventListener('submit', (e) => this.newUser(e))
 
     // login works but without a reload after ajax done, the update ajax don't work. an error "can't verify csrf token" pops.
     // when e session is create, rails save a token in the session as well as in the back. so, when user navigate, rails compare session token with back token.
@@ -20,15 +21,16 @@ export default class extends Controller {
     // try if from the login ajax response can get a session token ?
     // this.loginUser()
   }
-
-  disconnect(){
-    const newForm = document.getElementById("form-new-user")
-    newForm.removeEventListener('submit', (e) => this.newUser(e))
-  }
+  // test new feature
+  // disconnect(){
+    // const newForm = document.getElementById("form-new-user")
+    // newForm.removeEventListener('submit', (e) => this.newUser(e))
+  // }
 
   scrollTo(event) {
     event.preventDefault()
-    const form = document.getElementById('conversionForm')
+    // const form = document.getElementById('conversionForm')
+    const form = document.getElementById('form-new-user')
     form.scrollIntoView({behavior: "smooth"})
   }
 
@@ -69,19 +71,8 @@ export default class extends Controller {
     const userForm = new FormData(event.target)
 
     // build the payload for the call
-    // const payload = {
-    //   method: 'PUT',
-    //   headers: {
-    //     "X-CSRF-Token": document
-    //       .querySelector('meta[name="csrf-token"]')
-    //       .getAttribute("content")
-    //   },
-    //   body: userForm
-    // }
-
-    // test
     const payload = {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         "X-CSRF-Token": document
           .querySelector('meta[name="csrf-token"]')
@@ -89,6 +80,17 @@ export default class extends Controller {
       },
       body: userForm
     }
+
+    // test new feature
+    // const payload = {
+    //   method: 'POST',
+    //   headers: {
+    //     "X-CSRF-Token": document
+    //       .querySelector('meta[name="csrf-token"]')
+    //       .getAttribute("content")
+    //   },
+    //   body: userForm
+    // }
 
     // perform call and success/failure paths responses
     fetch("/users", payload)
@@ -158,9 +160,11 @@ export default class extends Controller {
             div.classList.remove('animate-bounce')
           }, 1000);
         } else {
-          // this.formTarget.insertAdjacentElement('beforebegin', div)
-          const myForm = document.getElementById("form-new-user")
-          myForm.insertAdjacentElement('beforebegin', div)
+          this.formTarget.insertAdjacentElement('beforebegin', div)
+
+          // test new feature
+          // const myForm = document.getElementById("form-new-user")
+          // myForm.insertAdjacentElement('beforebegin', div)
         }
       }
     })

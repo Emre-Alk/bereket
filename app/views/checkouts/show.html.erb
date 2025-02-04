@@ -1,4 +1,5 @@
 <%= render partial:'donations/success', locals: {
+  donation: @donation,
   place: @place,
   amount: @amount,
   amount_detaxed: @amount_detaxed,
@@ -9,6 +10,6 @@
   donator: @donator,
   favorite: @favorite,
   email: @checkout_session.customer_details.email,
-  first_name: @checkout_session.customer_details.name.split(' ')[0]
+  first_name: @checkout_session.customer_details.name.split(' ')[0],
   last_name: @checkout_session.customer_details.name.split(' ')[1]
 } %>

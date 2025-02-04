@@ -1,4 +1,4 @@
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), remote: true, html: { id:'form-new-user', class:'max-w-md mx-auto p-4' }) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { id:'form-new-user', class:'max-w-md mx-auto p-4' }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="grid md:grid-cols-2 md:gap-6 mt-5">

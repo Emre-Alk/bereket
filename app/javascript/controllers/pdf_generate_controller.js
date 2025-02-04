@@ -101,13 +101,15 @@ export default class extends Controller {
       }
     }
 
-    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details)
+    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details2)
     .then(response => response.json())
     .then((data) => {
       if (data.message === "job enqueued") {
         const url = params.payload.url
         const filename = params.payload.filename
         this.downloadFile(url, filename)
+      } else if (data.message === "profile uncomplete") {
+        // rediriger vers donator#edit ou afficher partial donator#edit
       }
     })
   }
