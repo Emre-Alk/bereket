@@ -65,6 +65,24 @@ export default class extends Controller {
     })
   }
 
+  // from view retrieve if profile is completed via {params}
+  // if complete, proceed to ajax initiate job
+  // if not complete, display modal (form):
+    // collect form inputs
+    // if checkbox 'save info' is checked, ajax to update donator:
+      // success path: proceed to ajax initiate job
+      // failure path: show object.errors retrieve form back-end
+    // if not checked, build new payload and ajax it to initate job
+
+  // ajax job success path: ajax to new location
+  // ajax job failure path: show custome msg 'contact support'
+
+  saveDataToDonator() {
+    // fetch to save info to rails
+    // success path: return to main function
+    // failure path: get model errors and return it to main function
+  }
+
   download({params}) {
     this.toggleAllButtons('disable')
     let status = 'loading'

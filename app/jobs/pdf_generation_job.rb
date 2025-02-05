@@ -28,11 +28,11 @@ class PdfGenerationJob < ApplicationJob
         }
       },
       donator: {
-        first_name: options[:content].present? ? options[:content][:first_name] : donator.first_name, # bc if visitor, record is empty
-        last_name: options[:content].present? ? options[:content][:last_name] : donator.last_name, # bc if visitor, record is empty
-        address: options[:content].present? ? options[:content][:address] : donator.address,
-        city: options[:content].present? ? options[:content][:city] : donator.city,
-        zip_code: options[:content].present? ? options[:content][:zip_code] : donator.zip_code,
+        first_name: donator.completed ? donator.first_name : options[:content][:first_name], # bc if visitor, record is empty
+        last_name: donator.completed ? donator.last_name : options[:content][:last_name], # bc if visitor, record is empty
+        address: donator.completed ? donator.address : options[:content][:address],
+        city: donator.completed ? donator.city : options[:content][:city],
+        zip_code: donator.completed ? donator.zip_code : options[:content][:zip_code],
         country: 'France'
       },
       donation: {
