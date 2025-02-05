@@ -1,4 +1,4 @@
-<%= form_with model: donator, class:"mt-44 border border-gray-300 rounded-md p-8" do |f| %>
+<%= form_with model: donator, data: {controller: "file", file_target: 'form'}, class:"mt-44 border border-gray-300 rounded-md p-8" do |f| %>
   <div class="flex flex-col gap-y-5">
     <div class="relative z-0 w-full mb-5 group">
       <%= f.label :first_name, 'Prénom(s)', class:"after:content-['*'] after:ml-0.5 after:text-red-500 peer-focus:font-medium absolute text-base text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" %>
@@ -35,7 +35,7 @@
       <%= f.label :country, 'Pays', class:"peer-focus:font-medium absolute text-base text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6" %>
     </div>
 
-    <div data-controller="file" class="fixed top-10 left-[calc(50%-56px)]">
+    <div class="fixed top-10 left-[calc(50%-56px)]">
       <button type="button" class="relative size-28" data-action="click->file#openField">
 
         <div class="absolute z-20 top-0 size-max">
@@ -51,8 +51,8 @@
             </div>
           <% end %>
 
-          <div class="absolute z-30 top-0 size-max">
-            <img data-file-target="canvas" class="size-28 rounded-full" src="">
+          <div class="absolute z-30 top-0 rounded-full hidden" data-file-target="canvasContainer">
+            <img data-file-target="canvas" class="size-28 bg-white rounded-full" src="">
           </div>
 
           <span class="absolute z-50 bottom-0 right-0 bg-white rounded-full p-2 border border-gray-200">
@@ -65,8 +65,11 @@
     </div>
 
 
-    <div class="mt-4 px-1 py-3 bg-black w-full text-white text-center text-lg tracking-widest rounded-lg">
-      <%= f.submit "Enregistrer" %>
+    <div class="mt-4">
+      <%= f.submit "Enregistrer",
+                                disabled: true,
+                                class:'block disabled:hidden px-1 py-3 w-full  bg-black w-full text-white text-center text-lg tracking-widest rounded-lg',
+                                data: { file_target: 'submitBtn' } %>
     </div>
   </div>
 <% end %>
