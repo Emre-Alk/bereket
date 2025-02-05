@@ -83,6 +83,7 @@ class PdfsController < ApplicationController
     # }
     # -------------------
     if params[:content].present?
+      # info donator when on the fly (via AJAX)
       data = {
         first_name: params[:content][:first_name].titleize,
         last_name: params[:content][:last_name].titleize,
@@ -97,7 +98,7 @@ class PdfsController < ApplicationController
       PdfGenerationJob.perform_later(params[:id], content: data)
       render json: { message: 'job enqueued', donator_id: params[:donator_id], donation_id: params[:id] }
     else
-      render json: { message: 'profile uncomplete' }
+      render json: { message: 'not completed', donation_id: params[:donator_id] }
     end
 
 

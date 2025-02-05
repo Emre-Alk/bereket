@@ -26,10 +26,12 @@
 #
 class Donator < ApplicationRecord
   after_create :create_customer, if: -> { enrolled? } # No customer object if not a registered user (ie, visitor)
+  after_save :update_completed, unless: -> { saved_change_to_completed? }
   after_update :update_customer, if: :stripe_update_needed?, unless: -> { saved_change_to_status?(from: 'visitor') } # unless update triggered by donator changes from visitor to enrolled (ie, new user)
   after_update :create_customer, if: -> { saved_change_to_status?(from: 'visitor') } # if donator changes from visitor (ie, new user)
 
   belongs_to :user, optional: true # to create a donator as a visitor and bypasing user creation which brings in complexity
+  accepts_nested_attributes_for :user # update user model attributes within a donator edit for
 
   has_one :customer, dependent: :destroy
 
@@ -46,15 +48,34 @@ class Donator < ApplicationRecord
     enrolled: 'enrolled'
   }, default: 'enrolled'
 
-  validates :status, presence: true
-  # validates :first_name, :last_name,
-  #           format: { with: /[a-zA-Z]/, message: 'letttres uniquement' }
-  validates :email,
+  validates :first_name, :last_name,
             presence: true,
-            format: { with: URI::MailTo::EMAIL_REGEXP },
-            uniqueness: true
+            format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: 'letttres uniquement' }
+
+  validates :address,
+            format: { with: /\A\d{1,3}\s[a-zA-Z0-9éÉàÀèÈùÙçÇ'\-\s]+\z/, message: 'pas de caractère spécial (. , § @ + etc...)' }
+
+  validates :zip_code, format: { with: /\A\d{5}\z/, message: 'max. 5 chiffres uniquement' }
+  validates :country, format: { with: /\A[a-zA-ZéÉàÀèÈùÙçÇ'\-\s]{2,50}\z/, message: 'letttres uniquement' }
+  validates :city, format: { with: /\A[a-zA-ZéÉàÀèÈùÙçÇ'\-\s]{2,50}\z/, message: 'letttres uniquement' }
 
   private
+
+  def update_completed
+    # whitelist = attribute_names.excluding('id', 'user_id', 'created_at', 'updated_at', 'status', 'completed')
+    # whitelist = %w[first_name last_name address zip_code country city]
+    whitelist = %w[address zip_code country city]
+
+    new_value = whitelist.all? { |attribute| attribute_present?(attribute) }
+
+    return if completed == new_value
+
+    update!(completed: new_value)
+  end
+
+  # def relevant_changes_for_user?
+  #   %i[email first_name last_name].any? { |attribute| saved_change_to_attribute?(attribute) }
+  # end
 
   def create_customer
     customer = Stripe::Customer.create(

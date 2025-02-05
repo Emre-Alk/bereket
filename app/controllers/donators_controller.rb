@@ -24,18 +24,18 @@ class DonatorsController < ApplicationController
     @favorites = @donator.favorites
   end
 
-  def create
-    @donator = Donator.new
-    @donator.first_name = current_user.first_name
-    @donator.last_name = current_user.last_name
-    @donator.email = current_user.email
+  # def create
+  #   @donator = Donator.new
+  #   @donator.first_name = current_user.first_name
+  #   @donator.last_name = current_user.last_name
+  #   @donator.email = current_user.email
 
-    if @donator.save
-      render :dashboard
-    else
-      redirect_to new_registration_path(@donator), status: :unprocessable_entity
-    end
-  end
+  #   if @donator.save
+  #     render :dashboard
+  #   else
+  #     redirect_to new_registration_path(@donator), status: :unprocessable_entity
+  #   end
+  # end
 
   def edit
     @donator = Donator.find(params[:id])
@@ -45,19 +45,12 @@ class DonatorsController < ApplicationController
     @donator = Donator.find(params[:id])
 
     respond_to do |format|
-      format.html do
-        if @donator.update(donator_params)
-          redirect_to  donator_root_path
-        end
-      end
-      format.json do
-        if @donator.update(donator_params)
-          render json: {
-            message: 'success'
-          }
-        else
-          render json: { message: 'failure' }
-        end
+      if @donator.update(donator_params)
+        format.html { redirect_to donator_root_path, notice: 'Les modifications ont été sauvegardées avec succès' }
+        # format.json { render :dashboard, status: :updated, location: @donator }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        # format.json { render json: @donator.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -65,6 +58,13 @@ class DonatorsController < ApplicationController
   private
 
   def donator_params
-    params.require(:donator).permit(:first_name, :last_name, :email, :address, :zip_code, :city, :country, :profile_image)
+    params.require(:donator).permit(
+      :address,
+      :zip_code,
+      :city,
+      :country,
+      :profile_image,
+      user_attributes: [:email, :first_name, :last_name, :id]
+    )
   end
 end

@@ -33,10 +33,19 @@ class User < ApplicationRecord
 
   ROLES = %w[donator asso]
 
-  validates :role, :first_name, :last_name, presence: true
-  validates :role, inclusion: { in: ROLES }
-  validates :first_name, :last_name, format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/,
-    message: "letttres uniquement" }
+  validates :role,
+            presence: true,
+            inclusion: { in: ROLES }
+
+  # to be removed (moved to donator at edit)
+  validates :first_name, :last_name,
+            presence: true,
+            format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: "letttres uniquement" }
+
+  validates :email,
+            presence: true,
+            format: { with: URI::MailTo::EMAIL_REGEXP },
+            uniqueness: true
 
   def donator?
     role == 'donator'
@@ -63,8 +72,14 @@ class User < ApplicationRecord
     true if Donator.where(email:)
   end
 
+  # to be deleted (duplicate attribute in user and donator)
   def relevant_changes_for_donator?
     %i[email first_name last_name].any? { |attribute| saved_change_to_attribute?(attribute) }
+  end
+
+  # to be deleted (duplicate attribute in user and donator)
+  def update_donator
+    donator.update!(first_name:, last_name:, email:)
   end
 
   # custom callback helper to create a donator after sign-up registration by devise if user has set a donator role
@@ -78,9 +93,5 @@ class User < ApplicationRecord
     # does the same as above but using devise method .create_'has_one' (rq: association must exist)
     # code below does also the same, using another devise method (rq: association must exist)
     # donator = build_donator(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
-  end
-
-  def update_donator
-    donator.update!(first_name:, last_name:, email:)
   end
 end
