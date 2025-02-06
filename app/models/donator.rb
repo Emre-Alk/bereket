@@ -50,14 +50,23 @@ class Donator < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true,
-            format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: 'letttres uniquement' }
+            format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: 'en letttres uniquement' }
 
   validates :address,
-            format: { with: /\A\d{1,3}\s[a-zA-Z0-9éÉàÀèÈùÙçÇ'\-\s]+\z/, message: 'pas de caractère spécial (. , § @ + etc...)' }
+            allow_blank: true,
+            format: { with: /\A\d{1,3}\s[a-zA-Z0-9éÉàÀèÈùÙçÇ'\-\s]+\z/, message: 'sans caractère spécial (. , § @ + )' }
 
-  validates :zip_code, format: { with: /\A\d{5}\z/, message: 'max. 5 chiffres uniquement' }
-  validates :country, format: { with: /\A[a-zA-ZéÉàÀèÈùÙçÇ'\-\s]{2,50}\z/, message: 'letttres uniquement' }
-  validates :city, format: { with: /\A[a-zA-ZéÉàÀèÈùÙçÇ'\-\s]{2,50}\z/, message: 'letttres uniquement' }
+  validates :zip_code,
+            format: { with: /\A\d{5}\z/, message: 'max. 5 chiffres uniquement' },
+            allow_blank: true
+
+  validates :country,
+            format: { with: /\A[a-zA-ZéÉàÀèÈùÙçÇ'\-\s]{2,50}\z/, message: 'en letttres uniquement' },
+            allow_blank: true
+
+  validates :city,
+            format: { with: /\A[a-zA-ZéÉàÀèÈùÙçÇ'\-\s]{2,50}\z/, message: 'en letttres uniquement' },
+            allow_blank: true
 
   private
 

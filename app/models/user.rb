@@ -40,11 +40,11 @@ class User < ApplicationRecord
   # to be removed (moved to donator at edit)
   validates :first_name, :last_name,
             presence: true,
-            format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: "letttres uniquement" }
+            format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: 'en letttres uniquement' }
 
   validates :email,
             presence: true,
-            format: { with: URI::MailTo::EMAIL_REGEXP },
+            format: { with: URI::MailTo::EMAIL_REGEXP, message: 'format non valide' },
             uniqueness: true
 
   def donator?

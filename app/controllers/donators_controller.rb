@@ -47,10 +47,10 @@ class DonatorsController < ApplicationController
     respond_to do |format|
       if @donator.update(donator_params)
         format.html { redirect_to donator_root_path, notice: 'Les modifications ont été sauvegardées avec succès' }
-        # format.json { render :dashboard, status: :updated, location: @donator }
+        format.json { render json: { message: 'success', status: :ok } }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        # format.json { render json: @donator.errors, status: :unprocessable_entity }
+        format.json { render json: @donator.errors, status: :unprocessable_entity }
       end
     end
   end

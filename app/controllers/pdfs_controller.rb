@@ -98,7 +98,7 @@ class PdfsController < ApplicationController
       PdfGenerationJob.perform_later(params[:id], content: data)
       render json: { message: 'job enqueued', donator_id: params[:donator_id], donation_id: params[:id] }
     else
-      render json: { message: 'not completed', donation_id: params[:donator_id] }
+      render json: { message: 'not completed', donator_id: params[:donator_id] }
     end
 
 

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="pdf-generate"
 export default class extends Controller {
-  static targets = ['btn']
+  static targets = ['btn', 'modal', 'form']
   static values = {
     donId: Number,
     donatorId: Number
@@ -28,88 +28,171 @@ export default class extends Controller {
   // with the response, programmatically create a file Blob in JavaScript from url and use a hidden <a> tag to trigger the download mechanism
   // result in PWA => it opens the pdf inline like send data inline but add UI to download. no changes in web app mode.
   // CC => the best approach would still be the 2nd if can be solved.
-  generate() {
-    const url = `/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`
+  // generate() {
+  //   const url = `/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`
 
-    fetch(url)
-    .then(response => response.json())
-    .then((data) => {
-        if (data.message === "job enqueued") {
-          this.fetchCerfa(data)
-        }
-      })
-  }
+  //   fetch(url)
+  //   .then(response => response.json())
+  //   .then((data) => {
+  //       if (data.message === "job enqueued") {
+  //         this.fetchCerfa(data)
+  //       }
+  //     })
+  // }
 
-  fetchCerfa(data) {
-    // const details = {
-    //   headers: {
-    //     "Accept" : "application/pdf"
-    //   }
-    // }
-    // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`, details)
-    // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`)
-    fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa_inline`)
-    .then(response => {
-      if (response.ok) {
+  // fetchCerfa(data) {
+  //   // const details = {
+  //   //   headers: {
+  //   //     "Accept" : "application/pdf"
+  //   //   }
+  //   // }
+  //   // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`, details)
+  //   // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`)
+  //   fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa_inline`)
+  //   .then(response => {
+  //     if (response.ok) {
 
-        let status = 'loading'
-        this.loadAnimation(status)
+  //       let status = 'loading'
+  //       this.loadAnimation(status)
 
-        setTimeout(() => {
-          window.location.href = response.url
-          status = 'reset'
-          this.loadAnimation(status)
+  //       setTimeout(() => {
+  //         window.location.href = response.url
+  //         status = 'reset'
+  //         this.loadAnimation(status)
 
-        }, 4000)
-      }
-    })
-  }
+  //       }, 4000)
+  //     }
+  //   })
+  // }
 
-  // from view retrieve if profile is completed via {params}
-  // if complete, proceed to ajax initiate job
-  // if not complete, display modal (form):
+  // from view retrieve if profile is completed via {params} #generate()
+  // if complete, proceed to ajax initiate job #generate/fetch
+  // if not complete, display modal (form): #displayForm()
     // collect form inputs
-    // if checkbox 'save info' is checked, ajax to update donator:
+    // if checkbox 'save info' is checked, ajax to update donator: #saveInfo()
       // success path: proceed to ajax initiate job
       // failure path: show object.errors retrieve form back-end
-    // if not checked, build new payload and ajax it to initate job
+    // if not checked, build new payload and ajax it to initate job #generate()
 
-  // ajax job success path: ajax to new location
-  // ajax job failure path: show custome msg 'contact support'
+  // ajax job success path: ajax to new location #downloadFile()
+  // ajax job failure path: show custome msg 'contact support' #downloadFile()
 
-  saveDataToDonator() {
-    // fetch to save info to rails
-    // success path: return to main function
-    // failure path: get model errors and return it to main function
+  isComplete({params}){
+    const isCompleted = params.payload.completed
+
+    if (isCompleted === true) {
+      this.generateJob(params)
+    } else {
+      this.toggleModal()
+    }
   }
 
-  download({params}) {
-    this.toggleAllButtons('disable')
-    let status = 'loading'
-    this.loadAnimation(status)
+  collectInfo(event){
+    event.preventDefault()
+    console.log('submit tryout')
 
-    // test
-    const data = {
-      first_name: 'toto',
-      last_name: 'tata',
-      address: '1 rue des totos',
-      city: 'lyon',
-      country: 'france',
-      zip_code: '69006'
+    const form = new FormData(event.target)
+    const saveAccepted = form.get('remember')
+
+    if (saveAccepted === 'on') {
+      this.saveDonatorInfo(event)
+    } else {
+      // on the fly
     }
+  }
+
+  saveDonatorInfo(event) {
+    const form = new FormData(this.formTarget)
+
     const details = {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
         "Accept" : "application/json",
         "X-CSRF-Token": document
           .querySelector('meta[name="csrf-token"]')
           .getAttribute("content"),
       },
-      body: JSON.stringify({content: data})
+      body: form
     }
 
-    const details2 = {
+    fetch(`${event.params.url}`, details)
+    .then(response => {
+      if (response.ok) {
+        return response.json()
+      }
+      return Promise.reject(response)
+    })
+    .then((data) => {
+      // success path: info is updated
+      console.log('data', data)
+    })
+    .catch((response) => {
+      // failure path: unprocessable entity
+      console.log(response.status, response.statusText)
+      response.json().then((errors) => {
+        // donator.errors are received
+
+        for (const key in errors) {
+          console.log(`${key}: ${errors[key]}`)
+          this.insertError(key, errors[key])
+        }
+      })
+    })
+  }
+
+  insertError(attribute, message){
+    // retrieve the form field of the key (city, address...)
+    // insert the value errros[key] (validation msg) under the field + add border red for invalid
+    // do it for each key received
+    const arrayOfOldAlerts = document.querySelectorAll('.validation-alert')
+    console.log(arrayOfOldAlerts)
+
+    // if (arrayOfOldAlerts) {
+    //   for (const alert in arrayOfOldAlerts) {
+    //     alert.remove()
+    //   }
+    // }
+
+    const invalideField = document.getElementById(`donator_${attribute}`)
+
+    // invalideField.setCustomValidity(`${message}`)
+    // invalideField.setCustomValidity(" ")
+    // invalideField.reportValidity()
+
+    const parag = document.createElement('p')
+    parag.innerText = `${message}`
+    parag.classList.add('validation-alert', 'text-red-500', 'italic', 'text-sm')
+    parag.setAttribute('id', `${attribute}`)
+
+    const paragExits = document.getElementById(`${attribute}`)
+
+    if (paragExits) {
+      paragExits.replaceWith(parag)
+      parag.classList.add('animate-bounce')
+      setTimeout(() => {
+        parag.classList.remove('animate-bounce')
+      }, 1000);
+    }
+    invalideField.insertAdjacentElement("afterend", parag)
+  }
+
+
+
+  toggleModal(){
+    const isOpen = this.modalTarget.classList.contains('-translate-y-full')
+    if (isOpen) {
+      this.modalTarget.classList.remove('-translate-y-full')
+    } else {
+      this.modalTarget.classList.add('-translate-y-full')
+    }
+  }
+
+  generateJob(params) {
+    this.toggleAllButtons('disable')
+    let status = 'loading'
+    this.loadAnimation(status)
+
+    const details = {
       method: 'POST',
       headers: {
         "Accept" : "application/json",
@@ -119,7 +202,7 @@ export default class extends Controller {
       }
     }
 
-    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details2)
+    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details)
     .then(response => response.json())
     .then((data) => {
       if (data.message === "job enqueued") {
