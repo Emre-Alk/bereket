@@ -82,7 +82,7 @@
                   </div>
                 </fieldset>
 
-                <%= f.submit 'Générer', class:"mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-base tracking-wider antialiased font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"%>
+                <%= f.submit 'Générer', disabled: true, data: { pdf_generate_target: 'submitBtn' } , class:"disabled:bg-indigo-300 mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-base tracking-wider antialiased font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"%>
 
               <% end %>
             </div>

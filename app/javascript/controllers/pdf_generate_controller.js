@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="pdf-generate"
 export default class extends Controller {
-  static targets = ['btn', 'modal', 'form']
+  static targets = ['btn', 'modal', 'form', 'submitBtn']
   static values = {
     donId: Number,
     donatorId: Number
@@ -10,6 +10,17 @@ export default class extends Controller {
 
   connect() {
     this.loadAnimation = this.loadAnimation.bind(this)
+    this.form = new FormData(this.formTarget)
+  }
+
+  initialize(){
+    this.timeoutId
+    this.delay = 500
+  }
+
+  disconnect(){
+    this.formTarget.removeEventListener('input', this.allowSubmit())
+    clearTimeout(this.timer)
   }
   // 1st approach = send data inline:
   // hit the route (controller pdfs#generate) that initiate the 'job perform' in the back-end
@@ -79,17 +90,54 @@ export default class extends Controller {
 
   isComplete({params}){
     const isCompleted = params.payload.completed
+    console.log('isComplete:', isCompleted);
 
-    if (isCompleted === true) {
+    if (isCompleted === 'true') {
       this.generateJob(params)
+      console.log('generate job path')
     } else {
+      console.log('collect info path')
       this.toggleModal()
+      this.formTarget.addEventListener('input', this.allowSubmit.bind(this))
+    }
+  }
+
+  allowSubmit(event){
+    if (this.timeoutId) {
+      clearInterval(this.timeoutId)
+    }
+
+    this.timeoutId = setTimeout(() => {
+      for (const pair of this.form.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      const selectInput = event.target.name
+      const newValue = event.target.value
+      console.log(newValue);
+
+      const oldValue = this.form.get(selectInput)
+      if (oldValue !== newValue) {
+        this.submitBtnTarget.removeAttribute('disabled')
+      } else {
+        this.submitBtnTarget.setAttribute('disabled', true)
+        console.log('disabled');
+
+      }
+    }, this.delay)
+
+  }
+
+  toggleModal(){
+    const isOpen = this.modalTarget.classList.contains('-translate-y-full')
+    if (isOpen) {
+      this.modalTarget.classList.remove('-translate-y-full')
+    } else {
+      this.modalTarget.classList.add('-translate-y-full')
     }
   }
 
   collectInfo(event){
     event.preventDefault()
-    console.log('submit tryout')
 
     const form = new FormData(event.target)
     const saveAccepted = form.get('remember')
@@ -124,14 +172,17 @@ export default class extends Controller {
     })
     .then((data) => {
       // success path: info is updated
+      this.submitBtnTarget.setAttribute('disabled', true)
+      this.toggleModal()
+      this.generateJob(data)
       console.log('data', data)
-      this.cleanOldErrors()
     })
     .catch((response) => {
       // failure path: unprocessable entity
       console.log(response.status, response.statusText)
       response.json().then((errors) => {
         // donator.errors are received
+        this.submitBtnTarget.setAttribute('disabled', true)
         const keys = Object.keys(errors)
         this.cleanOldErrors(keys)
 
@@ -180,17 +231,6 @@ export default class extends Controller {
       }, 1000);
     }
     invalideField.insertAdjacentElement("afterend", parag)
-  }
-
-
-
-  toggleModal(){
-    const isOpen = this.modalTarget.classList.contains('-translate-y-full')
-    if (isOpen) {
-      this.modalTarget.classList.remove('-translate-y-full')
-    } else {
-      this.modalTarget.classList.add('-translate-y-full')
-    }
   }
 
   generateJob(params) {
