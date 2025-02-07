@@ -125,12 +125,15 @@ export default class extends Controller {
     .then((data) => {
       // success path: info is updated
       console.log('data', data)
+      this.cleanOldErrors()
     })
     .catch((response) => {
       // failure path: unprocessable entity
       console.log(response.status, response.statusText)
       response.json().then((errors) => {
         // donator.errors are received
+        const keys = Object.keys(errors)
+        this.cleanOldErrors(keys)
 
         for (const key in errors) {
           console.log(`${key}: ${errors[key]}`)
@@ -140,18 +143,21 @@ export default class extends Controller {
     })
   }
 
+  cleanOldErrors(attributes){
+    // Attributes = array of attributes issues by object.errors
+    const oldErrors = document.querySelectorAll('.validation-alert')
+
+    for (const oldError of oldErrors) {
+      if (!attributes.includes(oldError.id)) {
+        oldError.remove()
+      }
+    }
+  }
+
   insertError(attribute, message){
     // retrieve the form field of the key (city, address...)
     // insert the value errros[key] (validation msg) under the field + add border red for invalid
     // do it for each key received
-    const arrayOfOldAlerts = document.querySelectorAll('.validation-alert')
-    console.log(arrayOfOldAlerts)
-
-    // if (arrayOfOldAlerts) {
-    //   for (const alert in arrayOfOldAlerts) {
-    //     alert.remove()
-    //   }
-    // }
 
     const invalideField = document.getElementById(`donator_${attribute}`)
 
