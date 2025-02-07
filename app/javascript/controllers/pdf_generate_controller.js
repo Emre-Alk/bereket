@@ -19,7 +19,7 @@ export default class extends Controller {
   }
 
   disconnect(){
-    this.formTarget.removeEventListener('input', this.allowSubmit())
+    this.formTarget.removeEventListener('input', this.allowSubmit.bind(this))
     clearTimeout(this.timer)
   }
   // 1st approach = send data inline:
@@ -146,6 +146,8 @@ export default class extends Controller {
       this.saveDonatorInfo(event)
     } else {
       // on the fly
+      this.generateJob(form)
+      console.log('form', form)
     }
   }
 
@@ -174,7 +176,7 @@ export default class extends Controller {
       // success path: info is updated
       this.submitBtnTarget.setAttribute('disabled', true)
       this.toggleModal()
-      this.generateJob(data)
+      this.generateJob()
       console.log('data', data)
     })
     .catch((response) => {
@@ -233,10 +235,24 @@ export default class extends Controller {
     invalideField.insertAdjacentElement("afterend", parag)
   }
 
-  generateJob(params) {
+  generateJob(payload) {
+    console.log('payload', payload);
+
     this.toggleAllButtons('disable')
     let status = 'loading'
     this.loadAnimation(status)
+    let data
+
+    if (payload) {
+      data = {
+        // first_name: payload.get('donator[first_name]'),
+        // last_name: payload.get('donator[last_name]'),
+        address: payload.get('donator[address]'),
+        city: payload.get('donator[city]'),
+        // country: payload.get('donator[country]'),
+        zip_code: payload.get('donator[zip_code]')
+      }
+    }
 
     const details = {
       method: 'POST',
@@ -245,15 +261,18 @@ export default class extends Controller {
         "X-CSRF-Token": document
           .querySelector('meta[name="csrf-token"]')
           .getAttribute("content"),
-      }
+      },
+      body: payload ? JSON.stringify( { content: data } ) : null
     }
+
+    console.log('details', details)
 
     fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details)
     .then(response => response.json())
     .then((data) => {
       if (data.message === "job enqueued") {
-        const url = params.payload.url
-        const filename = params.payload.filename
+        const url = data.url
+        const filename = data.filename
         this.downloadFile(url, filename)
       } else if (data.message === "profile uncomplete") {
         // rediriger vers donator#edit ou afficher partial donator#edit
