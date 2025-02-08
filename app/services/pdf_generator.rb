@@ -78,13 +78,13 @@ class PdfGenerator
       pdf.fill_circle [31.5, 460.7], 3 # 1st row, 'Association loi 1901'
       # new page
       pdf.start_new_page
-      pdf.text_box @data[:donator][:first_name], at: [37, 565]
-      pdf.text_box @data[:donator][:last_name], at: [323, 565]
+      pdf.text_box @data[:donator][:first_name].titleize, at: [37, 565]
+      pdf.text_box @data[:donator][:last_name].titleize, at: [323, 565]
 
-      pdf.text_box @data[:donator][:address], at: [98, 535]
+      pdf.text_box @data[:donator][:address].titleize, at: [98, 535]
       pdf.text_box @data[:donator][:zip_code], at: [63, 520]
-      pdf.text_box @data[:donator][:city], at: [198, 520]
-      pdf.text_box @data[:donator][:country], at: [50, 505]
+      pdf.text_box @data[:donator][:city].titleize, at: [198, 520]
+      pdf.text_box @data[:donator][:country].titleize, at: [50, 505]
 
       pdf.text_box "*****#{@data[:donation][:amount]}*****", at: [8, 452] # error of text_box when integer/float type
       pdf.text_box "*****#{@data[:donation][:amount_human]} euros*****", at: [322, 452]

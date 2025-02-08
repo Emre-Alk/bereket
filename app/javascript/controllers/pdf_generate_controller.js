@@ -146,8 +146,8 @@ export default class extends Controller {
       this.saveDonatorInfo(event)
     } else {
       // on the fly
-      this.generateJob(form)
       console.log('form', form)
+      this.generateJob(form)
     }
   }
 
@@ -242,40 +242,63 @@ export default class extends Controller {
     let status = 'loading'
     this.loadAnimation(status)
     let data
+    let details
 
     if (payload) {
       data = {
-        // first_name: payload.get('donator[first_name]'),
-        // last_name: payload.get('donator[last_name]'),
+        // last_name: 'tata',
+        // address: '1 rue des totos',
+        // city: 'lyon',
+        // country: 'france',
+        // zip_code: '69006'
+        first_name: payload.get('donator[first_name]'),
+        last_name: payload.get('donator[last_name]'),
         address: payload.get('donator[address]'),
         city: payload.get('donator[city]'),
-        // country: payload.get('donator[country]'),
+        country: payload.get('donator[country]'),
         zip_code: payload.get('donator[zip_code]')
+      }
+
+      console.log('data', data);
+
+
+      details = {
+        method: 'POST',
+        headers: {
+          "Accept" : "application/json",
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        },
+        // body: payload ? JSON.stringify( { content: data } ) : null
+        body: JSON.stringify({content: data})
+      }
+
+    } else {
+
+      details = {
+        method: 'POST',
+        headers: {
+          "Accept" : "application/json",
+          "X-CSRF-Token": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        }
       }
     }
 
-    const details = {
-      method: 'POST',
-      headers: {
-        "Accept" : "application/json",
-        "X-CSRF-Token": document
-          .querySelector('meta[name="csrf-token"]')
-          .getAttribute("content"),
-      },
-      body: payload ? JSON.stringify( { content: data } ) : null
-    }
-
-    console.log('details', details)
-
     fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details)
     .then(response => response.json())
-    .then((data) => {
-      if (data.message === "job enqueued") {
-        const url = data.url
-        const filename = data.filename
+    .then((dataa) => {
+      if (dataa.message === "job enqueued") {
+        const url = dataa.url
+        const filename = dataa.filename
         this.downloadFile(url, filename)
-      } else if (data.message === "profile uncomplete") {
+      } else if (dataa.message === "profile uncomplete") {
         // rediriger vers donator#edit ou afficher partial donator#edit
+        console.log('path failed')
+
       }
     })
   }

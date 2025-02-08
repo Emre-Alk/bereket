@@ -86,36 +86,32 @@ class PdfsController < ApplicationController
     if params[:content].present?
       # info donator when on the fly (via AJAX)
       data = {
-        first_name: params[:content][:first_name].titleize,
-        last_name: params[:content][:last_name].titleize,
-        address: params[:content][:address],
-        zip_code: params[:content][:zip_code],
-        city: params[:content][:city].titleize,
-        country: params[:content][:country].titleize
+        first_name: params[:content][:first_name].presence || 'aucune value',
+        last_name: params[:content][:last_name].presence || 'aucune value',
+        address: params[:content][:address].presence || 'aucune value',
+        zip_code: params[:content][:zip_code].presence || 'aucune value',
+        city: params[:content][:city].presence || 'aucune value',
+        country: params[:content][:country].presence || 'aucune value'
       }
     end
 
-    puts '🟪🟪🟪🟪🟪🟪🟪'
-    puts params
-    puts '🟪🟪🟪🟪🟪🟪🟪'
-    puts params[:content].inspect
-    puts '🟪🟪🟪🟪🟪🟪🟪'
-    puts data
-    puts '🟪🟪🟪🟪🟪🟪🟪'
-
-    if data || @donator.completed?
-      PdfGenerationJob.perform_later(params[:id], content: data)
-      render json: {
-        message: 'job enqueued',
-        url: download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)),
-        filename: "cerfa_11580_05_000#{@donator.id}000#{@donation.id}.pdf"
-      }
-    else
-      render json: { message: 'not completed', donator_id: params[:donator_id] }
+    respond_to do |format|
+      format.html
+      format.json do
+        if params[:content] || @donator.completed?
+          PdfGenerationJob.perform_later(params[:id], content: data)
+          render json: {
+            message: 'job enqueued',
+            url: download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)),
+            filename: "cerfa_11580_05_000#{@donator.id}000#{@donation.id}.pdf"
+          }
+        else
+          render json: { message: 'not completed', donator_id: params[:donator_id] }
+        end
+      end
     end
     # jid = pdf_job.provider_job_id # code to get the jid of a job from sidekiq
     # Sidekiq::Queue.new.find_job(jid) # code to find a given job in the queue using his jid
-
   end
 
   def view_pdf
