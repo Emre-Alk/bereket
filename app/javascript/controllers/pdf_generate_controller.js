@@ -113,10 +113,10 @@ export default class extends Controller {
       }
       const selectInput = event.target.name
       const newValue = event.target.value
-      console.log(newValue);
-
+      const rememberMeBtn = document.getElementById('remember')
       const oldValue = this.form.get(selectInput)
-      if (oldValue !== newValue) {
+
+      if ((oldValue !== newValue) && (selectInput !== rememberMeBtn.name)) {
         this.submitBtnTarget.removeAttribute('disabled')
       } else {
         this.submitBtnTarget.setAttribute('disabled', true)
@@ -146,7 +146,6 @@ export default class extends Controller {
       this.saveDonatorInfo(event)
     } else {
       // on the fly
-      console.log('form', form)
       this.generateJob(form)
     }
   }
@@ -263,26 +262,29 @@ export default class extends Controller {
       body: payload ? JSON.stringify({content: data}) : null
     }
 
-    // re-do the fetch so that if !rep.ok, return Promise.reject(response)
-    // then handle in the catch method
     fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details)
-    .then(response => response.json())
-    .then((data) => {
-      if (data.message === "job enqueued") {
-        this.toggleModal()
-        const url = data.url
-        console.log('url', url)
-        const token = data.token
-        console.log('token', token)
-
-        const filename = data.filename
-        this.downloadFile(url, filename, token)
-      } else if (data.message === "uncomplete") {
-        // rediriger vers donator#edit ou afficher partial donator#edit
-        // plus, pas de check validation des infos onthefly applied.. to be carried somehow
-
+    .then(response => {
+      if (response.ok) {
+        return response.json()
       }
+      return Promise.reject(response)
     })
+    .then((data) => {
+      // success path
+      this.toggleModal()
+      this.downloadFile(data.url, data.filename, data.token)
+    })
+    .catch((response) => {
+      // fail path
+      response.json().then((errors) => {
+        console.log('errors', errors)
+        // profile incomplet
+          // rediriger vers donator#edit ou afficher partial donator#edit
+          // plus, pas de check validation des infos onthefly applied.. to be carried somehow
+
+      })
+    })
+
   }
 
   toggleAllButtons(message) {
