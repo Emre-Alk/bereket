@@ -181,7 +181,6 @@ export default class extends Controller {
     })
     .catch((response) => {
       // failure path: unprocessable entity
-      console.log(response.status, response.statusText)
       response.json().then((errors) => {
         // donator.errors are received
         this.submitBtnTarget.setAttribute('disabled', true)
@@ -236,21 +235,13 @@ export default class extends Controller {
   }
 
   generateJob(payload) {
-    console.log('payload', payload);
-
     this.toggleAllButtons('disable')
     let status = 'loading'
     this.loadAnimation(status)
-    let data
-    let details
+    let data = null
 
     if (payload) {
       data = {
-        // last_name: 'tata',
-        // address: '1 rue des totos',
-        // city: 'lyon',
-        // country: 'france',
-        // zip_code: '69006'
         first_name: payload.get('donator[first_name]'),
         last_name: payload.get('donator[last_name]'),
         address: payload.get('donator[address]'),
@@ -258,46 +249,37 @@ export default class extends Controller {
         country: payload.get('donator[country]'),
         zip_code: payload.get('donator[zip_code]')
       }
-
-      console.log('data', data);
-
-
-      details = {
-        method: 'POST',
-        headers: {
-          "Accept" : "application/json",
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content"),
-        },
-        // body: payload ? JSON.stringify( { content: data } ) : null
-        body: JSON.stringify({content: data})
-      }
-
-    } else {
-
-      details = {
-        method: 'POST',
-        headers: {
-          "Accept" : "application/json",
-          "X-CSRF-Token": document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content"),
-        }
-      }
     }
 
+    const details = {
+      method: 'POST',
+      headers: {
+        "Accept" : "application/json",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content"),
+      },
+      body: payload ? JSON.stringify({content: data}) : null
+    }
+
+    // re-do the fetch so that if !rep.ok, return Promise.reject(response)
+    // then handle in the catch method
     fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details)
     .then(response => response.json())
-    .then((dataa) => {
-      if (dataa.message === "job enqueued") {
-        const url = dataa.url
-        const filename = dataa.filename
-        this.downloadFile(url, filename)
-      } else if (dataa.message === "profile uncomplete") {
+    .then((data) => {
+      if (data.message === "job enqueued") {
+        this.toggleModal()
+        const url = data.url
+        console.log('url', url)
+        const token = data.token
+        console.log('token', token)
+
+        const filename = data.filename
+        this.downloadFile(url, filename, token)
+      } else if (data.message === "uncomplete") {
         // rediriger vers donator#edit ou afficher partial donator#edit
-        console.log('path failed')
+        // plus, pas de check validation des infos onthefly applied.. to be carried somehow
 
       }
     })
@@ -323,10 +305,18 @@ export default class extends Controller {
     }
   }
 
-  downloadFile(url, filename) {
+  downloadFile(url, filename, token) {
     setTimeout(() => {
 
-      fetch(url)
+      const details = {
+        method: 'get',
+        headers: {
+          "Accept": "application/json",
+        }
+      }
+      // re-do the fetch so that if !rep.ok, return Promise.reject(response)
+      // then handle in the catch method
+      fetch(`${url}?token=${token}`, details)
       .then(response => response.blob())
       .then(blob => {
 

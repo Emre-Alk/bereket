@@ -2,7 +2,7 @@ require 'open-uri'
 
 class PdfsController < ApplicationController
   before_action :set_donator
-  before_action :set_donation
+  before_action :set_donation, except: %i[download_pdf]
 
   def generate
     # cerfa for 1 donation
@@ -82,16 +82,18 @@ class PdfsController < ApplicationController
     #   }
     # }
     # -------------------
-
+    puts '✅✅✅✅✅✅'
+    puts params
+    puts '✅✅✅✅✅✅'
     if params[:content].present?
       # info donator when on the fly (via AJAX)
       data = {
-        first_name: params[:content][:first_name].presence || 'aucune value',
-        last_name: params[:content][:last_name].presence || 'aucune value',
-        address: params[:content][:address].presence || 'aucune value',
-        zip_code: params[:content][:zip_code].presence || 'aucune value',
-        city: params[:content][:city].presence || 'aucune value',
-        country: params[:content][:country].presence || 'aucune value'
+        first_name: params[:content][:first_name].presence || 'aucune valeur',
+        last_name: params[:content][:last_name].presence || 'aucune valeur',
+        address: params[:content][:address].presence || 'aucune valeur',
+        zip_code: params[:content][:zip_code].presence || 'aucune valeur',
+        city: params[:content][:city].presence || 'aucune valeur',
+        country: params[:content][:country].presence || 'aucune valeur'
       }
     end
 
@@ -100,13 +102,16 @@ class PdfsController < ApplicationController
       format.json do
         if params[:content] || @donator.completed?
           PdfGenerationJob.perform_later(params[:id], content: data)
+          token = @donation.generate_token_for(:cerfa_access)
           render json: {
             message: 'job enqueued',
-            url: download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)),
+            token:,
+            # url: download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)),
+            url: download_donator_donation_path(@donator, @donation),
             filename: "cerfa_11580_05_000#{@donator.id}000#{@donation.id}.pdf"
           }
         else
-          render json: { message: 'not completed', donator_id: params[:donator_id] }
+          render json: { message: 'Profile uncomplete', status: :not_found, donator_id: params[:donator_id] }
         end
       end
     end
@@ -137,16 +142,23 @@ class PdfsController < ApplicationController
   end
 
   def download_pdf
-    cerfa = @donator.cerfa
+    donation = Donation.find_by_token_for(:cerfa_access, params[:token])
 
     respond_to do |format|
-      format.pdf do
-        send_data(
-          cerfa.download,
-          filename: cerfa.filename.to_s,
-          type: cerfa.content_type.to_s,
-          disposition: 'attachment'
-        )
+      if donation
+        cerfa = @donator.cerfa
+        format.html
+        format.json do
+          send_data(
+            cerfa.download,
+            filename: cerfa.filename.to_s,
+            type: cerfa.content_type.to_s,
+            disposition: 'attachment'
+          )
+        end
+      else
+        format.html
+        format.json { render json: { message: 'unauthorized', status: :forbidden } }
       end
     end
   end
