@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   def resource
     @resource ||= User.new
   end
+
   def resource_class
     User
   end

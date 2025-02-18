@@ -8,7 +8,7 @@ class DonatorsController < ApplicationController
     # set the donator object
     @donator = current_user.donator
     # array de tous ses dons
-    @donations = @donator.donations
+    @donations = @donator&.donations
     # --- son total dons ----
     # create an hash with 'key' being a place object and 'value' being all donations objects having this place association
     # hash: { obj_placeA: [obj_don1, obj_don6,...], obj_placeB: [obj_don2, ...]...}

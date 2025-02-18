@@ -1,15 +1,7 @@
 <%= render partial:'donations/success', locals: {
   donation: @donation,
-  place: @place,
-  amount: @amount,
-  amount_detaxed: @amount_detaxed,
-  amount_net: @amount_net,
-  app_fee: @app_fee,
-  stripe_fee: @stripe_fee,
-  total_fee: @total_fee,
-  donator: @donator,
+  checkout_session: @checkout_session,
+  reduction: @reduction,
+  after_reduction: @after_reduction,
   favorite: @favorite,
-  email: @checkout_session.customer_details.email,
-  first_name: @checkout_session.customer_details.name.split(' ')[0],
-  last_name: @checkout_session.customer_details.name.split(' ')[1]
 } %>

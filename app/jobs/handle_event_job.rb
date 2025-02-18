@@ -67,7 +67,7 @@ class HandleEventJob < ApplicationJob
         # So if convert on sucess page, he will save his last donaton only based on CS id and Cus id (in the last CS)
         # donator = visitor.donator
         # customer = donator.customer
-        donator.customer.update!(stripe_id: checkout_session.customer)
+        donator.customer.nil? ? donator.create_customer!(stripe_id: checkout_session.customer) : donator.customer.update!(stripe_id: checkout_session.customer)
         puts '⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️'
 
         # elsif donator.enrolled? && donator.persisted?

@@ -30,7 +30,7 @@ export default class extends Controller {
   scrollTo(event) {
     event.preventDefault()
     // const form = document.getElementById('conversionForm')
-    const form = document.getElementById('form-new-user')
+    const form = document.getElementById('CTA-conversion')
     form.scrollIntoView({behavior: "smooth"})
   }
 

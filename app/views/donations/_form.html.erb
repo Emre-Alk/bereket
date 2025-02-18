@@ -5,13 +5,17 @@
   </div>
 
   <%# edit form %>
-  <form action="<%= place_donation_path(params[:place_id], params[:id]) %>" method="PATCH">
-    <% if donation.errors.any? %>
-    <ul>
-      <%= donation.errors.each do |error| %>
-        <%= error.full_message %>
-      <% end %>
-    </ul>
+  <form action="<%= place_donation_path(params[:place_id], params[:id]) %>" method="POST">
+    <input type="hidden" name="_method" value="PATCH">
+
+    <% if donator.errors.any? %>
+      <div class="alert-error rounded-lg p-2 my-2">
+        <ul>
+          <% donator.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
 
     <%# donator identity filled by visitor %>
@@ -27,35 +31,35 @@
         <div class="col-span-2 sm:col-span-3">
           <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Prénom(s)</label>
           <div class="mt-2">
-            <input type="text" name="user[first_name]" id="first-name" value="<%= donator.present? ? donator.first_name : '' %>" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input type="text" name="donator[first_name]" id="first-name" value="<%= donator.present? ? donator.first_name : '' %>" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="col-span-2 sm:col-span-3">
           <label for="last-name" class="block text-sm/6 font-medium text-gray-900">Nom</label>
           <div class="mt-2">
-            <input type="text" name="user[last_name]" id="last-name" value="<%= donator.present? ? donator.last_name : '' %>" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input type="text" name="donator[last_name]" id="last-name" value="<%= donator.present? ? donator.last_name : '' %>" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="col-span-2 sm:col-span-4">
           <label for="email" class="block text-sm/6 font-medium text-gray-900">E-mail</label>
           <div class="mt-2">
-            <input id="email" name="email" type="user[email]" value="<%= donator.present? ? donator.email : '' %>" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input id="email" name="donator[email]" type="email" value="<%= donator.present? ? donator.email : '' %>" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="col-span-full">
           <label for="street-address" class="block text-sm/6 font-medium text-gray-900">Adresse</label>
           <div class="mt-2">
-            <input type="text" name="user[address]" id="street-address" value="<%= donator.present? ? donator.address : '' %>" autocomplete="street-address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input type="text" name="donator[address]" id="street-address" value="<%= donator.present? ? donator.address : '' %>" autocomplete="street-address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="sm:col-span-2 sm:col-start-1">
           <label for="city" class="block text-sm/6 font-medium text-gray-900">Ville</label>
           <div class="mt-2">
-            <input type="text" name="user[city]" id="city" value="<%= donator.present? ? donator.city : '' %>" autocomplete="address-level2" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input type="text" name="donator[city]" id="city" value="<%= donator.present? ? donator.city : '' %>" autocomplete="address-level2" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
@@ -71,20 +75,18 @@
         <div class="sm:col-span-2">
           <label for="postal-code" class="block text-sm/6 font-medium text-gray-900">Code postal</label>
           <div class="mt-2">
-            <input type="text" name="user[zip_code]" id="postal-code" value="<%= donator.present? ? donator.zip_code : '' %>" autocomplete="postal-code" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input type="text" name="donator[zip_code]" id="postal-code" value="<%= donator.present? ? donator.zip_code : '' %>" autocomplete="postal-code" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="hidden col-span-2 sm:col-span-3">
           <label for="country" class="block text-sm/6 font-medium text-gray-900">Pays</label>
           <div class="mt-2 grid grid-cols-1">
-            <select id="country" name="user[country]" autocomplete="country-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <select id="country" name="donator[country]" autocomplete="country-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
               <option>France</option>
             </select>
           </div>
         </div>
-
-
       </div>
     </div>
 

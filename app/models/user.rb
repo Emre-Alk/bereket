@@ -64,12 +64,12 @@ class User < ApplicationRecord
   private
 
   def merge_donator
-    donator = Donator.where(email:)
+    donator = Donator.find_by(email:)
     donator.update!(first_name:, last_name:, status: 'enrolled', user_id: id)
   end
 
   def donator_exits_as_visitor?
-    true if Donator.where(email:)
+    true if Donator.find_by(email:)
   end
 
   # to be deleted (duplicate attribute in user and donator)

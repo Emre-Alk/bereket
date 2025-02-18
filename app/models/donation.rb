@@ -29,7 +29,7 @@ class Donation < ApplicationRecord
   end
 
   generates_token_for :cerfa_access, expires_in: 60.seconds do
-    updated_at.to_i
+    updated_at.to_i # check if update at timestamp is relevant for the purpose cerfa_access
   end
 
   belongs_to :donator, optional: true # optional for the case 'manual cerfa' feature. null changed via migration

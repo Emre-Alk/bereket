@@ -83,7 +83,7 @@ class DonationsController < ApplicationController
     # if donation exists or not managed on the view with if condtion.
     @token = params[:token]
     @donation = Donation.find_by_token_for(:donation_link, @token)
-    @donator = current_user&.donator
+    @donator ||= current_user&.donator
   end
 
   def update
@@ -95,11 +95,12 @@ class DonationsController < ApplicationController
     @donation = Donation.find_by_token_for(:donation_link, params[:token])
     return edit_place_donation_path(params[:place_id], params[:id]) unless @donation
 
-    email = params[:email]
+    email = params[:donator][:email]
 
     # retrieve a donator
     if current_user
       # case 1 - donator exists and logged in
+      # not tested
       @donation.donator = current_user.donator
       puts '🟧🟧🟧🟧🟧🟧🟧'
     else
@@ -112,40 +113,47 @@ class DonationsController < ApplicationController
         puts '🟩🟩🟩🟩🟩🟩🟩🟩'
       else
         # case 4 - new visitor (1st visit)
-        new_visitor = Donator.new(
+        puts '🟪🟪🟪🟪🟪🟪🟪🟪'
+
+        # for now get all attributes but ultimetly, save Y/N btn:
+        # if Y => enrolled and save info
+        # if N => visitor and build data hash to send to job
+        @donator = Donator.new(
           email:,
+          first_name: params[:donator][:first_name],
+          last_name: params[:donator][:last_name],
+          address: params[:donator][:address],
+          city: params[:donator][:city],
+          country: params[:donator][:country],
+          zip_code: params[:donator][:zip_code],
           status: 'visitor'
-          # first_name: params[:user][:first_name],
-          # last_name: params[:user][:last_name],
-          # address: params[:user][:address],
-          # city: params[:user][:city],
-          # country: params[:user][:country],
-          # zip_code: params[:user][:zip_code]
         )
 
         # save the new record
-        new_visitor.save!
-
-        # update the donation with donator_id
-        @donation.donator = new_visitor
-
-        puts '🟦🟦🟦🟦🟦🟦🟦🟦'
+        if @donator.save
+          # update the donation with donator_id
+          @donation.donator = @donator
+        else
+          return render 'edit', assigns: { token: params[:token] }, status: 422 # this renders edit but without the token anymore which will cause donation not to be found again
+        end
       end
     end
 
     # redirect to same view as checkout#show to be consistent (using partial with locals)
     if @donation.save!
-      redirect_to success_place_donation_path(params[:place_id], params[:id]), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{params[:email]}"
+      redirect_to success_place_donation_path(params[:place_id], params[:id]), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{email}"
     else
+      puts '💬💬💬💬💬💬'
       render 'edit', status: 422
     end
   end
 
   def successful
-    @donation = Donation.includes(donator: :favorites).find(params[:id])
+    @donation = Donation.includes(:donator, place: [:favorites]).find(params[:id])
     @favorite = @donation.place.favorites.where(donator: @donation.donator).take
     detaxed_rate = 0.66 # logic auto selon type asso à implementer
-    @amount_detaxed = @donation.amount * detaxed_rate
+    @reduction = @donation.amount * detaxed_rate
+    @after_reduction = @donation.amount - @reduction
   end
 
   private

@@ -87,11 +87,13 @@ class Donator < ApplicationRecord
   # end
 
   def create_customer
-    customer = Stripe::Customer.create(
+    return if customer.present?
+
+    new_customer = Stripe::Customer.create(
       email:,
       name: "#{first_name} #{last_name}"
     )
-    create_customer!(stripe_id: customer.id)
+    create_customer!(stripe_id: new_customer.id)
   end
 
   # check if any updates on donator is to be pass to stripe for customer
