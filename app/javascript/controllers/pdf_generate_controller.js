@@ -90,10 +90,10 @@ export default class extends Controller {
 
   isComplete({params}){
     const isCompleted = params.payload.completed
-    console.log('isComplete:', isCompleted);
+    console.log('isComplete:', isCompleted)
 
     if (isCompleted === 'true') {
-      this.generateJob(params)
+      this.generateJob()
       console.log('generate job path')
     } else {
       console.log('collect info path')
@@ -271,7 +271,9 @@ export default class extends Controller {
     })
     .then((data) => {
       // success path
-      this.toggleModal()
+      if (payload) {
+        this.toggleModal()
+      }
       this.downloadFile(data.url, data.filename, data.token)
     })
     .catch((response) => {

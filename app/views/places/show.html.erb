@@ -48,7 +48,7 @@
   <%# subscribe btn (feature for later so people can see posts from this place =/ than add to fav) %>
 
   <%# Donate btn %>
-  <% if current_user.owner?(@place) %>
+  <% if current_user&.owner?(@place) %>
     <%= link_to edit_assos_place_path(@place), class:"flex justify-center py-2.5 px-5 bg-black text-white rounded-lg tracking-wide text-center" do %>
       <div class="inline-flex gap-x-2">
         <span><%= svg_tag("edit_pen", class:'size-6') %></span>

@@ -2,7 +2,8 @@ require 'open-uri'
 
 class PdfsController < ApplicationController
   before_action :set_donator
-  before_action :set_donation, except: %i[download_pdf]
+  before_action :set_donation, except: %i[download_pdf view_pdf]
+  skip_before_action :authenticate_user!, only: %i[view_pdf]
 
   def generate
     # cerfa for 1 donation
@@ -124,14 +125,17 @@ class PdfsController < ApplicationController
     # donator = current_user.donator unless params[:donator_id] # case if use the non nested route
     # donator = Donator.find(params[:donator_id]) if params[:donator_id] # refacto into before action
 
+    # @donation = Donation.find_by_token_for(:cerfa_access, params[:token])
+    # return unless @donation
+
     @cerfa = @donator.cerfa
     # @pdf = @cerfa.url
-
+    #  need as ajax bc cause infinite refresh
     send_data(
       @cerfa.download,
       filename: @cerfa.filename.to_s,
       type: @cerfa.content_type.to_s,
-      disposition: 'inline'
+      disposition: 'attachment'
     )
   end
 

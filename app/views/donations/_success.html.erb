@@ -214,7 +214,9 @@
 <%# fixed links %>
 <div class="fixed inset-x-0 bottom-0 px-5 py-5 bg-white shadow">
   <div data-controller="convertion-visitor" class="flex flex-col gap-4 justify-center items-center text-white text-center text-md tracking-wide">
-    <% if donation.donator.visitor? %>
+    <% if params[:cerfa_token] %>
+      <%= link_to 'afficher mon cerfa', cerfa_donator_donation_path(donation.donator, donation, token: params[:cerfa_token]), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+    <% elsif donation.donator.visitor? %>
       <%= link_to "Créer mon compte",  edit_user_registration_path(:user), id:"link", class: "flex-auto px-3 py-2 rounded-lg bg-black w-full ", data: {action:'convertion-visitor#scrollTo'} %>
     <% else %>
       <%= link_to "Home", donator_root_path(), id:"link", class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>

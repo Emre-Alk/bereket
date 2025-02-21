@@ -120,12 +120,6 @@ class DonationsController < ApplicationController
         # if N => visitor and build data hash to send to job
         @donator = Donator.new(
           email:,
-          first_name: params[:donator][:first_name],
-          last_name: params[:donator][:last_name],
-          address: params[:donator][:address],
-          city: params[:donator][:city],
-          country: params[:donator][:country],
-          zip_code: params[:donator][:zip_code],
           status: 'visitor'
         )
 
@@ -141,9 +135,11 @@ class DonationsController < ApplicationController
 
     # redirect to same view as checkout#show to be consistent (using partial with locals)
     if @donation.save!
-      redirect_to success_place_donation_path(params[:place_id], params[:id]), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{email}"
+      # build data payload and generate PDFjob
+      PdfGenerationJob.perform_later(@donation.id, content: donator_params)
+      cerfa_token = @donation.generate_token_for(:cerfa_access)
+      redirect_to success_place_donation_path(params[:place_id], params[:id], cerfa_token:), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{email}"
     else
-      puts '💬💬💬💬💬💬'
       render 'edit', status: 422
     end
   end
@@ -158,8 +154,8 @@ class DonationsController < ApplicationController
 
   private
 
-  def set_donator_params
-    params.require(:donator).permit(:first_name, :last_name, :email, :adress, :zip_code, :country, :city)
+  def donator_params
+    params.require(:donator).permit(:first_name, :last_name, :email, :address, :zip_code, :country, :city)
   end
 
   def redirect_if_asso

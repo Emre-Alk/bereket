@@ -68,7 +68,7 @@ Rails.application.routes.draw do
     resources :donations, only: %i[index] do
       member do
         post 'pdf', to: 'pdfs#generate', as: :pdf_generate
-        # get 'cerfa', to: 'pdfs#view_pdf'
+        get 'cerfa', to: 'pdfs#view_pdf'
         # get 'cerfa_inline', to: 'pdfs#cerfa_inline'
         get 'download', to: 'pdfs#download_pdf'
       end
