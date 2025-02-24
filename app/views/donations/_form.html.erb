@@ -5,7 +5,12 @@
   </div>
 
   <%# edit form %>
-  <form action="<%= place_donation_path(params[:place_id], params[:id]) %>" method="POST">
+  <form action="<%= place_donation_path(params[:place_id], params[:id]) %>"
+        id="form"
+        method="POST"
+        data-controller="visitor"
+        data-visitor-target="form">
+
     <input type="hidden" name="_method" value="PATCH">
 
     <% if donator.errors.any? %>
@@ -31,35 +36,35 @@
         <div class="col-span-2 sm:col-span-3">
           <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Prénom(s)</label>
           <div class="mt-2">
-            <input type="text" name="donator[first_name]" id="first-name" value="<%= donator.present? ? donator.first_name : '' %>" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input data-action="click->visitor#saveInfo" type="text" name="donator[first_name]" id="first-name" value="<%= donator.present? ? donator.first_name : '' %>" autocomplete="given-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="col-span-2 sm:col-span-3">
           <label for="last-name" class="block text-sm/6 font-medium text-gray-900">Nom</label>
           <div class="mt-2">
-            <input type="text" name="donator[last_name]" id="last-name" value="<%= donator.present? ? donator.last_name : '' %>" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input data-action="click->visitor#saveInfo" type="text" name="donator[last_name]" id="last-name" value="<%= donator.present? ? donator.last_name : '' %>" autocomplete="family-name" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="col-span-2 sm:col-span-4">
           <label for="email" class="block text-sm/6 font-medium text-gray-900">E-mail</label>
           <div class="mt-2">
-            <input id="email" name="donator[email]" type="email" value="<%= donator.present? ? donator.email : '' %>" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input data-action="click->visitor#saveInfo" id="email" name="donator[email]" type="email" value="<%= donator.present? ? donator.email : '' %>" autocomplete="email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="col-span-full">
           <label for="street-address" class="block text-sm/6 font-medium text-gray-900">Adresse</label>
           <div class="mt-2">
-            <input type="text" name="donator[address]" id="street-address" value="<%= donator.present? ? donator.address : '' %>" autocomplete="street-address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input data-action="click->visitor#saveInfo" type="text" name="donator[address]" id="street-address" value="<%= donator.present? ? donator.address : '' %>" autocomplete="street-address" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
         <div class="sm:col-span-2 sm:col-start-1">
           <label for="city" class="block text-sm/6 font-medium text-gray-900">Ville</label>
           <div class="mt-2">
-            <input type="text" name="donator[city]" id="city" value="<%= donator.present? ? donator.city : '' %>" autocomplete="address-level2" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input data-action="click->visitor#saveInfo" type="text" name="donator[city]" id="city" value="<%= donator.present? ? donator.city : '' %>" autocomplete="address-level2" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
@@ -75,7 +80,7 @@
         <div class="sm:col-span-2">
           <label for="postal-code" class="block text-sm/6 font-medium text-gray-900">Code postal</label>
           <div class="mt-2">
-            <input type="text" name="donator[zip_code]" id="postal-code" value="<%= donator.present? ? donator.zip_code : '' %>" autocomplete="postal-code" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <input data-action="click->visitor#saveInfo" type="text" name="donator[zip_code]" id="postal-code" value="<%= donator.present? ? donator.zip_code : '' %>" autocomplete="postal-code" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
           </div>
         </div>
 
@@ -93,7 +98,7 @@
     <div class="mt-6 w-full">
       <input type="hidden" name="token" value="<%= token %>">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <button type="submit" class="w-full rounded-md bg-indigo-600 px-3 py-2 text-base tracking-wider antialiased font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Générer mon reçu fiscal</button>
+      <button data-action="click->visitor#saveInfo" type="submit" class="w-full rounded-md bg-indigo-600 px-3 py-2 text-base tracking-wider antialiased font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Générer mon reçu fiscal</button>
     </div>
 
   </form>

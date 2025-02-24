@@ -132,7 +132,7 @@
 
   <%# CTA %>
   <% if donation.donator.visitor?%>
-    <div id="CTA-conversion" data-controller="convertion-visitor" data-convertion-visitor-user-email-value="<%= donation.donator.email %>">
+    <div id="CTA-conversion" data-controller="convertion-visitor">
       <div class="mt-2 flex justify-center">
         <h1 class="text-lg font-medium text-center tracking-wider">Ne perdez plus vos dons !</h1>
       </div>
@@ -145,9 +145,6 @@
 
       <%# form %>
       <div class="pt-2 w-full rounded-lg bg-white shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
-        <!--
-
-        -->
 
         <%= render partial: "devise/registrations/form_new_user",
           locals: {
