@@ -35,7 +35,7 @@ class Donation < ApplicationRecord
   belongs_to :donator, optional: true # optional for the case 'manual cerfa' feature. null changed via migration
   belongs_to :place
 
-  has_one :review
+  has_one :review, dependent: :destroy
 
   validates :amount, presence: true
   validates :amount, numericality: true

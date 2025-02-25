@@ -132,7 +132,7 @@
 
   <%# CTA %>
   <% if donation.donator.visitor?%>
-    <div id="CTA-conversion" data-controller="convertion-visitor">
+    <div data-controller="convertion-visitor" data-convertion-visitor-target="cta" data-convertion-visitor-donator-url-value="<%= donator_url(donation.donator) %>">
       <div class="mt-2 flex justify-center">
         <h1 class="text-lg font-medium text-center tracking-wider">Ne perdez plus vos dons !</h1>
       </div>

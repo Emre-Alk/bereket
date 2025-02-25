@@ -20,7 +20,7 @@ export default class extends Controller {
 
   disconnect(){
     this.formTarget.removeEventListener('input', this.allowSubmit.bind(this))
-    clearTimeout(this.timer)
+    clearTimeout(this.timeoutId)
   }
   // 1st approach = send data inline:
   // hit the route (controller pdfs#generate) that initiate the 'job perform' in the back-end
@@ -104,7 +104,7 @@ export default class extends Controller {
 
   allowSubmit(event){
     if (this.timeoutId) {
-      clearInterval(this.timeoutId)
+      clearTimeout(this.timeoutId)
     }
 
     this.timeoutId = setTimeout(() => {

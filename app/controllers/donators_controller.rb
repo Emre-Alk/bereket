@@ -1,7 +1,8 @@
 class DonatorsController < ApplicationController
   # authenticate user is devise callback helper for authentication
   # is donator is my custom callback helper for authorization
-  before_action :is_donator?
+  before_action :is_donator? #, except: %i[update]
+  # skip_before_action :authenticate_user!, only: %i[update]
 
   def dashboard
     # --- query initializers ----

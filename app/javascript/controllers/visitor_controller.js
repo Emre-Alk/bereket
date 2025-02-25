@@ -2,29 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="visitor"
 export default class extends Controller {
-  static targets = ['form']
-
-  // connect(){
-  //   const inputs = document.getElementById('form').elements
-
-  //   for (let i = 0; i < inputs.length; i++) {
-  //     const element = inputs[i]
-  //     if (element.nodeName === 'INPUT') {
-  //       element.addEventListener('click', this.saveInfo.bind(this))
-  //     }
-  //   }
-  // }
-
-  // disconnect(){
-  //   const inputs = document.getElementById('form').elements
-
-  //   for (let i = 0; i < inputs.length; i++) {
-  //     const element = inputs[i]
-  //     if (element.nodeName === 'INPUT') {
-  //       element.removeEventListener('click', this.saveInfo.bind(this))
-  //     }
-  //   }
-  // }
+  static targets = ['form', 'submitBtn']
 
   initialize(){
     const visitorInfo = JSON.parse(localStorage.getItem('visitorInfo'))
@@ -35,14 +13,11 @@ export default class extends Controller {
         input[0].value = visitorInfo['donator'][data]
       }
     }
-
   }
 
   saveInfo(){
     // build a form object to manipulate data from it
     const formInfo = new FormData(this.formTarget)
-    const test = Object.fromEntries(formInfo)
-
 
     // build the visitor info payload
     const data = {
@@ -57,6 +32,21 @@ export default class extends Controller {
 
     // save it into localstorage of the user device as temporary
     localStorage.setItem("visitorInfo", JSON.stringify({donator: data}))
+
+    // check if form filled out
+    if (this.enableSubmit(formInfo) === true) {
+      this.submitBtnTarget.removeAttribute('disabled')
+    } else {
+      this.submitBtnTarget.setAttribute('disabled', '')
+    }
+
+  }
+
+  enableSubmit(form){
+    for (const value of form.values()) {
+      if (!value) return false
+    }
+    return true
   }
 
 

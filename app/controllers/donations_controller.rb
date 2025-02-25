@@ -3,7 +3,7 @@ class DonationsController < ApplicationController
   # skip auth (only new), apply auth by redirection inside new
   before_action :redirect_if_asso, only: %i[new edit update successful]
   # before_action :store_user_location!, only: [:new], if: :storable_location?
-  after_action :store_user_location!, only: [:successful], if: :storable_location?
+  # after_action :store_user_location!, only: [:successful], if: :storable_location? # dkn what was that for but cause redirection to pdf_download after successful signup on success page with unknown donator id
 
   def index
     # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])
@@ -118,18 +118,43 @@ class DonationsController < ApplicationController
         # for now get all attributes but ultimetly, save Y/N btn:
         # if Y => enrolled and save info
         # if N => visitor and build data hash to send to job
+        # @donator = Donator.new(
+        #   email:,
+        #   status: 'visitor'
+        # )
+        # # instanciating new donator with all params to generate object.errors on save if any
+        @donator = Donator.new(donator_params)
+        @donator.status = :visitor
+
+        return render 'edit', assigns: { token: params[:token] }, status: 422 unless @donator.valid?
+
         @donator = Donator.new(
           email:,
           status: 'visitor'
         )
+        @donator.save
+        @donation.donator = @donator
+
+        # if !@donator.valid?
+        # return render 'edit', assigns: { token: params[:token] }, status: 422
+        # else
+        #   @donator = Donator.new(
+        #     email:,
+        #     status: 'visitor'
+        #   )
+        #   @donator.save
+        #   @donation.donator = @donator
+        # end
 
         # save the new record
-        if @donator.save
-          # update the donation with donator_id
-          @donation.donator = @donator
-        else
-          return render 'edit', assigns: { token: params[:token] }, status: 422 # this renders edit but without the token anymore which will cause donation not to be found again
-        end
+        # if @donator.save
+        #   # update the donation with donator_id
+        #   @donation.donator = @donator
+        #   # # removing donator infos except email
+        #   # @donator.update()
+        # else
+        #   return render 'edit', assigns: { token: params[:token] }, status: 422 # this renders edit with the token so that donation can be found again
+        # end
       end
     end
 

@@ -49,7 +49,7 @@ class Donator < ApplicationRecord
   }, default: 'enrolled'
 
   validates :first_name, :last_name,
-            allow_blank: true, # to allow visitor during manual cerfa to be saved without saving data except email
+            allow_blank: true, # to allow user creation without asking for FN and LN for after_create: :create_donator callback to work
             # presence: true,
             format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: 'en letttres uniquement' }
 
