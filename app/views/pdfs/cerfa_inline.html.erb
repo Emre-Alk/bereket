@@ -74,7 +74,12 @@
   //     alert("Le partage n'est pas pris en charge sur ce navigateur.");
   //   }
   // }
+  $("#object").contents().find("body").css({
+      "height": "100%",
+      "overflow": "auto",
+      "-webkit-overflow-scrolling": "touch"
+    });
 
   // Prevent page scrolling, allow only PDF viewer to scroll
-  // document.body.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
 </script>
