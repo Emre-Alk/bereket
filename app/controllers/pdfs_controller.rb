@@ -2,8 +2,8 @@ require 'open-uri'
 
 class PdfsController < ApplicationController
   before_action :set_donator
-  before_action :set_donation, except: %i[download_pdf view_pdf]
-  skip_before_action :authenticate_user!, only: %i[view_pdf]
+  before_action :set_donation, except: %i[download_pdf]
+  skip_before_action :authenticate_user!, only: %i[view_pdf cerfa_inline]
 
   def generate
     # cerfa for 1 donation
@@ -121,15 +121,10 @@ class PdfsController < ApplicationController
   end
 
   def view_pdf
-    # not used. see comment JS controller
-    # donator = current_user.donator unless params[:donator_id] # case if use the non nested route
-    # donator = Donator.find(params[:donator_id]) if params[:donator_id] # refacto into before action
-
     # @donation = Donation.find_by_token_for(:cerfa_access, params[:token])
     # return unless @donation
 
     @cerfa = @donator.cerfa
-    # @pdf = @cerfa.url
     #  need as ajax bc cause infinite refresh
     send_data(
       @cerfa.download,
@@ -141,8 +136,9 @@ class PdfsController < ApplicationController
 
   def cerfa_inline
     # not used. see comment JS controller
-    @pdf_inline = cerfa_donator_donation_path(donator_id: @donator, id: @donation)
-    # render layout: 'pdf_viewer'
+    # @pdf_inline = cerfa_donator_donation_path(donator_id: @donator, id: @donation)
+    @pdf_url = url_for(@donator.cerfa) if @donator.cerfa.attached?
+    render layout: 'pdf_viewer'
   end
 
   def download_pdf

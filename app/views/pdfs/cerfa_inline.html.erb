@@ -1,20 +1,39 @@
+<!--
 <div class="h-dvh">
     <div class="sticky z-50 top-0 inset-x-0 bg-white flex justify-around items-center py-4">
-      <!--
-        <%= link_to 'download', download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)), download: true, data: {turbo: :false}, class:"border border-black rounded-lg px-3 py-1.5" %>
-        <%= button_to "Download PDF", download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)), data: {turbo: :false} %>
-        <a href="<%= @pdf_inline %>" download class="bg-green-500 text-white px-4 py-2 rounded">
-        Download PDF
-        </a>
-      -->
-
       <button data-controller="pdf-download"
         data-action="click->pdf-download#download"
-        data-pdf-download-url="<%= download_donator_donation_path(@donator, @donation, request.params.merge(format: :pdf)) %>"
+        data-pdf-download-url="<%= cerfa_donator_donation_path(@donator, @donation) %>"
         data-pdf-download-filename="cerfa.pdf">
         Download PDF
       </button>
     </div>
 
   <iframe src="<%= @pdf_inline %>" class="w-full h-4/5"></iframe>
+</div>
+-->
+
+<div class="flex flex-col h-screen w-full overflow-hidden">
+  <!-- Top Section: Buttons -->
+  <div class="flex justify-between items-center w-full px-4 py-3 bg-white shadow-md">
+    <button onclick="history.back()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm">
+      ⬅ Retour
+    </button>
+    <div class="flex space-x-2">
+      <a href="<%= @pdf_url %>" download class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm">
+        ⬇ Télécharger
+      </a>
+      <button onclick="sharePDF()" class="bg-green-500 text-white px-4 py-2 rounded-md text-sm">
+        📤 Partager
+      </button>
+    </div>
+  </div>
+
+  <!-- Middle Section: PDF Viewer (Takes remaining space, scrollable) -->
+  <div class="flex-grow overflow-auto">
+    <iframe src="<%= @pdf_url %>#toolbar=0" class="w-full h-full"></iframe>
+  </div>
+
+  <!-- Bottom Section: Extra Margin -->
+  <div class="h-6 bg-white"></div>
 </div>
