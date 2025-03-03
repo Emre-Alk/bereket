@@ -48,16 +48,12 @@
       class="w-full h-full overflow-scroll -webkit-overflow-scrolling-touch relative"
       style="padding-top: 1px; padding-bottom: 1px;"
     >
-      <object
-        data="<%= @pdf_url %>#view=FitH&toolbar=0&scrollbar=0"
-        type="application/pdf"
-        class="w-full h-full"
-      >
-        <!-- Fallback link -->
-        <p class="text-center text-gray-700">Votre navigateur ne peut pas afficher ce PDF.
-          <a href="<%= @pdf_url %>" class="text-blue-500 underline">Cliquez ici pour le télécharger</a>.
-        </p>
-      </object>
+     <iframe
+      src="<%= @pdf_url %>#toolbar=0"
+      class="w-full h-full"
+      style="border: none;"
+    ></iframe>
+
     </div>
   </div>
 
@@ -74,7 +70,7 @@
   //     alert("Le partage n'est pas pris en charge sur ce navigateur.");
   //   }
   // }
-  $("#object").contents().find("body").css({
+  $("#iframe").contents().find("body").css({
       "height": "100%",
       "overflow": "auto",
       "-webkit-overflow-scrolling": "touch"
