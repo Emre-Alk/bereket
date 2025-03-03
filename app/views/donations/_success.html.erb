@@ -224,7 +224,9 @@
     <% elsif donation.donator.visitor? %>
       <%= link_to "Créer mon compte",  edit_user_registration_path(:user), id:"link", class: "flex-auto px-3 py-2 rounded-lg bg-black w-full ", data: {action:'convertion-visitor#scrollTo'} %>
     <% else %>
-      <%= link_to "Home", donator_root_path(), id:"link", class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+      <%= link_to 'cerfa', cerfa_inline_donator_donation_path(donation.donator, donation), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full" %>
+
+      <%= link_to "Home", donator_root_path(), id:"link", class: "mt-2 flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
     <% end %>
 
     <!--
