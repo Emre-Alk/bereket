@@ -42,11 +42,13 @@
     </div>
   </div>
 
-  <iframe
-    src="<%= show_pdf_donator_donation_path(@donator, @donation) %>"
-    scrolling="no"
-    class="h-full w-full"
-    ></iframe>
+  <div class="flex-grow overflow-auto">
+    <iframe
+      src="<%= show_pdf_donator_donation_path(@donator, @donation) %>"
+      scrolling="no"
+      class="h-full w-full"
+      ></iframe>
+  </div>
 
   <!-- Bottom Section: Extra Margin to prevent iPhone navigation overlap -->
   <div class="h-6 bg-white"></div>
