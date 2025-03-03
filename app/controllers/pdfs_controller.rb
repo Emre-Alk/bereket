@@ -3,7 +3,7 @@ require 'open-uri'
 class PdfsController < ApplicationController
   before_action :set_donator
   before_action :set_donation, except: %i[download_pdf]
-  skip_before_action :authenticate_user!, only: %i[view_pdf cerfa_inline]
+  skip_before_action :authenticate_user!, only: %i[view_pdf cerfa_inline show]
 
   def generate
     # cerfa for 1 donation
@@ -141,7 +141,7 @@ class PdfsController < ApplicationController
     render layout: 'pdf_viewer'
   end
 
-  def show_pdf
+  def show
     @pdf_url = url_for(@donator.cerfa) if @donator.cerfa.attached?
     render layout: 'pdf_show'
   end
