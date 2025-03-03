@@ -30,12 +30,24 @@
   </div>
 
   <!-- Middle Section: Scrollable PDF Viewer -->
+  <!--
   <div class="flex-grow overflow-auto">
     <iframe
       src="<%= @pdf_url %>#toolbar=0"
       class="w-full h-full"
       style="border: none;"
     ></iframe>
+  </div>
+  -->
+
+  <div style="overflow: auto; -webkit-overflow-scrolling: touch;">
+    <iframe
+      src="<%= @pdf_url %>"
+      style="overflow: auto; -webkit-overflow-scrolling: touch; border: none;"
+      scrolling="yes"
+      width="100%"
+      height="100%">
+    </iframe>
   </div>
 
   <!-- Bottom Section: Extra Margin to prevent iPhone navigation overlap -->
