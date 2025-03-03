@@ -113,6 +113,8 @@ export default class extends Controller {
       this.displayWelcome(newUserForm)
     })
     .catch((response) => {
+      console.log('response', response)
+
       // failure path: unprocessable entity
       const password = newUserForm.get('user[password]')
       const confirmPassword = newUserForm.get('user[password_confirmation]')
