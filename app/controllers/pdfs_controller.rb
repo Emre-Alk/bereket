@@ -137,13 +137,28 @@ class PdfsController < ApplicationController
   def cerfa_inline
     # not used. see comment JS controller
     # @pdf_inline = cerfa_donator_donation_path(donator_id: @donator, id: @donation)
-    @pdf_url = url_for(@donator.cerfa) if @donator.cerfa.attached?
-    render layout: 'pdf_viewer'
+    # @pdf_url = url_for(@donator.cerfa) if @donator.cerfa.attached?
+    # render layout: 'pdf_viewer'
+    respond_to do |format|
+      format.pdf do
+        pdf = Prawn::Document.new
+        pdf.text "This is order no: #{@donator.email}"
+
+        @cerfa = @donator.cerfa
+        send_data(
+          pdf.render,
+          filename: @cerfa.filename.to_s,
+          type: @cerfa.content_type.to_s,
+          disposition: 'inline'
+        )
+      end
+    end
+
   end
 
   def show
-    @pdf_url = url_for(@donator.cerfa) if @donator.cerfa.attached?
-    render layout: 'pdf_show'
+
+    # render layout: 'pdf_show'
   end
 
   def download_pdf
