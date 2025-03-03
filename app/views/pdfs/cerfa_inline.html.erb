@@ -42,18 +42,23 @@
     </div>
   </div>
 
-  <!-- Scrollable PDF Viewer using <object> -->
-  <div class="flex-grow overflow-auto">
-    <object
-      data="<%= @pdf_url %>#view=FitH&scrollbar=1"
-      type="application/pdf"
-      class="w-full h-full"
+  <!-- Scrollable PDF Viewer Container -->
+  <div class="flex-grow overflow-hidden">
+    <div
+      class="w-full h-full overflow-scroll -webkit-overflow-scrolling-touch relative"
+      style="padding-top: 1px; padding-bottom: 1px;"
     >
-      <!-- Fallback link for unsupported browsers -->
-      <p class="text-center text-gray-700">Votre navigateur ne peut pas afficher ce PDF.
-        <a href="<%= @pdf_url %>" class="text-blue-500 underline">Cliquez ici pour le télécharger</a>.
-      </p>
-    </object>
+      <object
+        data="<%= @pdf_url %>#view=FitH"
+        type="application/pdf"
+        class="w-full h-full"
+      >
+        <!-- Fallback link -->
+        <p class="text-center text-gray-700">Votre navigateur ne peut pas afficher ce PDF.
+          <a href="<%= @pdf_url %>" class="text-blue-500 underline">Cliquez ici pour le télécharger</a>.
+        </p>
+      </object>
+    </div>
   </div>
 
   <!-- Bottom Section: Extra Margin to prevent iPhone navigation overlap -->
