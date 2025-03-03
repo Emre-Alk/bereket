@@ -141,6 +141,11 @@ class PdfsController < ApplicationController
     render layout: 'pdf_viewer'
   end
 
+  def show_pdf
+    @pdf_url = url_for(@donator.cerfa) if @donator.cerfa.attached?
+    render layout: 'pdf_show'
+  end
+
   def download_pdf
     donation = Donation.find_by_token_for(:cerfa_access, params[:token])
 

@@ -1,0 +1,15 @@
+<!-- Scrollable PDF Viewer Container -->
+<iframe
+  src="<%= @pdf_url %>#toolbar=0"
+  class="w-full h-full"
+  style="border: none;"
+  scrolling="no"
+></iframe>
+
+<script>
+  $("#iframe").contents().find("body").css({
+      "height": "100%",
+      "overflow": "auto",
+      "-webkit-overflow-scrolling": "touch"
+    });
+</script>
