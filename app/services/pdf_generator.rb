@@ -32,7 +32,9 @@ class PdfGenerator
       page << page_stamp if page_stamp
     end
 
-    # Step 5: Save the combined PDF.
+
+
+    # Step 5: return the combined PDF
     template_pdf.to_pdf # string data to pdf
   end
 
@@ -76,17 +78,33 @@ class PdfGenerator
       pdf.fill_circle [31.5, 460.7], 3 # 1st row, 'Association loi 1901'
       # new page
       pdf.start_new_page
-      pdf.text_box @data[:donator][:first_name], at: [37, 565]
-      pdf.text_box @data[:donator][:last_name], at: [323, 565]
-      pdf.text_box @data[:donation][:amount].to_s, at: [31, 452] # error of text_box when integer/float type
-      pdf.text_box "#{@data[:donation][:amount_human]} euros", at: [322, 452]
+      pdf.text_box @data[:donator][:first_name].titleize, at: [37, 565]
+      pdf.text_box @data[:donator][:last_name].titleize, at: [323, 565]
+
+      pdf.text_box @data[:donator][:address].titleize, at: [98, 535]
+      pdf.text_box @data[:donator][:zip_code], at: [63, 520]
+      pdf.text_box @data[:donator][:city].titleize, at: [198, 520]
+      pdf.text_box @data[:donator][:country].titleize, at: [50, 505]
+
+      pdf.text_box "*****#{@data[:donation][:amount]}*****", at: [8, 452] # error of text_box when integer/float type
+      pdf.text_box "*****#{@data[:donation][:amount_human]} euros*****", at: [322, 452]
       pdf.text_box @data[:donation][:occured_on], at: [150, 432]
       pdf.text_box @data[:today], at: [274, 176]
       # tick some boxes
       pdf.fill_rectangle [64.2, 364], 6, 6.2 # '200 du CGI'
-      pdf.fill_rectangle [-1, 327], 6, 6.2 # 'Acte authentique'
+      # pdf.fill_rectangle [-1, 327], 6, 6.2 # 'Acte authentique'
+      pdf.fill_rectangle [255, 327], 6, 6.2 # 'don manuel'
       pdf.fill_rectangle [-1, 290], 6, 6.2 # 'Numéraire'
-      pdf.fill_rectangle [255.2, 222], 6, 6.2 # 'Virement, prélèvement, carte bancaire'
+
+      case @data[:donation][:mode]
+      when 'espèce'
+        pdf.fill_rectangle [-1, 222], 6, 6.2 # 'Espèce'
+      when 'virement, prélèvement, carte bancaire'
+        pdf.fill_rectangle [255.2, 222], 6, 6.2 # 'Virement, prélèvement, carte bancaire'
+      when 'chèque'
+        pdf.fill_rectangle [114.8, 222], 6, 6.2 # 'Chèque'
+      end
+
       # To do: add all data required as well as a 'cachet' and 'scaned signature' of the asso
       signature = @data[:asso][:identity][:signature]
       if signature.attached? # signature is used only if it is attached to the model (ie, it exists)

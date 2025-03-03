@@ -1,0 +1,246 @@
+  <%# scroll page %>
+<div class="pb-36 flex flex-col gap-y-10">
+
+  <%# icon check %>
+  <div class="rounded-lg flex flex-col py-4 items-center justify-center bg-black">
+    <div>
+      <%= svg_tag('check_circle', class:'size-20 text-white') %>
+    </div>
+
+    <%# message goodify (How does it feel to have accomplish a good deed today ? Good right !) %>
+  </div>
+
+  <%# card place %>
+  <div class="rounded-lg w-full shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+    <%# image %>
+    <% if donation.place.place_image.attached? %>
+      <div class=" flex justify-center items-center h-28 w-full">
+          <%= cl_image_tag(donation.place.place_image.key, crop: 'fill', class:'h-28 w-full rounded-t-lg') %>
+      </div>
+    <% else %>
+      <div class="flex justify-center items-center h-28 w-full rounded-t-lg bg-gray-300">
+        <%= svg_tag('image_empty', class:'size-20 bg-inherit text-gray-200') %>
+      </div>
+    <% end %>
+
+    <%# quick recap %>
+    <div data-controller="dropdown" class="relative rounded-b-lg text-sm flex flex-col gap-y-1 bg-white p-2">
+      <%# amount %>
+      <div class="flex flex-row gap-4 items-baseline" >
+        <%= icon('fa-solid', 'hand-holding-heart') %>
+        <%= number_to_currency(donation.amount.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
+        <% if donation.mode == "virement, prélèvement, carte bancaire" %>
+          <button data-action=dropdown#toggle>
+            <%= icon('fa-solid', 'chevron-down') %>
+          </button>
+        <% end %>
+      </div>
+
+      <%# dropdown fees %>
+      <% if donation.checkout_session_id %>
+        <div data-dropdown-target="fees" class="hidden">
+          <div class="ml-8 mt-2 mb-4 w-3/4 flex flex-col justify-center content-between gap-y-2 text-xs roboto-light">
+            <div class="flex items-center justify-between">
+              <p>Frais de service Goodify</p>
+              <%= number_to_currency(checkout_session.metadata.app_fee.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <p>Frais bancaire </p>
+              <%= number_to_currency(checkout_session.metadata.stripe_fee.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <p>Frais total</p>
+              <%= number_to_currency(checkout_session.metadata.total_fee.to_f / 100, unit: '€', format: '%n %u', delimiter: ' ') %>
+            </div>
+
+          </div>
+        </div>
+      <% end %>
+
+      <%# place %>
+      <div class="flex flex-row gap-4 items-baseline">
+        <%= icon("fa-solid", "paper-plane") %>
+        <%= donation.place.name.titleize %>
+      </div>
+
+      <div class="flex flex-row gap-4 items-baseline">
+        <%= icon("fa-solid", "location-dot") %>
+        <%= donation.place.street_no %> <%= donation.place.address %>, <%= donation.place.city %> <%= donation.place.zip_code %>, <%= donation.place.country %>
+      </div>
+
+      <div class="flex flex-row gap-4 items-baseline">
+        <%= icon("fa-solid", "bullhorn") %>
+        <p class="text-justify">
+        Merci pour vote générosité. Grâce à vous, nous pouvons continuer à assurer notre mission. Au plaisir de vous revoir bientôt
+        </p>
+      </div>
+
+      <%# ajouter en fav %>
+      <% if donation.donator.enrolled? %>
+        <div class="absolute top-2 right-2">
+          <%= render partial:"favorites/favorite_icon", locals: { donator: donation.donator, place: donation.place, favorite: favorite } %>
+        </div>
+      <% end %>
+
+    </div>
+
+  </div>
+
+  <%# payment details w/ breakdown %>
+  <div>
+    <div class="mt-2 flex justify-center">
+      <h1 class="text-lg font-medium text-center tracking-wider">Ce que votre don vous a vraiment coûté 👇</h1>
+    </div>
+
+    <div class=" mb-4 flex flex-col gap-y-3 text-center text-sm text-inherit opacity-80 roboto-light">
+      <p>Votre don ouvre des droits à la réduction d'impôt.</p>
+    </div>
+
+    <div class="overflow-x-auto rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+      <table class=" w-full text-sm text-center rtl:text-right text-black">
+          <thead class="text-xs text-black uppercase bg-white border-b">
+              <tr>
+                  <th scope="col" class="w-1/3 px-2 py-2">
+                      Montant
+                  </th>
+                  <th scope="col" class="w-1/3 px-2 py-2 ">
+                      Réduction impôt éligible
+                  </th>
+                  <th scope="col" class="w-1/3 px-2 py-2">
+                      Net
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="text-right text-gray-700 bg-white border-b">
+                  <td scope="row" class="px-2 py-2 whitespace-nowrap">
+                      <%= number_to_currency(donation.amount.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
+                  </td>
+                  <td class="px-2 py-2 ">
+                      <%= number_to_currency(reduction.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
+                  </td>
+                  <td class="px-2 py-2 font-medium text-base text-black">
+                      <%= number_to_currency(after_reduction.fdiv(100), unit: '€', format: '%n %u', delimiter: ' ') %>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%# CTA %>
+  <% if donation.donator.visitor?%>
+    <div data-controller="convertion-visitor" data-convertion-visitor-target="cta" data-convertion-visitor-donator-url-value="<%= donator_url(donation.donator) %>">
+      <div class="mt-2 flex justify-center">
+        <h1 class="text-lg font-medium text-center tracking-wider">Ne perdez plus vos dons !</h1>
+      </div>
+
+      <div class="mb-2 flex flex-col gap-y-3 text-center text-sm text-inherit opacity-80 roboto-light">
+        <p>Rejoignez <strong>Goodify</strong> et suivez toutes vos bonnes actions depuis votre tableau de bord.</p>
+        <p>Profitez de la réduction d'impôt en un seul clic grâce au <strong>reçu fiscal</strong> à retrouver dans votre espace.</p>
+        <p>Vivez une expérience nouvelle à travers vos bonnes actions avec Goodify.</p>
+      </div>
+
+      <%# form %>
+      <div class="pt-2 w-full rounded-lg bg-white shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
+
+        <%= render partial: "devise/registrations/form_new_user",
+          locals: {
+            role: "donator",
+            donator: donation.donator
+            # email: checkout_session.customer_details.email.presence || donation.donator.email,
+            # first_name: checkout_session.customer_details.name.split(' ')[0].presence || donation.donator.first_name,
+            # last_name: checkout_session.customer_details.name.split(' ')[1].presence || donation.donator.last_name
+          } %>
+
+      </div>
+    </div>
+  <% end %>
+
+  <%# feedback and contact %>
+  <div class="flex flex-col items-center justify-center">
+
+    <h1 class="mt-2 text-lg font-medium tracking-wider">Notez votre expérience</h1>
+
+    <p class="mb-2 text-sm text-center text-inherit opacity-80 roboto-light">Votre avis contribuera à notre amélioration continue pour rendre votre expérience meilleure.</p>
+
+    <% if donation.review %>
+      <%= render partial: "reviews/thanks" %>
+    <% else %>
+      <div class="flex flex-col items-center gap-y-2" data-controller="star-rating">
+        <div class="flex">
+          <% 5.times do %>
+            <button class="px-1" data-star-rating-target="star" data-action="click->star-rating#rate">
+              <%= svg_tag("star", class: "size-9 text-gray-300") %>
+            </button>
+          <% end %>
+        </div>
+
+        <div class="text-sm text-center text-inherit opacity-80 roboto-light" data-star-rating-target="message"></div>
+
+        <div class="flex gap-2 mt-2" >
+
+          <button disabled class="flex-auto w-20 text-sm px-3 py-2 rounded-lg bg-black disabled:opacity-25" data-star-rating-target="commentBtnOpen" data-action="click->star-rating#openComment">
+            <%= icon('fa-solid', 'comment', class:'fa-xl', style:'color: white;') %>
+          </button>
+
+          <form action="POST" url="/reviews" class="flex flex-col justify-center items-center gap-y-2"
+                                              data-action="submit->star-rating#sendReview">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="hidden" name="review[donation_id]" value="<%= donation.id %>">
+            <input type="hidden" name="review[rating]" data-star-rating-target="ratingForm">
+            <textarea data-star-rating-target="commentForm" class="rounded-lg hidden" type="text" name="review[content]" cols="40" rows="3" name="review[content]"></textarea>
+
+            <button disabled type="submit" class="flex-auto text-sm px-3 py-2 rounded-lg bg-black text-white tracking-wider w-20 disabled:opacity-25"
+                                          data-star-rating-target="submitBtnOpen">
+              Envoyer
+            </button>
+          </form>
+
+        </div>
+
+      </div>
+    <% end %>
+
+  </div>
+
+</div>
+
+<!--
+<%= link_to 'afficher mon cerfa', cerfa_donator_donation_path(donation.donator, donation),
+                class: "flex-auto px-3 py-2 rounded-lg bg-black w-full",
+                data: { controller:"pdf-download", action: 'click->pdf-download#download', pdf_download_url: cerfa_donator_donation_path(donation.donator, donation),  pdf_download_filename: 'cerfa' }
+                %>
+
+-->
+
+<%# fixed links %>
+<div class="fixed inset-x-0 bottom-0 px-5 py-5 bg-white shadow">
+  <div data-controller="convertion-visitor" class="flex flex-col gap-4 justify-center items-center text-white text-center text-md tracking-wide">
+    <% if params[:cerfa_token] %>
+      <%= link_to 'cerfa', cerfa_inline_donator_donation_path(donation.donator, donation), class: "flex-auto px-3 py-2 rounded-lg bg-black w-full" %>
+    <% elsif donation.donator.visitor? %>
+      <%= link_to "Créer mon compte",  edit_user_registration_path(:user), id:"link", class: "flex-auto px-3 py-2 rounded-lg bg-black w-full ", data: {action:'convertion-visitor#scrollTo'} %>
+    <% else %>
+      <%= link_to "Home", donator_root_path(), id:"link", class: "flex-auto px-3 py-2 rounded-lg bg-black w-full " %>
+    <% end %>
+
+    <!--
+    <div class="w-full" data-controller="clipboard" >
+      <button class="relative flex justify-center items-center gap-4 px-3 py-2 rounded-lg text-black bg-gray-200 w-full" value="0786415817" data-action="clipboard#copy clipboard#displayCopy" data-clipboard-target="source">
+        Nous contacter
+        <span><%= svg_tag('headset') %></span>
+        <div class="absolute right-4">
+          <span data-clipboard-target="defaultIcon"> <%= svg_tag('clipboard', class:'size-3.5') %></span>
+          <span data-clipboard-target="successIcon" class='hidden' > <%= svg_tag('check', class:'size-4 stroke-2 stroke-black') %></span>
+        </div>
+      </button>
+    </div>
+    -->
+
+    <%= render partial: 'shared/support_link', locals: { bg: 'bg-gray-200' } %>
+
+  </div>
+</div>

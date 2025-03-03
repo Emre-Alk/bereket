@@ -15,7 +15,8 @@ Rails.application.routes.draw do
   # ======== Pages ========
   # this line sends any user to the landing page
   root to: "pages#landing"
-  get "/members", to:"pages#members" # feature in working (static)
+  get "/members", to: "pages#members" # feature in working (static)
+  get '/tools', to: 'pages#tools' # feature in working (static)
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
   # ======== assos ========
@@ -28,7 +29,9 @@ Rails.application.routes.draw do
 
   # this line is to create a portal dedicated to the asso users
   namespace :assos do
-    resources :places, only: %i[index show new create edit update destroy]
+    resources :places, only: %i[index show new create edit update destroy] do
+      resources :donations, only: %i[new create destroy] # feature under working
+    end
     resource :signature, only: %i[new create]
     resource :account, only: %i[create show] do
       member do
@@ -37,7 +40,6 @@ Rails.application.routes.draw do
     end
     resource :payout, only: %i[new create]
     resources :donators, only: %i[index]
-    # nest a resources donations only index and show. will work since ctrl is nested in the assos namespace
   end
 
   # ======== places ========
@@ -45,7 +47,11 @@ Rails.application.routes.draw do
   # we need a show page of the places for the donators to reach (create fav, see place etc...)
   # this route don't interfer with the one in the asso namespace since it is nested inside asso namespace
   resources :places, only: %i[show] do
-    resources :donations, only: %i[new]
+    resources :donations, only: %i[new edit update] do
+      member do
+        get 'success', to: 'donations#successful'
+      end
+    end
     resource :checkout, only: %i[create show]
   end
 
@@ -57,14 +63,14 @@ Rails.application.routes.draw do
   # a after_create in user model, create also a donator if role was set as donator by user
   get "/donator", to: "donators#dashboard", as: :donator_root
 
-  resources :donators, only: %i[new create] do
+  resources :donators, only: %i[edit update] do
     resources :favorites, only: %i[create destroy]
     resources :donations, only: %i[index] do
       member do
-        get 'pdf', to: 'pdfs#generate', as: :pdf_generate
-        # get 'cerfa', to: 'pdfs#view_pdf'
-        # get 'cerfa_inline', to: 'pdfs#cerfa_inline'
+        post 'pdf', to: 'pdfs#generate', as: :pdf_generate
         get 'download', to: 'pdfs#download_pdf'
+        get 'cerfa', to: 'pdfs#view_pdf'
+        get 'cerfa_inline', to: 'pdfs#cerfa_inline'
       end
     end
   end

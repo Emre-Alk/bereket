@@ -6,6 +6,9 @@ class PagesController < ApplicationController
 
   def members # créer un controller membre sous namespace asso
     @place = Place.includes(donations: :donator).find(params[:place])
+  end
 
+  def tools # créer un controller outils sous namespace asso pour CRUD tools ?
+    @place = Place.find(params[:place])
   end
 end

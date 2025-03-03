@@ -1,0 +1,62 @@
+<%= form_with model: donator, data: {controller: "file", file_target: 'form'}, class:"mt-32 relative border border-gray-300 rounded-md p-8" do |f| %>
+  <!--
+  <% if donator.errors.any? %>
+    <ul>
+      <%= donator.errors.each do |error| %>
+        <li>
+          <%= error.full_message %>
+        </li>
+      <% end %>
+    </ul>
+    <% end %>
+  -->
+  <div class="mb-8">
+    <%= render partial: 'devise/shared/error_messages', locals: {resource: donator} %>
+  </div>
+
+  <div class="flex flex-col gap-y-2">
+    <%# email/FN/LN %>
+    <%= render partial: 'user_fields', locals: { user: donator.user, donator: donator } %>
+
+    <%# address/street/zip/city/country %>
+    <%= render partial: 'donators/address_fields', locals: { f: } %>
+
+    <%# profile image %>
+    <div class="absolute -top-36 left-[calc(50%-56px)]">
+      <button type="button" class="relative size-28" data-action="click->file#openField">
+
+        <div class="absolute z-20 top-0 size-max">
+          <% if donator.profile_image.attached? %>
+              <%= cl_image_tag(donator.profile_image.key, transformation: [
+                {height: 112, width: 112, crop: "thumb"},
+                {radius: "max"},
+                {fetch_format: "auto"}
+                ]) %>
+          <% else %>
+            <div class="flex justify-center items-center size-20 rounded-full bg-gray-300">
+              <%= svg_tag('image_empty', class:'size-8 bg-inherit text-gray-100') %>
+            </div>
+          <% end %>
+
+          <div class="absolute z-30 top-0 rounded-full hidden" data-file-target="canvasContainer">
+            <img data-file-target="canvas" class="size-28 bg-white rounded-full" src="">
+          </div>
+
+          <span class="absolute z-50 bottom-0 right-0 bg-white rounded-full p-2 border border-gray-200">
+            <%= svg_tag('edit_pen', class: 'size-4') %>
+          </span>
+        </div>
+      </button>
+
+      <%= f.file_field :profile_image, class:"hidden", data: { file_target: "source", action: "change->file#preview" } %>
+    </div>
+
+    <div class="mt-4">
+      <%= f.submit "Enregistrer",
+                                disabled: true,
+                                class:'block disabled:hidden px-1 py-3 w-full  bg-black w-full text-white text-center text-lg tracking-widest rounded-lg',
+                                data: { file_target: 'submitBtn' } %>
+    </div>
+
+  </div>
+<% end %>

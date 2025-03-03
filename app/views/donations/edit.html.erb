@@ -1,0 +1,7 @@
+<% if @donation %>
+  <%= render partial:'form', locals: { donation: @donation, donator: @donator || Donator.new, token: @token } %>
+<% else %>
+  <div class="flex flex-col items-center text-center p-4 rounded-lg bg-white">
+    <h1>Lien invalide ou expiré.</h1>
+  </div>
+<% end %>

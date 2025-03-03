@@ -1,5 +1,7 @@
 fr:
   activerecord:
+    models:
+      donator: 'donateur'
     attributes:
       user:
         first_name: 'Prénom'
@@ -8,6 +10,13 @@ fr:
         password_confirmation: 'Confirmation du mot de passe'
         remember_me: "Se souvenir de moi"
         role: 'Rôle'
+      donator:
+        address: 'Adresse'
+        first_name: 'Prénom'
+        last_name: 'Nom'
+        zip_code: 'Code Postal'
+        country: 'Pays'
+        city: 'Ville'
   date:
     abbr_day_names:
     - dim
@@ -155,8 +164,8 @@ fr:
       not_a_number: n'est pas un nombre
       not_an_integer: doit être un nombre entier
       not_saved:
-        one: "Il y a 1 erreur :"
-        other: "%{count} erreurs ont empêchées la sauvegarde :"
+        one: "1 erreur a empêché la sauvegarde :"
+        other: "%{count} erreurs ont empêché la sauvegarde :"
       odd: doit être impair
       other_than: doit être différent de %{count}
       present: doit être vide

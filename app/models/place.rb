@@ -63,7 +63,7 @@ class Place < ApplicationRecord
       )
   end
 
-  def is_favorite_of?(donator)
-    self.favorites.where(donator:).empty? ? false : true
+  def favorite_of?(donator)
+    favorites.where(donator:).exists?
   end
 end

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="pdf-generate"
 export default class extends Controller {
-  static targets = ['btn']
+  static targets = ['btn', 'modal', 'form', 'submitBtn']
   static values = {
     donId: Number,
     donatorId: Number
@@ -10,6 +10,17 @@ export default class extends Controller {
 
   connect() {
     this.loadAnimation = this.loadAnimation.bind(this)
+    this.form = new FormData(this.formTarget)
+  }
+
+  initialize(){
+    this.timeoutId
+    this.delay = 500
+  }
+
+  disconnect(){
+    this.formTarget.removeEventListener('input', this.allowSubmit.bind(this))
+    clearTimeout(this.timeoutId)
   }
   // 1st approach = send data inline:
   // hit the route (controller pdfs#generate) that initiate the 'job perform' in the back-end
@@ -28,57 +39,254 @@ export default class extends Controller {
   // with the response, programmatically create a file Blob in JavaScript from url and use a hidden <a> tag to trigger the download mechanism
   // result in PWA => it opens the pdf inline like send data inline but add UI to download. no changes in web app mode.
   // CC => the best approach would still be the 2nd if can be solved.
-  generate() {
-    const url = `/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`
+  // generate() {
+  //   const url = `/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`
 
-    fetch(url)
-    .then(response => response.json())
-    .then((data) => {
-        if (data.message === "job enqueued") {
-          this.fetchCerfa(data)
-        }
-      })
+  //   fetch(url)
+  //   .then(response => response.json())
+  //   .then((data) => {
+  //       if (data.message === "job enqueued") {
+  //         this.fetchCerfa(data)
+  //       }
+  //     })
+  // }
+
+  // fetchCerfa(data) {
+  //   // const details = {
+  //   //   headers: {
+  //   //     "Accept" : "application/pdf"
+  //   //   }
+  //   // }
+  //   // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`, details)
+  //   // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`)
+  //   fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa_inline`)
+  //   .then(response => {
+  //     if (response.ok) {
+
+  //       let status = 'loading'
+  //       this.loadAnimation(status)
+
+  //       setTimeout(() => {
+  //         window.location.href = response.url
+  //         status = 'reset'
+  //         this.loadAnimation(status)
+
+  //       }, 4000)
+  //     }
+  //   })
+  // }
+
+  // from view retrieve if profile is completed via {params} #generate()
+  // if complete, proceed to ajax initiate job #generate/fetch
+  // if not complete, display modal (form): #displayForm()
+    // collect form inputs
+    // if checkbox 'save info' is checked, ajax to update donator: #saveInfo()
+      // success path: proceed to ajax initiate job
+      // failure path: show object.errors retrieve form back-end
+    // if not checked, build new payload and ajax it to initate job #generate()
+
+  // ajax job success path: ajax to new location #downloadFile()
+  // ajax job failure path: show custome msg 'contact support' #downloadFile()
+
+  isComplete({params}){
+    const isCompleted = params.payload.completed
+    console.log('isComplete:', isCompleted)
+
+    if (isCompleted === 'true') {
+      this.generateJob()
+      console.log('generate job path')
+    } else {
+      console.log('collect info path')
+      this.toggleModal()
+      this.formTarget.addEventListener('input', this.allowSubmit.bind(this))
+    }
   }
 
-  fetchCerfa(data) {
-    // const details = {
-    //   headers: {
-    //     "Accept" : "application/pdf"
-    //   }
-    // }
-    // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`, details)
-    // fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa`)
-    fetch(`/donators/${data.donator_id}/donations/${data.donation_id}/cerfa_inline`)
+  allowSubmit(event){
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId)
+    }
+
+    this.timeoutId = setTimeout(() => {
+      for (const pair of this.form.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      const selectInput = event.target.name
+      const newValue = event.target.value
+      const rememberMeBtn = document.getElementById('remember')
+      const oldValue = this.form.get(selectInput)
+
+      if ((oldValue !== newValue) && (selectInput !== rememberMeBtn.name)) {
+        this.submitBtnTarget.removeAttribute('disabled')
+      } else {
+        this.submitBtnTarget.setAttribute('disabled', true)
+        console.log('disabled');
+
+      }
+    }, this.delay)
+
+  }
+
+  toggleModal(){
+    const isOpen = this.modalTarget.classList.contains('-translate-y-full')
+    if (isOpen) {
+      this.modalTarget.classList.remove('-translate-y-full')
+    } else {
+      this.modalTarget.classList.add('-translate-y-full')
+    }
+  }
+
+  collectInfo(event){
+    event.preventDefault()
+
+    const form = new FormData(event.target)
+    const saveAccepted = form.get('remember')
+
+    if (saveAccepted === 'on') {
+      this.saveDonatorInfo(event)
+    } else {
+      // on the fly
+      this.generateJob(form)
+    }
+  }
+
+  saveDonatorInfo(event) {
+    const form = new FormData(this.formTarget)
+
+    const details = {
+      method: 'PATCH',
+      headers: {
+        "Accept" : "application/json",
+        "X-CSRF-Token": document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content"),
+      },
+      body: form
+    }
+
+    fetch(`${event.params.url}`, details)
     .then(response => {
       if (response.ok) {
-
-        let status = 'loading'
-        this.loadAnimation(status)
-
-        setTimeout(() => {
-          window.location.href = response.url
-          status = 'reset'
-          this.loadAnimation(status)
-
-        }, 4000)
+        return response.json()
       }
+      return Promise.reject(response)
+    })
+    .then((data) => {
+      // success path: info is updated
+      this.submitBtnTarget.setAttribute('disabled', true)
+      this.toggleModal()
+      this.generateJob()
+      console.log('data', data)
+    })
+    .catch((response) => {
+      // failure path: unprocessable entity
+      response.json().then((errors) => {
+        // donator.errors are received
+        this.submitBtnTarget.setAttribute('disabled', true)
+        const keys = Object.keys(errors)
+        this.cleanOldErrors(keys)
+
+        for (const key in errors) {
+          console.log(`${key}: ${errors[key]}`)
+          this.insertError(key, errors[key])
+        }
+      })
     })
   }
 
-  download({params}) {
+  cleanOldErrors(attributes){
+    // Attributes = array of attributes issues by object.errors
+    const oldErrors = document.querySelectorAll('.validation-alert')
+
+    for (const oldError of oldErrors) {
+      if (!attributes.includes(oldError.id)) {
+        oldError.remove()
+      }
+    }
+  }
+
+  insertError(attribute, message){
+    // retrieve the form field of the key (city, address...)
+    // insert the value errros[key] (validation msg) under the field + add border red for invalid
+    // do it for each key received
+
+    const invalideField = document.getElementById(`donator_${attribute}`)
+
+    // invalideField.setCustomValidity(`${message}`)
+    // invalideField.setCustomValidity(" ")
+    // invalideField.reportValidity()
+
+    const parag = document.createElement('p')
+    parag.innerText = `${message}`
+    parag.classList.add('validation-alert', 'text-red-500', 'italic', 'text-sm')
+    parag.setAttribute('id', `${attribute}`)
+
+    const paragExits = document.getElementById(`${attribute}`)
+
+    if (paragExits) {
+      paragExits.replaceWith(parag)
+      parag.classList.add('animate-bounce')
+      setTimeout(() => {
+        parag.classList.remove('animate-bounce')
+      }, 1000);
+    }
+    invalideField.insertAdjacentElement("afterend", parag)
+  }
+
+  generateJob(payload) {
     this.toggleAllButtons('disable')
     let status = 'loading'
     this.loadAnimation(status)
+    let data = null
 
-    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`)
-    .then(response => response.json())
-    .then((data) => {
-      if (data.message === "job enqueued") {
-        const url = params.payload.url
-        const filename = params.payload.filename
-        this.downloadFile(url, filename);
+    if (payload) {
+      data = {
+        first_name: payload.get('donator[first_name]'),
+        last_name: payload.get('donator[last_name]'),
+        address: payload.get('donator[address]'),
+        city: payload.get('donator[city]'),
+        country: payload.get('donator[country]'),
+        zip_code: payload.get('donator[zip_code]')
       }
+    }
+
+    const details = {
+      method: 'POST',
+      headers: {
+        "Accept" : "application/json",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content"),
+      },
+      body: payload ? JSON.stringify({content: data}) : null
+    }
+
+    fetch(`/donators/${this.donatorIdValue}/donations/${this.donIdValue}/pdf`, details)
+    .then(response => {
+      if (response.ok) {
+        return response.json()
+      }
+      return Promise.reject(response)
     })
+    .then((data) => {
+      // success path
+      if (payload) {
+        this.toggleModal()
+      }
+      this.downloadFile(data.url, data.filename, data.token)
+    })
+    .catch((response) => {
+      // fail path
+      response.json().then((errors) => {
+        console.log('errors', errors)
+        // profile incomplet
+          // rediriger vers donator#edit ou afficher partial donator#edit
+          // plus, pas de check validation des infos onthefly applied.. to be carried somehow
+
+      })
+    })
+
   }
 
   toggleAllButtons(message) {
@@ -101,10 +309,18 @@ export default class extends Controller {
     }
   }
 
-  downloadFile(url, filename) {
+  downloadFile(url, filename, token) {
     setTimeout(() => {
 
-      fetch(url)
+      const details = {
+        method: 'get',
+        headers: {
+          "Accept": "application/json",
+        }
+      }
+      // re-do the fetch so that if !rep.ok, return Promise.reject(response)
+      // then handle in the catch method
+      fetch(`${url}?token=${token}`, details)
       .then(response => response.blob())
       .then(blob => {
 

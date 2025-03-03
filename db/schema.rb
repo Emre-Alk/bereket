@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_13_120311) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_06_202342) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -95,7 +95,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_13_120311) do
   end
 
   create_table "donations", force: :cascade do |t|
-    t.bigint "donator_id", null: false
+    t.bigint "donator_id"
     t.bigint "place_id", null: false
     t.integer "amount"
     t.datetime "occured_on"
@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_13_120311) do
     t.datetime "updated_at", null: false
     t.string "checkout_session_id"
     t.integer "amount_net"
+    t.string "mode", default: "virement, prélèvement, carte bancaire", null: false
     t.index ["donator_id"], name: "index_donations_on_donator_id"
     t.index ["place_id"], name: "index_donations_on_place_id"
   end
@@ -111,10 +112,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_13_120311) do
     t.string "first_name"
     t.string "last_name"
     t.string "email"
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.enum "status", default: "visitor", null: false, enum_type: "donator_status"
+    t.enum "status", default: "enrolled", null: false, enum_type: "donator_status"
+    t.string "address"
+    t.string "zip_code"
+    t.string "country"
+    t.string "city"
+    t.boolean "completed", default: false, null: false
     t.index ["user_id"], name: "index_donators_on_user_id"
   end
 

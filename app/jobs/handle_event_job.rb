@@ -42,110 +42,93 @@ class HandleEventJob < ApplicationJob
       }
     )
 
-    if checkout_session.payment_status == 'paid' # create a donation record if status is paid
-      # retrieve a place_id
-      place = Place.find(checkout_session.metadata.place_id)
+    return unless checkout_session.payment_status == 'paid' # create a donation record if status is paid
 
-      # retrive a donator_id
-      if checkout_session.customer_creation
-        # case visitor not converted yet (cus created by CS but not a user yet) || user not logged in
-        email = checkout_session.customer_details.email
-        name = checkout_session.customer_details.name.nil? ? 'visiteur visiteur' : checkout_session.customer_details.name
+    # retrieve a place_id
+    place = Place.find(checkout_session.metadata.place_id)
 
-        # this will find already existing visitor or an already registered user that is not logged in
-        # or initiate a new one based on email and role
-        visitor = User.find_or_initialize_by(
-          email:,
-          role: 'donator'
-        )
-        puts '🔵🔵🔵🔵🔵🔵🔵🔵'
-        puts visitor.inspect
-        puts '🔵🔵🔵🔵🔵🔵🔵🔵'
+    # retrive a donator_id
+    if checkout_session.customer_creation
+      # case visitor not converted yet (cus created by CS but not a user yet) || user not logged in
+      email = checkout_session.customer_details.email
+      name = checkout_session.customer_details.name.nil? ? 'visiteur visiteur' : checkout_session.customer_details.name
 
-        if visitor.donator&.visitor? # && visitor.id && visitor.valid_password?('654321') #PS: check by status should suffice
-          # case find already existing visitor comingback for 2nd/+ time
-          # retrieve his customer id so to updated with the last CS generated customer id
-          # So if convert on sucess page, he will save his last donaton only based on CS id and Cus id (in the last CS)
-          donator = visitor.donator
-          customer = donator.customer
-          customer.update!(stripe_id: checkout_session.customer)
-          puts '⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️'
+      donator = Donator.find_or_initialize_by(email:)
+      # this will either:
+      # 1/ find already existing enrolled donator and was not logged in
+      # do nothing => updating each time his cus id of registration with the one created by CS, No added value.
+      # 2/ find already existing persisted visitor donator
+      # do nothing => creating a cus association and cus id would require also an updating case if comes twice. No added value
+      # 3/ Or initiate a new one based on email
+      # finish the initialiazed new record and persist it
 
-        elsif visitor.donator&.enrolled? # && visitor.id && !visitor.valid_password?('654321') #PS: check by status should suffice
-          # case find already registered user that is not logged in
-          donator = visitor.donator
-          # in contradiction to what the docs API says, CS cannot be updated
-          # /!\/!\/!\
-          # So the CS will generate a cus id to a registered donator with already a valid cus id
-          # and donation will have a CS id referencing a wrong cus-id
-          # which can be ambiguous: donator have a donation where the CS don't reference his cus-id
-          # Stripe::Checkout::Session.update(
-          #   checkout_session.id,
-          #   { metadata: { registered_customer: donator.customer.stripe_id } }
-          # )
+      # if donator.visitor? && donator.persisted?
+      # case find already existing visitor comingback for 2nd/+ time
+      # retrieve his customer id so to updated with the last CS generated customer id
+      # So if convert on sucess page, he will save his last donaton only based on CS id and Cus id (in the last CS)
+      # donator = visitor.donator
+      # customer = donator.customer
+      # donator.customer.nil? ? donator.create_customer!(stripe_id: checkout_session.customer) : donator.customer.update!(stripe_id: checkout_session.customer)
 
-          puts '🟪🟪🟪🟪🟪🟪🟪🟪'
-        else
-          # case initialize new visitor (1st visit)
-          puts '🟧🟧🟧🟧🟧🟧🟧🟧🟧'
-          puts visitor
-          puts visitor.id
-          puts visitor.first_name
-          puts !visitor.valid_password?('654321')
-          puts '🟧🟧🟧🟧🟧🟧🟧🟧🟧'
+      # elsif donator.enrolled?
+      # case find already registered user that is not logged in
+      # donator = visitor.donator
+      # in contradiction to what the docs API says, CS cannot be updated
+      # /!\/!\/!\
+      # So the CS will generate a cus id to a registered donator with already a valid cus id
+      # and donation will have a CS id referencing a wrong cus-id
+      # which can be ambiguous: donator have a donation where the CS don't reference his cus-id
+      # Stripe::Checkout::Session.update(
+      #   checkout_session.id,
+      #   { metadata: { registered_customer: donator.customer.stripe_id } }
+      # )
 
-          visitor.password = '654321'
-          visitor.first_name = name.split(' ')[0].to_s
-          visitor.last_name = name.split(' ')[1].to_s
-          visitor.save!
+      if !donator.persisted?
+        # case initialize new visitor (1st visit)
+        puts '🟧🟧🟧🟧🟧🟧🟧🟧🟧'
 
-          donator = visitor.donator
+        donator.first_name = name.split(' ')[0].to_s
+        donator.last_name = name.split(' ')[1].to_s
+        donator.status = :visitor
+        donator.save!
 
-          # update the status to visitor
-          donator.visitor!
-
-          # retrieve his customer id generated by donator creation to updated with the CS generated customer id
-          # So if convert on sucess page, he will save his last donaton only based on CS id and Cus id (in the last CS)
-          customer = donator.customer
-          customer.update!(stripe_id: checkout_session.customer)
-        end
-
-      else
-        # case when donator is already registrated and donate 1st time. BC 2nd times are done by PaymentIntent.
-        donator = Customer.find_by(stripe_id: checkout_session.customer).donator
-        puts '🟨🟨🟨🟨🟨🟨🟨🟨🟨'
+        # retrieve his customer id generated by donator creation to updated with the CS generated customer id
+        # So if convert on sucess page, he will save his last donaton only based on CS id and Cus id (in the last CS)
+        # customer = donator.customer
+        # customer.update!(stripe_id: checkout_session.customer)
+        # donator.create_customer!(stripe_id: checkout_session.customer) # only benefit is to be consistent w/ stripe dashboard
       end
 
-      # retrive donated amount
-      amount = checkout_session.amount_total
-      total_fee = checkout_session.metadata.total_fee
-      amount_net = amount - total_fee.to_f
-
-      # create a donation record (donator, place, cs, amount brut, occured_on)
-      # /!\/!\/!\/!\/!\/!\
-      # if donator is a registered user => no pbm.
-      # when donator is a visitor => don't have a donator_id to create donation object, so:
-      # For now, I create donation object with a general purpose made-up user account since need a donator_id
-      # on success page, if visitor want to convert, I update the donation just created to be associated with his id.
-      # but if he don't, I still need the donation to exist for the asso user.
-      # So, I keep it as associated to the visitor purpose user id
-      # TODO: how to create a donation object even without a registered donator ?
-
-      Donation.create!(
-        place:,
-        donator:,
-        amount:,
-        amount_net:,
-        occured_on: Date.today,
-        checkout_session_id: checkout_session.id
-      )
-
-      # for next times, payment intent with cus id and pm id can be done.
-      # however, on testing i had to create pi, then "status": "requires_confirmation".
-      # so i confirmed via Stripe::PaymentIntent.confirm(), then "status": "succeeded".
-      # the money is transfer and my app is paid.
-      # in live mode, do i still need to confirm server-side ?
+      puts '🟪🟪🟪🟪🟪🟪🟪🟪🟪'
+    else
+      # case when donator is already registrated and donate 1st time. BC 2nd times are done by PaymentIntent.
+      donator = Customer.find_by(stripe_id: checkout_session.customer).donator
+      puts '🟨🟨🟨🟨🟨🟨🟨🟨🟨'
     end
+
+    # retrive donated amount
+    amount = checkout_session.amount_total
+    total_fee = checkout_session.metadata.total_fee
+    amount_net = amount - total_fee.to_f
+
+    # create a donation record (donator, place, cs, amount brut, occured_on)
+    Donation.create!(
+      place:,
+      donator:,
+      amount:,
+      amount_net:,
+      occured_on: Date.today,
+      checkout_session_id: checkout_session.id,
+      mode: 'virement, prélèvement, carte bancaire'
+    )
+
+    puts '🟢🟢🟢🟢🟢🟢🟢🟢'
+
+    # for next times, payment intent with cus id and pm id can be done.
+    # however, on testing i had to create pi, then "status": "requires_confirmation".
+    # so i confirmed via Stripe::PaymentIntent.confirm(), then "status": "succeeded".
+    # the money is transfer and my app is paid.
+    # in live mode, do i still need to confirm server-side ?
   end
 
   def handle_capability_updated(stripe_event)

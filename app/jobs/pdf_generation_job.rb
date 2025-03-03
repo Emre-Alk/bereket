@@ -1,12 +1,13 @@
 class PdfGenerationJob < ApplicationJob
   queue_as :default
 
-  def perform(donation_id)
+  def perform(donation_id, options = {})
     # Do something later
     # cerfa for 1 donation
     donation = Donation.find(donation_id)
-    donator = donation.donator
     return unless donation
+
+    donator = donation.donator
 
     amount = donation.amount.to_f / 100
     data = {
@@ -27,13 +28,18 @@ class PdfGenerationJob < ApplicationJob
         }
       },
       donator: {
-        first_name: donator.first_name,
-        last_name: donator.last_name
+        first_name: donator.completed ? donator.first_name : options[:content][:first_name], # bc if visitor, record is empty
+        last_name: donator.completed ? donator.last_name : options[:content][:last_name], # bc if visitor, record is empty
+        address: donator.completed ? donator.address : options[:content][:address],
+        city: donator.completed ? donator.city : options[:content][:city],
+        zip_code: donator.completed ? donator.zip_code : options[:content][:zip_code],
+        country: 'France'
       },
       donation: {
         amount: ,
         amount_human: amount.humanize(locale: :fr),
-        occured_on: donation.occured_on.to_date.strftime('%d     %m     %Y') # whitespace to fit template
+        occured_on: donation.occured_on.to_date.strftime('%d     %m     %Y'), # whitespace to fit template
+        mode: donation.mode
       },
       today: Date.today.strftime('%d  %m  %Y'), # whitespace to fit template
       receipt: "#{donation.id}-#{donation.created_at.to_i}"

@@ -1,0 +1,71 @@
+<div class="mb-5">
+  <%= link_to asso_root_path do %>
+    <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
+  <% end %>
+</div>
+
+<%# title %>
+<div class="mb-5 flex flex-col justify-between items-center">
+  <h1 class="font-medium">Mes outils</h1>
+  <span class="font-light text-sm"> 2 Actifs</span>
+</div>
+
+<%# grid of all tools (active and inactive) %>
+<div class="mt-10 grid grid-cols-2 md:grid-cols-max gap-8">
+
+  <%# card of a tool %>
+  <%= link_to '#', class:"text-center rounded-md shadow-md bg-white h-32 w-full" do %>
+    <figure class="relative h-full flex flex-col items-center justify-evenly">
+      <span class="absolute right-2 top-2 text-green-500">
+        <%= icon('fa-solid', 'circle-check', class:'fa-lg') %>
+      </span>
+      <%= icon('fa-regular', 'credit-card', class:'fa-2x' ) %>
+      <figcaption class="text-sm">
+        Smart collecte
+      </figcaption>
+    </figure>
+  <% end %>
+
+  <%# card of a tool %>
+  <%= link_to new_assos_place_donation_path(@place), class:"text-center rounded-md shadow-md bg-white h-32 w-full" do %>
+    <figure class="relative h-full flex flex-col items-center justify-evenly">
+      <span class="absolute right-2 top-2 text-green-500">
+        <%= icon('fa-solid', 'circle-check', class:'fa-lg') %>
+      </span>
+      <%= icon('fa-regular', 'file', class:'fa-2x') %>
+      <figcaption class="text-sm">
+        Cerfa
+      </figcaption>
+    </figure>
+  <% end %>
+
+  <%# card of a tool %>
+  <%= link_to '#', class:"text-center rounded-md shadow-md bg-white h-32 w-full" do %>
+    <figure class="h-full flex flex-col items-center justify-evenly">
+      <%= icon('fa-solid', 'arrow-right-arrow-left', class:'fa-2x' ) %>
+      <figcaption class="text-sm">
+        Virement IBAN
+      </figcaption>
+    </figure>
+  <% end %>
+
+  <%# card of a tool %>
+  <%= link_to '#', class:"text-center rounded-md shadow-md bg-white h-32 w-full" do %>
+    <figure class="h-full flex flex-col items-center justify-evenly">
+      <%= icon('fa-solid', 'comments', class:'fa-2x blur-sm ' ) %>
+      <figcaption class="text-sm">
+        Bientôt disponible
+      </figcaption>
+    </figure>
+  <% end %>
+
+  <%# card of a tool %>
+  <%= link_to '#', class:"text-center rounded-md shadow-md bg-white h-32 w-full" do %>
+    <figure class="h-full flex flex-col items-center justify-evenly">
+      <%= icon('fa-regular', 'calendar', class:'fa-2x blur-sm ' ) %>
+      <figcaption class="text-sm">
+        Bientôt disponible
+      </figcaption>
+    </figure>
+  <% end %>
+</div>

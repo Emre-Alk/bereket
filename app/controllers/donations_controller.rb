@@ -1,8 +1,9 @@
 class DonationsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:new]
+  skip_before_action :authenticate_user!, only: %i[new edit update successful]
   # skip auth (only new), apply auth by redirection inside new
-  before_action :redirect_if_asso, only: [:new]
+  before_action :redirect_if_asso, only: %i[new edit update successful]
   # before_action :store_user_location!, only: [:new], if: :storable_location?
+  # after_action :store_user_location!, only: [:successful], if: :storable_location? # dkn what was that for but cause redirection to pdf_download after successful signup on success page with unknown donator id
 
   def index
     # user = current_user.donator? ? Donator.find(params[:donator_id]) : Asso.find(params[:asso_id])
@@ -76,7 +77,111 @@ class DonationsController < ApplicationController
     end
   end
 
+  def edit
+    # the donation record is create by asso (assos::donations#create), scanned by visitor (token: secured link) and comes here to edit his personal info
+    # finally, donation record is updated with visitor information
+    # if donation exists or not managed on the view with if condtion.
+    @token = params[:token]
+    @donation = Donation.find_by_token_for(:donation_link, @token)
+    @donator ||= current_user&.donator
+  end
+
+  def update
+    # create a find or initialize a new user with info inputs
+    # retrieve second time visitor or registered but not logged in user or create first time visitor account
+    # save the edited donation
+
+    # retrieve the donation submited
+    @donation = Donation.find_by_token_for(:donation_link, params[:token])
+    return edit_place_donation_path(params[:place_id], params[:id]) unless @donation
+
+    email = params[:donator][:email]
+
+    # retrieve a donator
+    if current_user
+      # case 1 - donator exists and logged in
+      # not tested
+      @donation.donator = current_user.donator
+      puts '🟧🟧🟧🟧🟧🟧🟧'
+    else
+      donator = Donator.find_by(email:)
+
+      if donator
+        # case 2 - donator exists (enrolled) but Not logged in
+        # case 3 - donator exists as visitor
+        @donation.donator = donator
+        puts '🟩🟩🟩🟩🟩🟩🟩🟩'
+      else
+        # case 4 - new visitor (1st visit)
+        puts '🟪🟪🟪🟪🟪🟪🟪🟪'
+
+        # for now get all attributes but ultimetly, save Y/N btn:
+        # if Y => enrolled and save info
+        # if N => visitor and build data hash to send to job
+        # @donator = Donator.new(
+        #   email:,
+        #   status: 'visitor'
+        # )
+        # # instanciating new donator with all params to generate object.errors on save if any
+        @donator = Donator.new(donator_params)
+        @donator.status = :visitor
+
+        return render 'edit', assigns: { token: params[:token] }, status: 422 unless @donator.valid?
+
+        @donator = Donator.new(
+          email:,
+          status: 'visitor'
+        )
+        @donator.save
+        @donation.donator = @donator
+
+        # if !@donator.valid?
+        # return render 'edit', assigns: { token: params[:token] }, status: 422
+        # else
+        #   @donator = Donator.new(
+        #     email:,
+        #     status: 'visitor'
+        #   )
+        #   @donator.save
+        #   @donation.donator = @donator
+        # end
+
+        # save the new record
+        # if @donator.save
+        #   # update the donation with donator_id
+        #   @donation.donator = @donator
+        #   # # removing donator infos except email
+        #   # @donator.update()
+        # else
+        #   return render 'edit', assigns: { token: params[:token] }, status: 422 # this renders edit with the token so that donation can be found again
+        # end
+      end
+    end
+
+    # redirect to same view as checkout#show to be consistent (using partial with locals)
+    if @donation.save!
+      # build data payload and generate PDFjob
+      PdfGenerationJob.perform_later(@donation.id, content: donator_params)
+      cerfa_token = @donation.generate_token_for(:cerfa_access)
+      redirect_to success_place_donation_path(params[:place_id], params[:id], cerfa_token:), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{email}"
+    else
+      render 'edit', status: 422
+    end
+  end
+
+  def successful
+    @donation = Donation.includes(:donator, place: [:favorites]).find(params[:id])
+    @favorite = @donation.place.favorites.where(donator: @donation.donator).take
+    detaxed_rate = 0.66 # logic auto selon type asso à implementer
+    @reduction = @donation.amount * detaxed_rate
+    @after_reduction = @donation.amount - @reduction
+  end
+
   private
+
+  def donator_params
+    params.require(:donator).permit(:first_name, :last_name, :email, :address, :zip_code, :country, :city)
+  end
 
   def redirect_if_asso
     if user_signed_in? && current_user.asso?
@@ -91,6 +196,6 @@ class DonationsController < ApplicationController
   end
 
   def store_user_location!
-    store_location_for(:user, request.fullpath)
+    store_location_for(:resource, request.fullpath)
   end
 end

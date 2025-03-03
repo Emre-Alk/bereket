@@ -1,0 +1,25 @@
+<div class="fixed z-50 bg-neutral-100 flex justify-center items-center inset-x-0 h-dvh">
+
+  <div class="w-4/5 h-fit bg-neutral-100 flex flex-col items-center justify-center gap-y-20  ">
+    <div class="flex flex-col items-center justify-center w-full gap-y-8 pb-8 pt-10 rounded-3xl bg-white">
+      <%# qr code %>
+      <%= qrcode_svg(edit_place_donation_url(place, donation, token: token), class:'size-48') %>
+      <%# place name upcase %>
+      <h1 class="text-xl font-medium tracking-wide align-bottom"><%= place.name.titleize %></h1>
+      <p class="text-3xl font-medium tracking-wide align-bottom"><%= number_to_currency(donation.amount.fdiv(100), locale: :fr, strip_insignificant_zeros: true) %></p>
+    </div>
+
+    <div class="w-full flex flex-col items-center gap-y-6">
+      <%# done link  %>
+      <%= link_to new_assos_place_donation_path(place), class: "flex flex-col items-center justify-center w-11/12 rounded-lg py-2 bg-black text-white tracking-wide" do %>
+        <p class="tracking-wide">Faire un nouveau don</p>
+      <% end %>
+
+      <%# cancel link  %>
+      <%= button_to assos_place_donation_path(place, donation), method: :delete, class:"flex flex-col items-center justify-center w-11/12 py-2 tracking-wide" do %>
+        <p class="tracking-wide">Annuler</p>
+      <% end %>
+    </div>
+
+  </div>
+</div>

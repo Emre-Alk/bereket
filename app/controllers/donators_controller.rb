@@ -1,14 +1,15 @@
 class DonatorsController < ApplicationController
   # authenticate user is devise callback helper for authentication
   # is donator is my custom callback helper for authorization
-  before_action :is_donator?
+  before_action :is_donator? #, except: %i[update]
+  # skip_before_action :authenticate_user!, only: %i[update]
 
   def dashboard
     # --- query initializers ----
     # set the donator object
     @donator = current_user.donator
     # array de tous ses dons
-    @donations = @donator.donations
+    @donations = @donator&.donations
     # --- son total dons ----
     # create an hash with 'key' being a place object and 'value' being all donations objects having this place association
     # hash: { obj_placeA: [obj_don1, obj_don6,...], obj_placeB: [obj_don2, ...]...}
@@ -24,22 +25,47 @@ class DonatorsController < ApplicationController
     @favorites = @donator.favorites
   end
 
-  def create
-    @donator = Donator.new
-    @donator.first_name = current_user.first_name
-    @donator.last_name = current_user.last_name
-    @donator.email = current_user.email
+  # def create
+  #   @donator = Donator.new
+  #   @donator.first_name = current_user.first_name
+  #   @donator.last_name = current_user.last_name
+  #   @donator.email = current_user.email
 
-    if @donator.save
-      render :dashboard
-    else
-      redirect_to new_registration_path(@donator), status: :unprocessable_entity
+  #   if @donator.save
+  #     render :dashboard
+  #   else
+  #     redirect_to new_registration_path(@donator), status: :unprocessable_entity
+  #   end
+  # end
+
+  def edit
+    @donator = Donator.find(params[:id])
+  end
+
+  def update
+    @donator = Donator.find(params[:id])
+
+    respond_to do |format|
+      if @donator.update(donator_params)
+        format.html { redirect_to donator_root_path, notice: 'Les modifications ont été sauvegardées avec succès' }
+        format.json { render json: { message: 'success', status: :ok } }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @donator.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   private
 
-  def set_donator_params
-    params.require(:donator).permit(:first_name, :last_name, :email, :profile_image)
+  def donator_params
+    params.require(:donator).permit(
+      :address,
+      :zip_code,
+      :city,
+      :country,
+      :profile_image,
+      user_attributes: [:email, :first_name, :last_name, :id]
+    )
   end
 end

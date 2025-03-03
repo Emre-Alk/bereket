@@ -12,7 +12,7 @@
       </div>
     <% end %>
 
-    <h1 class="text-lg font-medium tracking-wide"><%= @place.name.split(' ').map(&:capitalize).join(' ') %></h1>
+    <h1 class="text-lg font-medium tracking-wide"><%= @place.name.titleize %></h1>
     <span class="fa-stack fa-2xs scale-75" style="vertical-align: baseline;" >
       <%= icon('fa-solid', 'certificate', class:'fa-stack-2x', style:'color: #0471FF;') %>
       <%= icon('fa-solid', 'check', class:'fa-stack-1x', style:'color: white;') %>
@@ -48,7 +48,7 @@
   <%# subscribe btn (feature for later so people can see posts from this place =/ than add to fav) %>
 
   <%# Donate btn %>
-  <% if current_user.owner?(@place) %>
+  <% if current_user&.owner?(@place) %>
     <%= link_to edit_assos_place_path(@place), class:"flex justify-center py-2.5 px-5 bg-black text-white rounded-lg tracking-wide text-center" do %>
       <div class="inline-flex gap-x-2">
         <span><%= svg_tag("edit_pen", class:'size-6') %></span>

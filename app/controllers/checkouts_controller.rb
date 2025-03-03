@@ -4,9 +4,6 @@ class CheckoutsController < ApplicationController
 
   def show
     # collect all needed info on the payment to display a success page
-    @place = Place.find(params[:place_id])
-    @favorite = @place.favorites.where(donator: @donator).take
-
     @checkout_session = Stripe::Checkout::Session.retrieve(
       {
         id: params[:session_id],
@@ -14,25 +11,21 @@ class CheckoutsController < ApplicationController
       }
     )
 
-    @connected_account = @checkout_session.payment_intent.transfer_data.destination
-    @payment_method = @checkout_session.payment_intent.payment_method.id
-    @payment_status = @checkout_session.payment_status
+    # @connected_account = @checkout_session.payment_intent.transfer_data.destination
+    # @payment_method = @checkout_session.payment_intent.payment_method.id
+    # @payment_status = @checkout_session.payment_status
 
-    @donation = Donation.find_by(checkout_session_id: @checkout_session.id)
+    @donation = Donation.includes(:donator, place: [:favorites]).find_by(checkout_session_id: @checkout_session.id)
     @donator = @donation.donator
+    @favorite = @donation.place.favorites.where(donator: @donator).take
 
-    @amount = @checkout_session.amount_total
     detaxed_rate = 0.66 # logic auto selon type asso à implementer
-    @amount_detaxed = @amount * detaxed_rate
-    @amount_net = @amount - @amount_detaxed
-
-    @app_fee = @checkout_session.metadata.app_fee
-    @stripe_fee = @checkout_session.metadata.stripe_fee
-    @total_fee = @checkout_session.metadata.total_fee
+    @reduction = @checkout_session.amount_total * detaxed_rate
+    @after_reduction = @checkout_session.amount_total - @reduction
 
     # login user if visitor to allow smooth account update (via JS, login succeeds but requires a reload of page to change state to allow 'put' ajax to work)
     # TODO: find a safer way to login visitor only when he choose to convert (ajax)
-    sign_in(@donator.user) if @donator.visitor?
+    # sign_in(@donator.user) if @donator.visitor?
   end
 
   def create
@@ -132,17 +125,6 @@ class CheckoutsController < ApplicationController
     )
 
     redirect_to checkout_session.url, allow_other_host: true
-  end
-
-  def test
-    @donator = current_user.donator
-    puts 'you are in test'
-    respond_to do |format|
-      format.html
-      format.json do
-        render json: { url: checkout_test_path }
-      end
-    end
   end
 
   private
