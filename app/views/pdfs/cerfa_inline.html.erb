@@ -26,6 +26,7 @@
 
 -->
 
+
 <div class="flex flex-col h-screen w-full overflow-hidden">
   <!-- Top Section: Buttons -->
   <div class="flex justify-between items-center w-full px-4 py-3 bg-white shadow-md">
@@ -42,12 +43,13 @@
     </div>
   </div>
 
-  <div class="flex-grow overflow-auto">
-    <iframe
-      src="<%= show_pdf_donator_donation_path(@donator, @donation) %>"
-      scrolling="no"
-      class="h-full w-full"
-      ></iframe>
+  <!-- Middle Section: PDF Viewer (Takes remaining space, fully scrollable) -->
+  <div class="flex-grow overflow-hidden relative">
+    <embed
+      src="<%= @pdf_url %>#view=FitH&toolbar=0&scrollbar=0"
+      type="application/pdf"
+      class="absolute top-0 left-0 w-full h-full"
+    />
   </div>
 
   <!-- Bottom Section: Extra Margin to prevent iPhone navigation overlap -->
@@ -65,5 +67,5 @@
   // }
 
   // Prevent page scrolling, allow only PDF viewer to scroll
-  // document.body.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
 </script>

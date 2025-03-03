@@ -3,7 +3,7 @@ require 'open-uri'
 class PdfsController < ApplicationController
   before_action :set_donator
   before_action :set_donation, except: %i[download_pdf]
-  skip_before_action :authenticate_user!, only: %i[view_pdf cerfa_inline show]
+  skip_before_action :authenticate_user!, only: %i[view_pdf cerfa_inline]
 
   def generate
     # cerfa for 1 donation
@@ -137,29 +137,8 @@ class PdfsController < ApplicationController
   def cerfa_inline
     # not used. see comment JS controller
     # @pdf_inline = cerfa_donator_donation_path(donator_id: @donator, id: @donation)
-    # @pdf_url = url_for(@donator.cerfa) if @donator.cerfa.attached?
-    # render layout: 'pdf_viewer'
-    respond_to do |format|
-      format.pdf do
-        pdf = Prawn::Document.new
-        pdf.text "This is order no: #{@donator.email}"
-        pdf.image Rails.root.join("app", "assets", "images", 'default_avatar.png').to_s, width: 450
-
-        @cerfa = @donator.cerfa
-        send_data(
-          pdf.render,
-          filename: @cerfa.filename.to_s,
-          type: @cerfa.content_type.to_s,
-          disposition: 'inline'
-        )
-      end
-    end
-
-  end
-
-  def show
-
-    # render layout: 'pdf_show'
+    @pdf_url = url_for(@donator.cerfa) if @donator.cerfa.attached?
+    render layout: 'pdf_viewer'
   end
 
   def download_pdf
