@@ -143,6 +143,7 @@ class PdfsController < ApplicationController
       format.pdf do
         pdf = Prawn::Document.new
         pdf.text "This is order no: #{@donator.email}"
+        pdf.image Rails.root.join("app", "assets", "images", 'default_avatar.png').to_s, width: 450
 
         @cerfa = @donator.cerfa
         send_data(
