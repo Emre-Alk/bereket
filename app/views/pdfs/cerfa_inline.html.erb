@@ -60,7 +60,12 @@
    <div class="flex-grow overflow-auto scroll-touch bg-gray-100">
 
     <object
-        data="<%= cl_image_path(@donator.cerfa.key) %>#view=FitH&toolbar=0"
+        data="<%= cl_image_path(@donator.cerfa.key) %>#page=1&view=FitH&toolbar=0"
+        type="application/pdf"
+        class="w-full h-full"
+      >
+    <object
+        data="<%= cl_image_path(@donator.cerfa.key) %>#page=2&view=FitH&toolbar=0"
         type="application/pdf"
         class="w-full h-full"
       >
@@ -71,14 +76,14 @@
 </div>
 
 <script>
-  // function sharePDF() {
-  //   if (navigator.share) {
-  //     navigator.share({ url: "<%= @pdf_url %>" })
-  //       .catch((err) => console.error("Sharing failed", err));
-  //   } else {
-  //     alert("Le partage n'est pas pris en charge sur ce navigateur.");
-  //   }
-  // }
+  function sharePDF() {
+    if (navigator.share) {
+      navigator.share({ url: "<%= cl_image_path(@donator.cerfa.key) %>" })
+        .catch((err) => console.error("Sharing failed", err));
+    } else {
+      alert("Le partage n'est pas pris en charge sur ce navigateur.");
+    }
+  }
 
   // Prevent page scrolling, allow only PDF viewer to scroll
   document.body.style.overflow = 'hidden';
