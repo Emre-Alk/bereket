@@ -12,6 +12,10 @@ export default class extends Controller {
     // this.form = document.getElementById('form-new-user')
   }
 
+  disconnect() {
+    localStorage.clear()
+  }
+
   initialize(){
     const visitorInfo = JSON.parse(localStorage.getItem('visitorInfo'))
 

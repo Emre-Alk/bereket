@@ -310,6 +310,8 @@ export default class extends Controller {
   }
 
   downloadFile(url, filename, token) {
+    console.log(url)
+
     setTimeout(() => {
 
       const details = {

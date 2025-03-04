@@ -3,7 +3,7 @@ require 'open-uri'
 class PdfsController < ApplicationController
   before_action :set_donator
   before_action :set_donation, except: %i[download_pdf]
-  skip_before_action :authenticate_user!, only: %i[download_pdf]
+  skip_before_action :authenticate_user!, only: %i[view_pdf download_pdf]
 
   def generate
     # cerfa for 1 donation
@@ -120,19 +120,19 @@ class PdfsController < ApplicationController
     # Sidekiq::Queue.new.find_job(jid) # code to find a given job in the queue using his jid
   end
 
-  # def view_pdf
-  #   # @donation = Donation.find_by_token_for(:cerfa_access, params[:token])
-  #   # return unless @donation
+  def view_pdf
+    # @donation = Donation.find_by_token_for(:cerfa_access, params[:token])
+    # return unless @donation
 
-  #   @cerfa = @donator.cerfa
-  #   #  need as ajax bc cause infinite refresh
-  #   send_data(
-  #     @cerfa.download,
-  #     filename: @cerfa.filename.to_s,
-  #     type: @cerfa.content_type.to_s,
-  #     disposition: 'attachment'
-  #   )
-  # end
+    @cerfa = @donator.cerfa
+    #  need as ajax bc cause infinite refresh
+    send_data(
+      @cerfa.download,
+      filename: @cerfa.filename.to_s,
+      type: @cerfa.content_type.to_s,
+      disposition: 'attachment'
+    )
+  end
 
   # def cerfa_inline
   #   # not used. see comment JS controller
@@ -143,7 +143,10 @@ class PdfsController < ApplicationController
 
   def download_pdf
     donation = Donation.find_by_token_for(:cerfa_access, params[:token])
+    puts '✅✅✅✅✅'
+    return unless donation
 
+    puts '🟢🟢🟢🟢🟢'
     respond_to do |format|
       if donation
         cerfa = @donator.cerfa

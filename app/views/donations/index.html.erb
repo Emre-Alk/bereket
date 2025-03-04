@@ -100,16 +100,24 @@
 
             <% if don.donator.profile_image.attached? %>
               <%= cl_image_tag(don.donator.profile_image.key, class:"rounded-full size-14") %>
-            <% else %>
+            <% elsif don.donator.first_name && don.donator.last_name %>
               <div class="size-14 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
                 <%= don.donator.first_name[0].capitalize %><%= don.donator.last_name[0].capitalize %>
+              </div>
+            <% else %>
+              <div class="size-14 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
+                <%= don.donator.email[0].capitalize %><%= don.donator.email[1].capitalize %>
               </div>
             <% end %>
 
           </div>
 
           <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
-            <p><%= don.donator.first_name %> <%= don.donator.last_name %></p>
+            <% if don.donator.first_name && don.donator.last_name %>
+              <p><%= don.donator.first_name %> <%= don.donator.last_name %></p>
+            <% else %>
+              <p><%= don.donator.email %></p>
+            <% end %>
             <p><%= number_to_currency(don.amount_net.to_f / 100, locale: :fr, strip_insignificant_zeros: true) %></p>
             <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
           </div>

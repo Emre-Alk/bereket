@@ -6,29 +6,43 @@ export default class extends Controller {
   download(event) {
     event.preventDefault()
     const url = this.data.get('url'); // PDF URL from data attribute
+    const token = this.data.get('token'); // PDF URL from data attribute
     const filename = this.data.get('filename'); // Optional filename
-    console.log(url, filename)
-    this.downloadFile(url, filename);
+    this.downloadFile(url, filename, token)
+    // this.downloadFile(url, filename)
   }
 
-  downloadFile(url, filename) {
-    console.log('fetching', url)
-    console.log('fetching', filename)
+  downloadFile(url, filename, token) {
 
-    fetch(url)
-      .then(response => response.blob())
-      .then(blob => {
-        const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(blob);
-        a.href = objectUrl;
-        a.download = filename || 'file.pdf';
-        document.body.appendChild(a); // Required for some mobile browsers
-        a.click();
-        document.body.removeChild(a); // Clean up
-        URL.revokeObjectURL(objectUrl); // Release memory
+    const details = {
+      method: 'get',
+      headers: {
+        "Accept": "application/json",
+      }
+    }
+
+    fetch(`${url}?token=${token}`, details)
+    // fetch(url)
+    .then(response => {
+      if (response.ok) {
+        return response.blob()
+      }
+      return Promise.reject(response)
+    })
+    .then(blob => {
+      const a = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      a.href = objectUrl;
+      a.download = filename || 'file.pdf';
+      document.body.appendChild(a); // Required for some mobile browsers
+      a.click();
+      document.body.removeChild(a); // Clean up
+      URL.revokeObjectURL(objectUrl); // Release memory
+    })
+    .catch((response) => {
+      response.json().then((errors) => {
+        console.log('errors', errors)
       })
-      .catch(error => {
-        console.error('Error downloading the file:', error);
-      });
+    })
   }
 }

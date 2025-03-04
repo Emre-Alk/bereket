@@ -103,13 +103,21 @@
 
             <% if don[0].profile_image.attached? %>
               <%= cl_image_tag(don[0].profile_image.key, class:"rounded-full size-12") %>
-            <% else %>
+            <% elsif don[0].first_name && don[0].last_name %>
               <div class="size-12 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
                 <%= don[0].first_name[0].capitalize %><%= don[0].last_name[0].capitalize %>
               </div>
+            <% else %>
+              <div class="size-12 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
+                <%= don[0].email[0].capitalize %><%= don[0].email[1].capitalize %>
+              </div>
             <% end %>
 
-            <p class="w-full text-sm text-center text-wrap truncate"><%= don[0].first_name %> <%= don[0].last_name%> </p>
+            <% if don[0].first_name && don[0].last_name %>
+              <p class="w-full text-sm text-center text-wrap truncate"><%= don[0].first_name %> <%= don[0].last_name%> </p>
+            <% else %>
+              <p class="w-full text-sm text-center text-wrap truncate"><%= don[0].email %> </p>
+            <% end %>
           </div>
         <% end %>
         <!--end-->

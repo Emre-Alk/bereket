@@ -69,6 +69,7 @@ Rails.application.routes.draw do
       member do
         post 'pdf', to: 'pdfs#generate', as: :pdf_generate
         get 'download', to: 'pdfs#download_pdf'
+        get 'cerfa', to: 'pdfs#view_pdf'
       end
     end
   end
