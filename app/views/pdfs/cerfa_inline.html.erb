@@ -45,17 +45,18 @@
 
   <!-- Middle Section: PDF Viewer (Takes remaining space, fully scrollable) -->
   <div class="flex-grow overflow-hidden relative">
-   <!--
     <embed
-      src="<%= @pdf_url %>#page=2&view=FitH&toolbar=0&scrollbar=0"
+      src="<%= cl_image_path(@donator.cerfa.key) %>#view=FitH&toolbar=0&scrollbar=0"
       type="application/pdf"
       class="absolute top-0 left-0 w-full h-full"
     />
-   -->
+   <!--
    <iframe
       src="<%= cl_image_path(@donator.cerfa.key) %>#view=FitH&toolbar=0"
       class="w-full h-full border-none"
     ></iframe>
+   -->
+
   </div>
 
   <!-- Bottom Section: Extra Margin to prevent iPhone navigation overlap -->
