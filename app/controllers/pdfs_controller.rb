@@ -3,7 +3,7 @@ require 'open-uri'
 class PdfsController < ApplicationController
   before_action :set_donator
   before_action :set_donation, except: %i[download_pdf]
-  # skip_before_action :authenticate_user!, only: %i[view_pdf]
+  skip_before_action :authenticate_user!, only: %i[download_pdf]
 
   def generate
     # cerfa for 1 donation

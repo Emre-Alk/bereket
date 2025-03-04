@@ -7,11 +7,14 @@ export default class extends Controller {
     event.preventDefault()
     const url = this.data.get('url'); // PDF URL from data attribute
     const filename = this.data.get('filename'); // Optional filename
-    console.log(url, filename);
+    console.log(url, filename)
     this.downloadFile(url, filename);
   }
 
   downloadFile(url, filename) {
+    console.log('fetching', url)
+    console.log('fetching', filename)
+
     fetch(url)
       .then(response => response.blob())
       .then(blob => {
