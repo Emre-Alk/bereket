@@ -6,8 +6,8 @@ export default class extends Controller {
   download(event) {
     event.preventDefault()
     const url = this.data.get('url'); // PDF URL from data attribute
-    const token = this.data.get('token'); // PDF URL from data attribute
     const filename = this.data.get('filename'); // Optional filename
+    const token = this.data.get('token')
     this.downloadFile(url, filename, token)
     // this.downloadFile(url, filename)
   }

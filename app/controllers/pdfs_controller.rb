@@ -121,6 +121,7 @@ class PdfsController < ApplicationController
   end
 
   def view_pdf
+    # to be removed if confirmed that all is ok with download_pdf on success page
     # @donation = Donation.find_by_token_for(:cerfa_access, params[:token])
     # return unless @donation
 
@@ -142,11 +143,9 @@ class PdfsController < ApplicationController
   # end
 
   def download_pdf
-    donation = Donation.find_by_token_for(:cerfa_access, params[:token])
-    puts '✅✅✅✅✅'
+    donation = Donation.find_by_token_for(:cerfa_access, params[:token]) || Donation.find_by(checkout_session_id: params[:token])
     return unless donation
 
-    puts '🟢🟢🟢🟢🟢'
     respond_to do |format|
       if donation
         cerfa = @donator.cerfa

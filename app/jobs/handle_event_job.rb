@@ -98,8 +98,7 @@ class HandleEventJob < ApplicationJob
         # customer.update!(stripe_id: checkout_session.customer)
         # donator.create_customer!(stripe_id: checkout_session.customer) # only benefit is to be consistent w/ stripe dashboard
       end
-
-      puts '🟪🟪🟪🟪🟪🟪🟪🟪🟪'
+      # otherwise donator is found (enrolled or nth visitor)
     else
       # case when donator is already registrated and donate 1st time. BC 2nd times are done by PaymentIntent.
       donator = Customer.find_by(stripe_id: checkout_session.customer).donator

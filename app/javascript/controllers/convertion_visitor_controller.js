@@ -8,10 +8,6 @@ export default class extends Controller {
 
   static targets = ['cta']
 
-  connect() {
-    // this.form = document.getElementById('form-new-user')
-  }
-
   disconnect() {
     localStorage.clear()
   }
@@ -180,7 +176,6 @@ export default class extends Controller {
     // replacing controller element by the message container. could have also been done with insertadjacenthtml()
     this.ctaTarget.replaceWith(successDiv)
   }
-
 
   scrollTo(event) {
     event.preventDefault()

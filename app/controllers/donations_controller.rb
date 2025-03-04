@@ -128,33 +128,17 @@ class DonationsController < ApplicationController
 
         return render 'edit', assigns: { token: params[:token] }, status: 422 unless @donator.valid?
 
+        # re-initialize a record with just email info
         @donator = Donator.new(
           email:,
           status: 'visitor'
         )
-        @donator.save
-        @donation.donator = @donator
-
-        # if !@donator.valid?
-        # return render 'edit', assigns: { token: params[:token] }, status: 422
-        # else
-        #   @donator = Donator.new(
-        #     email:,
-        #     status: 'visitor'
-        #   )
-        #   @donator.save
-        #   @donation.donator = @donator
-        # end
 
         # save the new record
-        # if @donator.save
-        #   # update the donation with donator_id
-        #   @donation.donator = @donator
-        #   # # removing donator infos except email
-        #   # @donator.update()
-        # else
-        #   return render 'edit', assigns: { token: params[:token] }, status: 422 # this renders edit with the token so that donation can be found again
-        # end
+        @donator.save
+
+        # assign donator to donation
+        @donation.donator = @donator
       end
     end
 
@@ -163,7 +147,7 @@ class DonationsController < ApplicationController
       # build data payload and generate PDFjob
       PdfGenerationJob.perform_later(@donation.id, content: donator_params)
       cerfa_token = @donation.generate_token_for(:cerfa_access)
-      redirect_to success_place_donation_path(params[:place_id], params[:id], cerfa_token:), notice: "Votre reçu fiscal vous a été envoyé à l'adresse mail #{email}"
+      redirect_to success_place_donation_path(params[:place_id], params[:id], cerfa_token:)
     else
       render 'edit', status: 422
     end
