@@ -46,9 +46,14 @@
   <!-- Middle Section: PDF Viewer (Takes remaining space, fully scrollable) -->
   <div class="flex-grow overflow-auto relative" style="-webkit-overflow-scrolling: touch;">
     <embed
-      src="<%= cl_image_path(@donator.cerfa.key) %>#view=FitH&toolbar=0&scrollbar=0"
+      src="<%= cl_image_path(@donator.cerfa.key) %>#page=1&view=FitH&toolbar=0&scrollbar=0"
       type="application/pdf"
-      class="absolute inset-0 w-full h-full"
+      class="w-full h-full"
+    />
+    <embed
+      src="<%= cl_image_path(@donator.cerfa.key) %>#page=2&view=FitH&toolbar=0&scrollbar=0"
+      type="application/pdf"
+      class="w-full h-full"
     />
    <!--
    <iframe
