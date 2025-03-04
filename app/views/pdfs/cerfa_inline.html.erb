@@ -27,7 +27,7 @@
 -->
 
 
-<div class="flex flex-col h-dvh w-full overflow-hidden">
+<div class="flex flex-col h-screen w-full overflow-hidden">
   <!-- Top Section: Buttons -->
   <div class="flex justify-between items-center w-full px-4 py-3 bg-white shadow-md">
     <button onclick="history.back()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm">
@@ -44,19 +44,20 @@
   </div>
 
   <!-- Middle Section: PDF Viewer (Takes remaining space, fully scrollable) -->
-  <div class="flex-grow overflow-auto w-full relative" style="-webkit-overflow-scrolling: touch;">
    <!--
+  <div class="flex-grow overflow-auto scroll-touch bg-gray-100" style="-webkit-overflow-scrolling: touch;">
     <embed
       src="<%= cl_image_path(@donator.cerfa.key) %>#page=1&view=FitH&toolbar=0&scrollbar=0"
       type="application/pdf"
       class="w-full h-full"
     />
+  </div>
    -->
-   <iframe
-      src="<%= cl_image_path(@donator.cerfa.key) %>#view=FitH&toolbar=0"
+   <div class="flex-grow overflow-auto scroll-touch bg-gray-100">
+    <iframe
+      src="<%= cl_image_path(donator.cerfa.key) %>#view=FitH&zoom=FitH"
       class="w-full h-full border-none"
     ></iframe>
-
   </div>
 
   <!-- Bottom Section: Extra Margin to prevent iPhone navigation overlap -->
