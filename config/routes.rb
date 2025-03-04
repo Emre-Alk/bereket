@@ -69,14 +69,10 @@ Rails.application.routes.draw do
       member do
         post 'pdf', to: 'pdfs#generate', as: :pdf_generate
         get 'download', to: 'pdfs#download_pdf'
-        get 'cerfa', to: 'pdfs#view_pdf'
-        get 'cerfa_inline', to: 'pdfs#cerfa_inline'
       end
     end
   end
 
   # to collect feedback from donators after each donation paiement
   resources :reviews, only: %i[create]
-
-
 end
