@@ -1,15 +1,18 @@
 
 <%# go :back or :root link %>
-<div class="fixed top-7 left-7">
+<% if user_signed_in? %>
+  <div class="mb-5 inline-block">
     <%= link_to place_path(@place) do %>
       <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
     <% end %>
-  <!--
-    <%= link_to "S'inscrire", new_user_registration_path, class: "px-3 py-2 rounded-lg bg-black text-white tracking-wide text-xs" %>
-  -->
-</div>
+  </div>
+<% else %>
+  <div class="mb-5 flex justify-end">
+    <%= link_to "Se connecter", new_user_registration_path, class: "px-3 py-2 rounded-lg bg-black text-white tracking-wide text-xs" %>
+  </div>
+<% end %>
 
-<div class="mt-7 flex flex-col items-center gap-y-10" data-controller="donation" data-donation-donator-id-value="<%= @donator ? @donator.id : nil %>" data-donation-place-id-value="<%= @place.id %>">
+<div class="flex flex-col items-center gap-y-10" data-controller="donation" data-donation-donator-id-value="<%= @donator ? @donator.id : nil %>" data-donation-place-id-value="<%= @place.id %>">
 
   <%# place identification %>
   <div class="flex flex-col justify-center items-center gap-2">

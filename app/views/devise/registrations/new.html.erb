@@ -1,7 +1,10 @@
-<div class="sticky top-0">
-  <div class="flex justify-end">
-    <%= link_to I18n.t('wording.log_in'), new_session_path(resource_name), class:"border border-black rounded-lg text-base px-4 py-2 text-center active:bg-black active:text-white"  %>
-  </div>
-</div>
+<div class="mx-auto mt-20">
+  <%= render partial:"form_new_user", locals: { role: false, donator: nil, css: 'max-w-md w-full' } %>
 
-<%= render partial:"form_new_user", locals: { role: false, donator: nil } %>
+  <%# if have account sign in %>
+  <div class="w-full flex flex-col items-center justify-center gap-y-4 mt-4">
+    <span class="w-full flex items-center text-base text-gray-600 before:flex-1 before:border-t before:border-gray-300 before:me-2 after:flex-1 after:border-t after:border-gray-300 after:ms-2">ou</span>
+    <%= link_to I18n.t('wording.log_in'), new_session_path(resource_name), class:"w-full border border-black rounded-lg text-base px-4 py-2 text-center active:bg-black active:text-white "  %>
+  </div>
+
+</div>
