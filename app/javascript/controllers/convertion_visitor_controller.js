@@ -21,7 +21,7 @@ export default class extends Controller {
 
     const now = Date.now()
     const ecart = now - visitorInfo.setTime
-    const min = 1
+    const min = 10
 
     if (ecart > min*60*1000) {
       localStorage.clear()
