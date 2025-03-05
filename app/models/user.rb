@@ -23,6 +23,7 @@ class User < ApplicationRecord
   after_create :create_donator, if: :donator?, unless: :donator_exits_as_visitor?
   after_create :merge_donator, if: %i[donator? donator_exits_as_visitor?]
   after_update :update_donator, if: %i[donator? relevant_changes_for_donator?]
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

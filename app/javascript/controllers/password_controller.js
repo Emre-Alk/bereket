@@ -27,7 +27,6 @@ export default class extends Controller {
   }
 
   confirm(event) {
-    event.preventDefault()
 
     // paste pw value to confirm field
     this.passwordConfirmInputTarget.value = this.passwordInputTarget.value
@@ -36,6 +35,6 @@ export default class extends Controller {
     this.togglePassword()
 
     // submit form
-    event.target.submit()
+    // event.target.submit()
   }
 }

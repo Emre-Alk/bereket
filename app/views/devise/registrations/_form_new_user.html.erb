@@ -2,7 +2,7 @@
             as: resource_name,
             url: registration_path(resource_name),
             html: { id:'form-new-user', class: css},
-            data: { controller: 'password', action: "submit->password#confirm submit->convertion-visitor#newUser", convertion_visitor_target: "formNewUser"}
+            data: { controller:'password', action: "submit->convertion-visitor#newUser", convertion_visitor_target: "formNewUser"}
             ) do |f| %>
 
   <%= render "devise/shared/error_messages", resource: resource %>
@@ -59,7 +59,7 @@
   <% end %>
 
   <div class="actions w-full mt-10">
-    <%= f.submit I18n.t('wording.sign_up'), class:"text-white tracking-wider bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-base w-full px-5 py-2.5 text-center" %>
+    <%= f.submit I18n.t('wording.sign_up'), data: { action: 'click->password#confirm' }, class:"text-white tracking-wider bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-base w-full px-5 py-2.5 text-center" %>
   </div>
 
 <% end %>

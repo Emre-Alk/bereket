@@ -30,8 +30,11 @@ export default class extends Controller {
       zip_code: formInfo.get('donator[zip_code]')
     }
 
+    // setup time to clear LS next visit
+    const timestamp = Date.now()
+
     // save it into localstorage of the user device as temporary
-    localStorage.setItem("visitorInfo", JSON.stringify({donator: data}))
+    localStorage.setItem("visitorInfo", JSON.stringify({donator: data, setTime: timestamp}))
 
     // check if form filled out
     if (this.enableSubmit(formInfo) === true) {
