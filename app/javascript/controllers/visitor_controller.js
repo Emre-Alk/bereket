@@ -8,9 +8,18 @@ export default class extends Controller {
     const visitorInfo = JSON.parse(localStorage.getItem('visitorInfo'))
 
     if (visitorInfo) {
-      for (const data in visitorInfo.donator) {
-        const input = document.getElementsByName(`donator[${data}]`)
-        input[0].value = visitorInfo['donator'][data]
+      const now = Date.now()
+      const ecart = now - visitorInfo.setTime
+      const min = 1
+
+      // min en ms
+      if (ecart > min*60*1000) {
+        localStorage.clear()
+      } else {
+        for (const data in visitorInfo.donator) {
+          const input = document.getElementsByName(`donator[${data}]`)
+          input[0].value = visitorInfo['donator'][data]
+        }
       }
     }
   }

@@ -19,14 +19,21 @@ export default class extends Controller {
       return
     }
 
-    for (const data in visitorInfo.donator) {
-      const input = document.getElementsByName(`user[${data}]`)
+    const now = Date.now()
+    const ecart = now - visitorInfo.setTime
+    const min = 1
 
-      if (input[0]) {
-        input[0].value = visitorInfo['donator'][data]
+    if (ecart > min*60*1000) {
+      localStorage.clear()
+    } else {
+      for (const data in visitorInfo.donator) {
+        const input = document.getElementsByName(`user[${data}]`)
+
+        if (input[0]) {
+          input[0].value = visitorInfo['donator'][data]
+        }
       }
     }
-
   }
 
   updateDonator(){
