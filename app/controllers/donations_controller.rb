@@ -83,7 +83,7 @@ class DonationsController < ApplicationController
     # if donation exists or not managed on the view with if condtion.
     @token = params[:token]
     @donation = Donation.find_by_token_for(:donation_link, @token)
-    @donator ||= current_user&.donator
+    @donator ||= Donator.new
   end
 
   def update

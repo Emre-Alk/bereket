@@ -1,9 +1,3 @@
-  <div class="text-center">
-    <h2><%= number_to_currency(donation.amount.fdiv(100), locale: :fr, strip_insignificant_zeros: true) %></h2>
-    <p><%= donation.mode %></p>
-    <%= current_user.inspect %>
-  </div>
-
   <%# edit form %>
   <form action="<%= place_donation_path(params[:place_id], params[:id]) %>"
         id="form"

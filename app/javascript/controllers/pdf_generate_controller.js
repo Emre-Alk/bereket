@@ -152,6 +152,8 @@ export default class extends Controller {
 
   saveDonatorInfo(event) {
     const form = new FormData(this.formTarget)
+    console.log(this.formTarget)
+
 
     const details = {
       method: 'PATCH',
