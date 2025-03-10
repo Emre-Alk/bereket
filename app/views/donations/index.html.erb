@@ -30,11 +30,11 @@
         <div data-controller="pdf-generate" data-pdf-generate-don-id-value="<%= don.id %>" data-pdf-generate-donator-id-value="<%= @donator.id %>" class="flex-none">
 
           <button
-                id="<%= don.id %>"
-                class="button bg-neutral-100 text-black text-center min-w-28 min-h-8 rounded-lg"
-                data-pdf-generate-target="btn"
-                data-action="click->pdf-generate#isComplete"
-                data-pdf-generate-payload-param='{"url": "<%= download_donator_donation_path(@donator, don, request.params.merge(format: :pdf)) %>", "filename": "cerfa_11580_05_000<%= @donator.id %>000<%= don.id %>.pdf", "completed": "<%= @donator.completed %>" }'>
+            id="<%= don.id %>"
+            class="button bg-neutral-100 text-black text-center min-w-28 min-h-8 rounded-lg"
+            data-pdf-generate-target="btn"
+            data-action="click->pdf-generate#isComplete"
+            data-pdf-generate-payload-param='{"url": "<%= download_donator_donation_path(@donator, don, request.params.merge(format: :pdf)) %>", "filename": "cerfa_11580_05_000<%= @donator.id %>000<%= don.id %>.pdf", "completed": "<%= @donator.completed %>" }'>
 
             <p>Reçu Fiscal</p>
             <span id="spinner-<%= don.id %>" class="hidden items-center justify-center min-w-28 min-h-8 rounded-lg bg-black">
@@ -42,17 +42,19 @@
             </span>
 
           </button>
-          <!--
-          <button data-action="click->pdf-generate#generate" data-pdf-generate-target="btn" class="bg-neutral-100 text-black text-center min-w-28 min-h-8 rounded-lg ">
-            <p>Reçu Fiscal</p>
-            <span class="hidden items-center justify-center min-w-28 min-h-8 rounded-lg bg-black spinner-<%= don.id %>">
-              <%= icon("fa-solid", "circle-notch", class: "animate-spin", style:"color: white") %>
-            </span>
-          </button>
-          -->
+
+          <%# filter modal %>
+          <div class="fixed inset-0 -z-10"
+              data-pdf-generate-target="filter"
+              data-action="click->pdf-generate#toggleModal"></div>
 
           <%# pop-up if profile not complete %>
-          <div data-pdf-generate-target="modal" class="fixed inset-x-0 -bottom-3/4 h-3/4 p-8 rounded-t-3xl flex flex-col gap-y-8 bg-white transition transform delay-0 duration-700 ease-in-out ">
+          <div data-pdf-generate-target="modal" class="fixed z-50 inset-x-0 -bottom-3/4 h-3/4 p-8 rounded-t-3xl flex flex-col gap-y-4 bg-white transition transform delay-0 duration-700 ease-in-out ">
+
+            <button class="inline size-fit" data-action="click->pdf-generate#toggleModal">
+              <%= svg_tag('cross_icon', class: 'size-4') %>
+            </button>
+
             <div class="">
               <h2 class="text-base/7 font-semibold text-gray-900">Mon identité</h2>
               <p class="mt-1 text-sm/6 text-gray-600">Le reçu fiscal est un document officiel et personnel. Nous avons besoin de vos informations pour vous délivrer un reçu fiscal attitré et unique.</p>

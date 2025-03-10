@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="pdf-generate"
 export default class extends Controller {
-  static targets = ['btn', 'modal', 'form', 'submitBtn']
+  static targets = ['btn', 'modal', 'form', 'submitBtn', 'filter']
   static values = {
     donId: Number,
     donatorId: Number
@@ -16,6 +16,7 @@ export default class extends Controller {
   initialize(){
     this.timeoutId
     this.delay = 500
+    this.btnId
   }
 
   disconnect(){
@@ -88,16 +89,15 @@ export default class extends Controller {
   // ajax job success path: ajax to new location #downloadFile()
   // ajax job failure path: show custome msg 'contact support' #downloadFile()
 
-  isComplete({params}){
-    const isCompleted = params.payload.completed
+  isComplete(event){
+    const isCompleted = event.params.payload.completed
     console.log('isComplete:', isCompleted)
 
     if (isCompleted === 'true') {
       this.generateJob()
-      console.log('generate job path')
     } else {
-      console.log('collect info path')
       this.toggleModal()
+      this.btnId = event.currentTarget.id
       this.formTarget.addEventListener('input', this.allowSubmit.bind(this))
     }
   }
@@ -129,11 +129,16 @@ export default class extends Controller {
 
   toggleModal(){
     const isOpen = this.modalTarget.classList.contains('-translate-y-full')
+    this.filterTarget.classList.toggle('-z-10')
     if (isOpen) {
       this.modalTarget.classList.remove('-translate-y-full')
     } else {
       this.modalTarget.classList.add('-translate-y-full')
     }
+  }
+
+  reduceModal(){
+
   }
 
   collectInfo(event){
@@ -152,8 +157,6 @@ export default class extends Controller {
 
   saveDonatorInfo(event) {
     const form = new FormData(this.formTarget)
-    console.log(this.formTarget)
-
 
     const details = {
       method: 'PATCH',
