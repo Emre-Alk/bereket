@@ -40,8 +40,8 @@ class Donator < ApplicationRecord
   has_many :favorites, dependent: :destroy
   has_many :reviews, through: :donations
 
-  has_one_attached :profile_image # service not specified and config active storage is default cloudinary => thus, store on cloud
-  has_one_attached :cerfa #, service: :local # Use local disk for user PDFs
+  has_one_attached :profile_image, dependent: :destroy # service not specified and config active storage is default cloudinary => thus, store on cloud
+  has_one_attached :cerfa, dependent: :destroy #, service: :local # Use local disk for user PDFs
 
   enum :status, {
     visitor: 'visitor',

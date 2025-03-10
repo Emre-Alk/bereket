@@ -10,24 +10,13 @@ class AssosController < ApplicationController
     @my_place = @my_asso.places.includes(:donations).first # "first" afin de faire simple pour l'exemple mais reprendre pour carousselle
     return @place = Place.new unless @my_place
 
-    @donations = @my_place.donations # array of all donations instances
-    table = @donations.map { |i| [i.donator, i.amount_net] }
+    @donations = @my_place.donations.includes(donator: [profile_image_attachment: :blob]) # array of all donations instances
     # ===== somme des dons à date ===== start
-    @sum = 0
-    table.each do |e|
-      @sum += e[1]
-    end
     # ===== somme des dons à date ===== end
     # ===== top donateurs ===== start
-    hash = {}
-    table.each do |e|
-      if hash.key?(e[0])
-        hash[e[0]] += e[1]
-      else
-        hash[e[0]] = e[1]
-      end
-    end
-    @top_donators = hash.sort_by { |_donateur, total| -total }.to_h
+    donations_per_donator = @donations.group_by(&:donator)
+    top_donators = donations_per_donator.map { |donator, dons| [donator, dons.sum(&:amount_net)] }
+    @top_donators_sorted = top_donators.sort_by { |_donator, total| -total }
     # ===== top donateurs ===== end
 
     # ===== last donations (plus recent au plus ancien) ===== start
@@ -63,19 +52,19 @@ class AssosController < ApplicationController
     @account = Account.find_by(asso: @my_asso)
     if @account
       account_balance = StripeAccount.new(@account).account_balance
-      @balance_available = account_balance.available.first.amount
-      @money_pending = account_balance.pending.first.amount
-      @balance_future = @balance_available + @money_pending
+      balance_available = account_balance.available.first.amount
+      money_pending = account_balance.pending.first.amount
+      @balance_future = balance_available + money_pending
       # ===== connected account balance (available money on the stripe account) ===== end
 
-      @transfers_all = StripeAccount.new(@account).transfers_lifetime
-      @transfers_all_sum = @transfers_all.data.sum(&:amount)
+      # @transfers_all = StripeAccount.new(@account).transfers_lifetime
+      # @transfers_all_sum = @transfers_all.data.sum(&:amount)
       # tous les transferts y compris les refund toujours inclus dans la somme
       # @transfers_span = StripeAccount.new(@account).transfers_span(@start_month, end_month)
       # @transfers_span_sum = @transfers_span.data.sum(&:amount)
       # tous les transferts hors les refund
-      @transfers_span = StripeAccount.new(@account).transfers_span(@start_month, end_month).select { |transfer| !transfer.reversed}
-      @transfers_span_sum = @transfers_span.sum(&:amount)
+      transfers_span = StripeAccount.new(@account).transfers_span(@start_month, end_month).select { |transfer| !transfer.reversed}
+      @transfers_span_sum = transfers_span.sum(&:amount)
     end
 
   end

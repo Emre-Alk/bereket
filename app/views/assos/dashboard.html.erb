@@ -1,4 +1,4 @@
-<%= render partial: "assos/navbar", locals: { asso: @my_asso, place: @my_place, donations: @donations, top_donators: @top_donators } if @my_asso %>
+<%= render partial: "assos/navbar", locals: { asso: @my_asso, place: @my_place, donations: @donations, top_donators: @top_donators_sorted } if @my_asso %>
 
 <% if @my_asso && @my_place && @account && @my_asso.signature.attached? %>
 
@@ -51,23 +51,11 @@
         <div class="flex flex-row w-full">
 
           <p class="text-base text-gray-500 flex-auto w-fit"> Collecte <%= I18n.l(@start_month, format: "%B", locale: :fr).capitalize %> </p>
-          <!--
-          <button class="rounded-lg p-1 shadow-sm active:shadow-inner bg-neutral-100">
-            <%= link_to new_assos_payout_path do %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-              </svg>
-            <% end %>
-          </button>
-          -->
 
         </div>
 
         <div class="flex-auto w-fit self-center">
           <%= number_to_currency(@transfers_span_sum.fdiv(100), locale: :fr, strip_insignificant_zeros: true) %>
-          <!--
-          <%= number_to_currency(@transfers_all_sum.fdiv(100), locale: :fr, strip_insignificant_zeros: true) %>
-          -->
         </div>
       </div>
 
@@ -84,7 +72,11 @@
     <!-- chart - start -->
     <div class="space-y-2">
       <div class="text-gray-500 font-medium text-sm"><%= I18n.l(@start_month, format: "%B", locale: :fr).capitalize %></div>
-      <div class="bg-white py-2 px-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]" data-controller="line-chart" data-line-chart-revenue-value= "<%= @revenue_per_day_current_month.to_json %>" data-line-chart-timeframe-value="<%= @array_complete_days_current_month.to_json %>">
+      <div class="bg-white py-2 px-2 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]"
+            data-controller="line-chart"
+            data-line-chart-revenue-value= "<%= @revenue_per_day_current_month.to_json %>"
+            data-line-chart-timeframe-value="<%= @array_complete_days_current_month.to_json %>">
+
         <div class="w-full">
           <canvas data-line-chart-target="revenueChart" id="revenueChart" aria-label="courbe" role="revenu" >
           </canvas>
@@ -98,25 +90,25 @@
       <div class="text-gray-500 font-medium text-sm">Top donateurs</div>
       <div class="bg-white flex flex-row justify-start items-center h-32 gap-x-2 p-1 rounded-lg overflow-x-auto text-center shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
         <!--start-->
-        <% @top_donators.first(10).each do |don| %>
+        <% @top_donators_sorted.first(10).each do |donator| %>
           <div class="bg-white flex flex-col justify-evenly items-center gap-y-1 w-24 h-full p-0.5">
 
-            <% if don[0].profile_image.attached? %>
-              <%= cl_image_tag(don[0].profile_image.key, class:"rounded-full size-12") %>
-            <% elsif don[0].first_name && don[0].last_name %>
+            <% if donator[0].profile_image.attached? %>
+              <%= cl_image_tag(donator[0].profile_image.key, class:"rounded-full size-12") %>
+            <% elsif donator[0].first_name && donator[0].last_name %>
               <div class="size-12 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
-                <%= don[0].first_name[0].capitalize %><%= don[0].last_name[0].capitalize %>
+                <%= donator[0].first_name[0].capitalize %><%= donator[0].last_name[0].capitalize %>
               </div>
             <% else %>
               <div class="size-12 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
-                <%= don[0].email[0].capitalize %>
+                <%= donator[0].email[0].capitalize %>
               </div>
             <% end %>
 
-            <% if don[0].first_name && don[0].last_name %>
-              <p class="w-full text-sm text-center text-wrap truncate"><%= don[0].first_name %> <%= don[0].last_name%> </p>
+            <% if donator[0].first_name && donator[0].last_name %>
+              <p class="w-full text-sm text-center text-wrap truncate"><%= donator[0].first_name %> <%= donator[0].last_name%> </p>
             <% else %>
-              <p class="w-full text-sm text-center text-wrap truncate"><%= don[0].email %> </p>
+              <p class="w-full text-sm text-center text-wrap truncate"><%= donator[0].email %> </p>
             <% end %>
           </div>
         <% end %>
