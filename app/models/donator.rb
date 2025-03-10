@@ -73,8 +73,8 @@ class Donator < ApplicationRecord
 
   def update_completed
     # whitelist = attribute_names.excluding('id', 'user_id', 'created_at', 'updated_at', 'status', 'completed')
-    # whitelist = %w[first_name last_name address zip_code country city]
-    whitelist = %w[address zip_code country city]
+    whitelist = %w[first_name last_name address zip_code country city]
+    # whitelist = %w[address zip_code country city]
 
     new_value = whitelist.all? { |attribute| attribute_present?(attribute) }
 
@@ -91,8 +91,8 @@ class Donator < ApplicationRecord
     return if customer.present?
 
     new_customer = Stripe::Customer.create(
-      email:,
-      name: "#{first_name} #{last_name}"
+      email:
+      # name: "#{first_name} #{last_name}"
     )
     create_customer!(stripe_id: new_customer.id)
   end

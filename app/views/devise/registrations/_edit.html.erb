@@ -3,7 +3,7 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
   <% if @checkout_session %>
-
+    <!--
     <div class="field">
       <%= f.label :last_name %><br />
       <%= f.text_field :last_name, autofocus: true, value: @checkout_session.customer_details.name.split(' ')[1] %>
@@ -13,6 +13,7 @@
       <%= f.label :first_name %><br />
       <%= f.text_field :first_name, autofocus: true, value: @checkout_session.customer_details.name.split(' ')[0] %>
     </div>
+    -->
 
     <div class="field">
       <%= f.label :email %><br />
@@ -47,7 +48,7 @@
     </div>
 
   <% else %>
-
+    <!--
     <div class="field">
       <%= f.label :last_name %><br />
       <%= f.text_field :last_name, autofocus: true, autocomplete: "last_name" %>
@@ -57,6 +58,7 @@
       <%= f.label :first_name %><br />
       <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name" %>
     </div>
+    -->
 
     <div class="field">
       <%= f.label :email %><br />

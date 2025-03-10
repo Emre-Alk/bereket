@@ -25,19 +25,6 @@ class DonatorsController < ApplicationController
     @favorites = @donator.favorites.includes(place: [place_image_attachment: :blob])
   end
 
-  # def create
-  #   @donator = Donator.new
-  #   @donator.first_name = current_user.first_name
-  #   @donator.last_name = current_user.last_name
-  #   @donator.email = current_user.email
-
-  #   if @donator.save
-  #     render :dashboard
-  #   else
-  #     redirect_to new_registration_path(@donator), status: :unprocessable_entity
-  #   end
-  # end
-
   def edit
     @donator = Donator.find(params[:id])
   end
@@ -60,12 +47,14 @@ class DonatorsController < ApplicationController
 
   def donator_params
     params.require(:donator).permit(
+      :first_name,
+      :last_name,
       :address,
       :zip_code,
       :city,
       :country,
       :profile_image,
-      user_attributes: [:email, :first_name, :last_name, :id]
+      user_attributes: [:email, :id]
     )
   end
 end

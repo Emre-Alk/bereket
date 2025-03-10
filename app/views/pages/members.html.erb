@@ -18,18 +18,27 @@
 
         <% if don.donator.profile_image.attached? %>
           <%= cl_image_tag(don.donator.profile_image.key, class:"rounded-full size-14") %>
-        <% else %>
+        <% elsif don.donator.first_name && don.donator.last_name %>
           <div class="size-14 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
             <%= don.donator.first_name[0].capitalize %><%= don.donator.last_name[0].capitalize %>
+          </div>
+        <% else %>
+          <div class="size-14 flex justify-center items-center bg-black rounded-full text-xl font-medium text-white">
+            <%= don.donator.email[0].capitalize %>
           </div>
         <% end %>
 
       </div>
-
-      <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
-        <p><%= don.donator.first_name.capitalize %></p>
-        <p><%= don.donator.last_name.capitalize %></p>
-      </div>
+      <% if don.donator.first_name && don.donator.last_name %>
+        <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+          <p><%= don.donator.first_name.capitalize %></p>
+          <p><%= don.donator.last_name.capitalize %></p>
+        </div>
+      <% else %>
+        <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
+          <p><%= don.donator.email %></p>
+        </div>
+      <% end %>
 
       <div class="px-5 py-2.5 rounded-lg ">
         <% if don.id.odd? %>

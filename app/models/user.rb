@@ -5,8 +5,6 @@
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
-#  first_name             :string           not null
-#  last_name              :string           not null
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -38,11 +36,6 @@ class User < ApplicationRecord
             presence: true,
             inclusion: { in: ROLES }
 
-  # to be removed (moved to donator at edit)
-  validates :first_name, :last_name,
-            presence: true,
-            format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: 'en letttres uniquement' }
-
   validates :email,
             presence: true,
             format: { with: URI::MailTo::EMAIL_REGEXP, message: 'format non valide' },
@@ -66,7 +59,8 @@ class User < ApplicationRecord
 
   def merge_donator
     donator = Donator.find_by(email:)
-    donator.update!(first_name:, last_name:, status: 'enrolled', user_id: id)
+    # donator.update!(first_name:, last_name:, status: 'enrolled', user_id: id)
+    donator.update!(status: 'enrolled', user_id: id)
   end
 
   def donator_exits_as_visitor?
@@ -75,12 +69,14 @@ class User < ApplicationRecord
 
   # to be deleted (duplicate attribute in user and donator)
   def relevant_changes_for_donator?
-    %i[email first_name last_name].any? { |attribute| saved_change_to_attribute?(attribute) }
+    # %i[email first_name last_name].any? { |attribute| saved_change_to_attribute?(attribute) }
+    saved_change_to_email?
   end
 
   # to be deleted (duplicate attribute in user and donator)
   def update_donator
-    donator.update!(first_name:, last_name:, email:)
+    # donator.update!(first_name:, last_name:, email:)
+    donator.update!(email:)
   end
 
   # custom callback helper to create a donator after sign-up registration by devise if user has set a donator role
@@ -90,7 +86,8 @@ class User < ApplicationRecord
     # using active record method:
     # Donator.create!(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
     # using devise helper methods:
-    create_donator!(first_name:, last_name:, email:, user_id: id, status: 'enrolled')
+    # create_donator!(first_name:, last_name:, email:, user_id: id, status: 'enrolled')
+    create_donator!(email:, user_id: id, status: 'enrolled')
     # does the same as above but using devise method .create_'has_one' (rq: association must exist)
     # code below does also the same, using another devise method (rq: association must exist)
     # donator = build_donator(first_name: user.first_name, last_name: user.last_name, email: user.email, user_id: user.id)
