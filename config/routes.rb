@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   root to: "pages#landing"
   get "/members", to: "pages#members" # feature in working (static)
   get '/tools', to: 'pages#tools' # feature in working (static)
+  # get '/profil', to: 'pages#profil' # choisir entre asso ou donator signup form (cf helloasso)
 
   # after sign in, a method redirect user to appropriate dashboards (donator or asso)
   # ======== assos ========

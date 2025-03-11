@@ -14,8 +14,8 @@
   <div class="rounded-lg w-full shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
     <%# image %>
     <% if donation.place.place_image.attached? %>
-      <div class=" flex justify-center items-center h-28 w-full">
-          <%= cl_image_tag(donation.place.place_image.key, crop: 'fill', class:'h-28 w-full rounded-t-lg') %>
+      <div class=" flex justify-center items-center h-28 sm:h-40 lg:h-64 w-full">
+          <%= cl_image_tag(donation.place.place_image.key, crop: 'fill', class:'h-full w-full rounded-t-lg') %>
       </div>
     <% else %>
       <div class="flex justify-center items-center h-28 w-full rounded-t-lg bg-gray-300">
@@ -148,9 +148,10 @@
 
         <%= render partial: "devise/registrations/form_new_user",
           locals: {
+            minimum_password_length: 6,
             role: "donator",
             donator: donation.donator,
-            css: "max-w-md w-full p-4"
+            css: "w-full p-4"
             # email: checkout_session.customer_details.email.presence || donation.donator.email,
             # first_name: checkout_session.customer_details.name.split(' ')[0].presence || donation.donator.first_name,
             # last_name: checkout_session.customer_details.name.split(' ')[1].presence || donation.donator.last_name

@@ -1,5 +1,7 @@
 <div class="mx-auto mt-20">
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class:'max-w-md w-full' }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class:'w-full' }) do |f| %>
+
+    <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="field relative z-0 w-full mb-5 group">
       <%= f.email_field :email, class: "block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer invalid:text-red-500 invalid:focus:border-red-500 invalid:border-red-500", placeholder:" "%>
