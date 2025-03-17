@@ -36,8 +36,9 @@ class Place < ApplicationRecord
   has_many :donators, through: :donations
   has_many :favorites, dependent: :destroy
   has_many :reviews, through: :donations
-  has_many :volunteerings
-  has_many :volunteers, through: :volunteerings
+
+  has_many :volunteerings, foreign_key: :host_place_id
+  has_many :volunteers, through: :volunteerings, source: :volunteer
 
   # has_many :donators, through: :favorites
   # if needed later 'has many donators through favorites' it can be use to list for a place who has added it to its favorites

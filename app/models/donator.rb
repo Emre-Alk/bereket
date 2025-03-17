@@ -39,8 +39,9 @@ class Donator < ApplicationRecord
   has_many :places, through: :donations
   has_many :favorites, dependent: :destroy
   has_many :reviews, through: :donations
-  has_many :volunteerings
-  has_many :host_places, through: :volunteerings # this is not conventional. see if works othewise do it via a helper_method 'volunteering_places'
+
+  has_many :volunteerings, foreign_key: :volunteer_id
+  has_many :host_places, through: :volunteerings, source: :host_place # this is not conventional. see if works othewise do it via a helper_method 'volunteering_places'
 
   has_one_attached :profile_image, dependent: :destroy # service not specified and config active storage is default cloudinary => thus, store on cloud
   has_one_attached :cerfa, dependent: :destroy #, service: :local # Use local disk for user PDFs
