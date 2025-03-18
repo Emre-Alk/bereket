@@ -36,7 +36,6 @@ class Place < ApplicationRecord
   has_many :donators, through: :donations
   has_many :favorites, dependent: :destroy
   has_many :reviews, through: :donations
-
   has_many :volunteerings, foreign_key: :host_place_id
   has_many :volunteers, through: :volunteerings, source: :volunteer
 

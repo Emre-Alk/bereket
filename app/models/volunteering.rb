@@ -22,4 +22,6 @@
 class Volunteering < ApplicationRecord
   belongs_to :volunteer, class_name: 'Donator'
   belongs_to :host_place, class_name: 'Place'
+  # class_name = Used in 'belongs_to' or 'has_many' to specify the model name when Rails can't infer it from the association name.
+  # when to use: when an association name doesn’t match the expected model name.
 end
