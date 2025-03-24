@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :users
 
   # Sidekiq Web UI, only for admins.
@@ -31,7 +30,8 @@ Rails.application.routes.draw do
   # this line is to create a portal dedicated to the asso users
   namespace :assos do
     resources :places, only: %i[index show new create edit update destroy] do
-      resources :donations, only: %i[new create destroy] # feature under working
+      resources :donations, only: %i[new create destroy] # manu cerfa tool
+      # resources :volunteerings, only: %i[index new create edit update] # form pour asso afin de créer un bénévolat
     end
     resource :signature, only: %i[new create]
     resource :account, only: %i[create show] do
@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     end
     resource :payout, only: %i[new create]
     resources :donators, only: %i[index]
+    # resources :volunteerings, only: %i[index new create edit update] # form pour asso afin de créer un bénévolat
   end
 
   # ======== places ========
@@ -65,6 +66,7 @@ Rails.application.routes.draw do
   get "/donator", to: "donators#dashboard", as: :donator_root
 
   resources :donators, only: %i[edit update] do
+    resources :volunteerings, only: %i[index destroy], shallow: true
     resources :favorites, only: %i[create destroy]
     resources :donations, only: %i[index] do
       member do
@@ -73,7 +75,9 @@ Rails.application.routes.draw do
         get 'cerfa', to: 'pdfs#view_pdf'
       end
     end
+    # resources :volunteerings, only: %i[index new create destroy] # form pour donator afin de créer un bénévolat en passant la place id depuis la place#show
   end
+
 
   # to collect feedback from donators after each donation paiement
   resources :reviews, only: %i[create]

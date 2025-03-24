@@ -1,0 +1,5 @@
+<%= form_with model: @volunteering do |f| %>
+  <%= f.hidden_field :volunteer_id, value: current_user.donator.id %>
+  <%= f.hidden_field :host_place_id, value: params[:place_id] %>
+  <%= f.submit 'Créer' %>
+<% end %>

@@ -1,0 +1,30 @@
+<div data-volunteering-target="modal" class="fixed z-50 inset-x-0 -bottom-1/2 h-1/2 p-8 rounded-t-3xl flex flex-col gap-y-4 bg-white transition transform delay-0 duration-700 ease-in-out ">
+  <button class="inline size-fit" data-action="click->volunteering#toggleModal">
+    <%= svg_tag('cross_icon', class: 'size-4') %>
+  </button>
+
+  <div class="">
+    <h2 class="text-base/7 font-semibold text-gray-900">Mon identité</h2>
+    <p class="mt-1 text-sm/6 text-gray-600">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat iure deserunt animi dolorem veniam praesentium mollitia, accusamus nihil dolorum saepe cupiditate dolor.</p>
+  </div>
+<!--
+  <div>
+    <%= button_to method: :delete, params: { donator_id: current_user.donator.id }, form_class:"w-full" do %>
+      <div class="flex flex-row justify-center items-center gap-x-4 bg-red-500 text-white rounded-lg px-3 py-1.5 w-full">
+        <span><%= svg_tag('bin', class:'size-5') %></span>
+        <p class="text-lg"><%= I18n.t('volunteering.delete') %></p>
+      </div>
+    <% end %>
+  </div>
+-->
+  <div>
+    <%= link_to "#", data: { volunteering_target:"deleteBtn", turbo_method: :delete } do %>
+      <div class="flex flex-row justify-center items-center gap-x-4 bg-red-500 text-white rounded-lg px-3 py-1.5 w-full">
+        <span><%= svg_tag('bin', class:'size-5') %></span>
+        <p class="text-lg"><%= I18n.t('volunteering.delete') %></p>
+      </div>
+    <% end %>
+  </div>
+
+
+</div>

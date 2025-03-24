@@ -255,7 +255,11 @@ fr:
       long: "%A %d %B %Y %Hh%M"
       short: "%d %b %Hh%M"
     pm: pm
+  volunteering:
+    delete: "Supprimer ce bénévolat"
   wording:
     log_in: 'Se connecter'
     sign_up: "Créer mon compte"
     forgot_password: "Mot de passe oublié ?"
+    pending: "En attente"
+    active: "Actif"

@@ -1,0 +1,14 @@
+<div class="mt-16">
+  <h2 class="text-2xl font-semibold text-gray-900">Sélectionnez un établissement</h2>
+  <p class=" text-base text-gray-600">Le bénévole apparaitra ainsi parmis l'équipe de cet établissement</p>
+</div>
+
+<div class="mb-16">
+  <% places.each do |place| %>
+   <%= render partial: 'volunteerings/host_place', locals: { place: place } %>
+  <% end %>
+</div>
+
+<div class="fixed bottom-10 inset-x-5 flex justify-center items-center">
+  <button class="w-full text-lg tracking-wider px-4 py-1.5 rounded-md border border-black text-white bg-black">Suivant</button>
+</div>

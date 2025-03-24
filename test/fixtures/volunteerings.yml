@@ -4,6 +4,7 @@
 #
 #  id                     :bigint           not null, primary key
 #  has_access_to_donation :boolean          default(FALSE)
+#  status                 :enum             default("pending"), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  host_place_id          :bigint           not null

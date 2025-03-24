@@ -1,8 +1,6 @@
 class DonatorsController < ApplicationController
-  # authenticate user is devise callback helper for authentication
   # is donator is my custom callback helper for authorization
-  before_action :is_donator? #, except: %i[update]
-  # skip_before_action :authenticate_user!, only: %i[update]
+  before_action :is_donator?
 
   def dashboard
     # --- query initializers ----
@@ -24,19 +22,6 @@ class DonatorsController < ApplicationController
     # --- ses favoris ---
     @favorites = @donator.favorites.includes(place: [place_image_attachment: :blob])
   end
-
-  # def create
-  #   @donator = Donator.new
-  #   @donator.first_name = current_user.first_name
-  #   @donator.last_name = current_user.last_name
-  #   @donator.email = current_user.email
-
-  #   if @donator.save
-  #     render :dashboard
-  #   else
-  #     redirect_to new_registration_path(@donator), status: :unprocessable_entity
-  #   end
-  # end
 
   def edit
     @donator = Donator.find(params[:id])

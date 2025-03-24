@@ -1,6 +1,7 @@
 class PlacesController < ApplicationController
   skip_before_action :authenticate_user!
-  # before_action :set_place
+  before_action :is_donator?
+
   layout "profile"
 
   def show

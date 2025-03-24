@@ -42,7 +42,7 @@ class Donator < ApplicationRecord
   has_many :volunteerings, foreign_key: :volunteer_id # The explcit foreign_key ensures Rails to look for volunteer_id in volunteerings. Without it, it will look for donator_id.
   has_many :host_places, through: :volunteerings, source: :host_place # The has_many :host_places in Donator would try to look for a host_places (plural) association in Volunteering, but our column is named host_place_id. Source will tell rails to look for the association name 'host_place' (singular)
   # source = Used in 'has_many :through' associations to specify the association name inside the join model.
-  # foreign_key = Used only for direct associations, while source is specifically required when dealing with a 'has_many :through' association (indirect).
+  # foreign_key = Used only for direct 'has_many' or 'belongs_to' associations, while source is specifically required when dealing with a 'has_many :through' association (indirect).
 
   has_one_attached :profile_image, dependent: :destroy # service not specified and config active storage is default cloudinary => thus, store on cloud
   has_one_attached :cerfa, dependent: :destroy #, service: :local # Use local disk for user PDFs

@@ -4,6 +4,7 @@
 #
 #  id                     :bigint           not null, primary key
 #  has_access_to_donation :boolean          default(FALSE)
+#  status                 :enum             default("pending"), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  host_place_id          :bigint           not null
@@ -24,4 +25,12 @@ class Volunteering < ApplicationRecord
   belongs_to :host_place, class_name: 'Place'
   # class_name = Used in 'belongs_to' or 'has_many' to specify the model name when Rails can't infer it from the association name.
   # when to use: when an association name doesn’t match the expected model name.
+
+  enum :status, {
+    pending: 'pending',
+    active: 'active',
+    archived: 'archived'
+  }, default: 'pending', prefix: true
+
+  ACCESS_LIST = ['Donation'].freeze
 end

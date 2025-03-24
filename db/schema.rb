@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_17_160331) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_24_141154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_17_160331) do
   create_enum "requirement_status", ["past", "currently", "eventually", "clear"]
   create_enum "status", ["pending", "processing", "processed", "failed"]
   create_enum "user_status", ["visitor", "active"]
+  create_enum "volunteering_status", ["pending", "active", "archived"]
 
   create_table "accounts", force: :cascade do |t|
     t.string "stripe_id"
@@ -192,6 +193,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_17_160331) do
     t.boolean "has_access_to_donation", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.enum "status", default: "pending", null: false, enum_type: "volunteering_status"
     t.index ["host_place_id"], name: "index_volunteerings_on_host_place_id"
     t.index ["volunteer_id"], name: "index_volunteerings_on_volunteer_id"
   end

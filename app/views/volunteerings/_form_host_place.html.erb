@@ -1,0 +1,29 @@
+<div class="mt-8">
+  <h2 class="text-lg font-semibold text-gray-900">Sélectionnez un établissement</h2>
+  <span></span>
+</div>
+<div>
+  <p class=" text-base text-gray-600">Le bénévole apparaitra ainsi parmis l'équipe de cet établissement</p>
+</div>
+
+<!-- Faire un truk a la planity avec div déroulant pour collecter place and donator one after the other -->
+<div class="my-8">
+  <% col_nbr = places.count > 1 ? 2 : 1 %>
+  <div class="grid grid-cols-<%= col_nbr %> md:grid-cols-max gap-8">
+    <% places.each do |place| %>
+      <div class="h-32 w-full">
+        <%= render partial: 'volunteerings/host_place', locals: { place: place } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+  <%= form_with model: @volunteering, class:"w-full" do |f| %>
+    <%= text_field_tag :email, nil %>
+    <%= f.hidden_field :volunteer_id %>
+    <%= text_field_tag :donator_email %>
+    <%= f.label :donator_email, %>
+    <%= f.check_box :has_access_to_donation %>
+    <%= f.hidden_field :host_place_id %>
+    <%= f.submit "Envoyer l'invitation", class:'w-full text-lg tracking-wider px-4 py-1.5 rounded-md border border-black text-white bg-black' %>
+  <% end %>
