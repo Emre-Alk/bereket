@@ -258,6 +258,8 @@ fr:
   volunteering:
     delete: "Supprimer ce bénévolat"
     pause: "Mettre en pause"
+    activate: "Activer"
+    cancel: "Annuler la demande"
   wording:
     log_in: 'Se connecter'
     sign_up: "Créer mon compte"

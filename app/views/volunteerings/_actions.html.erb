@@ -1,19 +1,20 @@
-<div data-volunteering-target="modal" class="fixed z-50 inset-x-0 -bottom-1/2 h-1/2 p-8 rounded-t-3xl flex flex-col justify-between bg-white transition transform delay-0 duration-700 ease-in-out ">
+<div>
   <%# close modal %>
   <button class="inline size-fit" data-action="click->volunteering#toggleModal">
-    <%= svg_tag('cross_icon', class: 'size-4') %>
+    <%= svg_tag('cross_icon', class: 'size-6') %>
   </button>
 
   <div class="h-5/6 flex flex-col justify-between pb-4">
-    <div class="">
+
+   <div class="">
       <h2 class="text-base/7 font-medium text-gray-900">
         Votre bénévolat à
         <span class="ml-1 before:block before:absolute before:-inset-1 before:-skew-y-1 before:bg-pink-500 relative inline-block">
-          <span data-volunteering-target="title" class="relative text-white text-lg capitalize font-semibold "></span>
+          <span data-volunteering-target="title" class="relative text-white text-lg capitalize font-semibold "> <%= volunteering.host_place.name %></span>
         </span>
       </h2>
       <!--
-      <p class="mt-4 text-sm/6 text-gray-600">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat iure deserunt animi dolorem veniam praesentium mollitia, accusamus nihil dolorum saepe cupiditate dolor.</p>
+      <p class="mt-4 text-sm/6 text-gray-600"></p>
       -->
     </div>
 

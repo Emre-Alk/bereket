@@ -12,7 +12,13 @@ export default class extends Controller {
     'title'
   ]
 
-  connect() {
+  openActions({params}) {
+    fetch(params.urlAction)
+    .then(response => response.text())
+    .then((data) => {
+      this.modalTarget.innerHTML = data
+      this.toggleModal()
+    })
   }
 
   toggleModal() {

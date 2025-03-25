@@ -65,6 +65,12 @@ Rails.application.routes.draw do
   # a after_create in user model, create also a donator if role was set as donator by user
   get "/donator", to: "donators#dashboard", as: :donator_root
 
+  resources :volunteerings, only: %i[] do
+    member do
+      get :actions
+    end
+  end
+
   resources :donators, only: %i[edit update] do
     resources :volunteerings, only: %i[index destroy], shallow: true do
       member do
