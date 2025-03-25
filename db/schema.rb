@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_24_141154) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_25_111013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_24_141154) do
   create_enum "requirement_status", ["past", "currently", "eventually", "clear"]
   create_enum "status", ["pending", "processing", "processed", "failed"]
   create_enum "user_status", ["visitor", "active"]
-  create_enum "volunteering_status", ["pending", "active", "archived"]
+  create_enum "volunteering_status", ["pending", "active", "paused", "archived"]
 
   create_table "accounts", force: :cascade do |t|
     t.string "stripe_id"

@@ -6,7 +6,14 @@ class HandleEventJob < ApplicationJob
     # to redirect event to the corresponding handler.
     case event.source
     when 'stripe'
-      handle_stripe_event(event)
+      begin
+        handle_stripe_event(event)
+        event.update(status: :processed, processing_errors: '')
+      rescue => e
+        event.update(status: :failed, processing_errors: e.message)
+      end
+    else
+      event.update(status: :failed, processing_errors: "Unknown source #{event.source}")
     end
   end
 
@@ -27,11 +34,11 @@ class HandleEventJob < ApplicationJob
     # handle_capability_updated(stripe_event)
   end
 
-  def handle_transfer_created
+  # def handle_transfer_created
     # to finish later.
     # possible 'issue' if later change type of charge from destination to direct for instance
     # transfer = stripe_event.data.object
-  end
+  # end
 
   def handle_checkout_session_completed(stripe_event)
     # retrive checkout session

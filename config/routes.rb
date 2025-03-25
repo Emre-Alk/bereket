@@ -66,7 +66,11 @@ Rails.application.routes.draw do
   get "/donator", to: "donators#dashboard", as: :donator_root
 
   resources :donators, only: %i[edit update] do
-    resources :volunteerings, only: %i[index destroy], shallow: true
+    resources :volunteerings, only: %i[index destroy], shallow: true do
+      member do
+        post '/pause', to: 'volunteerings#paused'
+      end
+    end
     resources :favorites, only: %i[create destroy]
     resources :donations, only: %i[index] do
       member do

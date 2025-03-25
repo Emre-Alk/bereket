@@ -29,6 +29,7 @@ class Volunteering < ApplicationRecord
   enum :status, {
     pending: 'pending',
     active: 'active',
+    paused: 'paused',
     archived: 'archived'
   }, default: 'pending', prefix: true
 

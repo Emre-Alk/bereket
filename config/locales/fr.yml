@@ -257,9 +257,11 @@ fr:
     pm: pm
   volunteering:
     delete: "Supprimer ce bénévolat"
+    pause: "Mettre en pause"
   wording:
     log_in: 'Se connecter'
     sign_up: "Créer mon compte"
     forgot_password: "Mot de passe oublié ?"
     pending: "En attente"
     active: "Actif"
+    paused: "En pause"
