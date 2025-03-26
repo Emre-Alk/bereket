@@ -1,10 +1,6 @@
-<div class="mb-7 inline-block">
-  <%= link_to asso_root_path do %>
-    <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
-  <% end %>
-</div>
+<%= render partial:"shared/back_dashboard" %>
 
-<div class="px-5 sm:pr-10 sm:pl-5 py-4 flex flex-col divide-y border rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] ">
+<div class="mx-5 px-5 sm:pr-10 sm:pl-5 py-4 flex flex-col divide-y border rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] ">
 
   <div class="flex flex-row items-center justify-between pb-4">
     <p class="text-lg roboto-medium">Mon portefeuille monétaire</p>

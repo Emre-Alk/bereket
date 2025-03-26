@@ -28,6 +28,8 @@ class Asso < ApplicationRecord
   belongs_to :user
   belongs_to :asso_type
   has_many :places, dependent: :destroy
+  has_many :donations, through: :places
+  has_many :donators, through: :places
   has_one_attached :profile_image
   has_one_attached :signature # feature_signature
   has_one :account, dependent: :destroy # check if yt done the same

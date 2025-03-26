@@ -1,13 +1,12 @@
-<div class="mb-7 inline-block">
-  <%= link_to asso_root_path do %>
-    <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
-  <% end %>
-</div>
+<%= render partial:"shared/back_dashboard" %>
 
-<div class="bg-white flex flex-col min-h-24  divide-y divide-neutral-100 divide-black/30 rounded-lg overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
+<div class="mx-5 bg-white flex flex-col min-h-24  divide-y divide-neutral-100 divide-black/30 rounded-lg overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
+  <% if @top_donators_sorted.empty? %>
+    <p class="text-center">Vous n'avez pas encore de donateur ayant effectué de dons</p>
+  <% end %>
 
   <% @top_donators_sorted.each_with_index do |array, index| %>
-    <div class="bg-white flex flex-row items-center justify-between py-4 pl-2">
+    <div class="bg-white flex flex-row items-center justify-between py-4 px-2">
 
       <div class="flex flex-row items-center gap-2 grow ">
         <div class="bg-white">
@@ -32,7 +31,7 @@
           <% else %>
             <p><%= array[0].email %></p>
           <% end %>
-          <p class="text-lg"> <span class="mr-4 font-normal text-sm">Total reçu:</span> <%= number_to_currency(array[1].to_f / 100, locale: :fr, strip_insignificant_zeros: true) %></p>
+          <p class="text-lg"> <span class="mr-4 font-normal text-sm">Total reçu:</span> <%= number_to_currency(array[1].fdiv(100), locale: :fr, strip_insignificant_zeros: true) %></p>
         </div>
       </div>
 

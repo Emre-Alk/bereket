@@ -5,6 +5,8 @@
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  first_name             :string
+#  last_name              :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -38,7 +40,8 @@ class User < ApplicationRecord
 
   # to be removed (moved to donator at edit)
   validates :first_name, :last_name,
-            presence: true,
+            allow_blank: true,
+            # presence: true,
             format: { with: /\A[A-Za-z]+(\s?[A-Za-z]*)*\z/, message: 'en letttres uniquement' }
 
   validates :email,

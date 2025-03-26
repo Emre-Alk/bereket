@@ -38,7 +38,7 @@
     </div>
   </div> <!-- fixed top page end -->
 
-  <div class="flex flex-col pt-48 gap-y-8"> <!-- scrolled page start -->
+  <div class="mx-5 mt-52 flex flex-col gap-y-8"> <!-- scrolled page start -->
     <!-- total - start -->
     <div class="bg-white flex flex-col divide-y justify-center items-center roboto-medium text-4xl py-2 sm:pr-4 rounded-lg shadow-[0_0_12px_1px_rgba(0,0,0,0.1)]">
       <!--
@@ -131,8 +131,8 @@
   </div>
   <!-- scrolled page end -->
 <% elsif @my_asso && @my_place %>
-  <div class= "w-full">
-    <div class="flex flex-col justify-center items-start gap-y-8 py-4">
+  <div class= "mx-5 my-5">
+    <div class=" flex flex-col justify-center items-start gap-y-8 py-10">
       <p>
         Vous devez créer un portefeuille monétaire pour recevoir et transférer des fonds.
       </p>
@@ -152,11 +152,11 @@
     </div>
   </div>
 <% elsif @my_asso %>
-  <div class= "w-full">
+  <div class= "mx-5 my-5">
     <%= render partial: "assos/places/form_place", locals: { place: @place } %>
   </div>
 <% else %>
-  <div class= "w-full">
+  <div class= "mx-5 my-5">
     <%= render partial: "form_asso", locals: { asso: @asso } %>
   </div>
 <% end %>

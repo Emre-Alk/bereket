@@ -1,13 +1,15 @@
-<% if @donation %>
-  <div class="text-center">
-    <h2><%= number_to_currency(@donation.amount.fdiv(100), locale: :fr, strip_insignificant_zeros: true) %></h2>
-    <p><%= @donation.mode %></p>
-    <p>current user: <%= current_user.inspect %> </p>
-  </div>
+<div class="mx-5 my-10 pb-10">
+  <% if @donation %>
+    <div class="text-center">
+      <h2><%= number_to_currency(@donation.amount.fdiv(100), locale: :fr, strip_insignificant_zeros: true) %></h2>
+      <p><%= @donation.mode %></p>
+      <p>current user: <%= current_user.inspect %> </p>
+    </div>
 
-  <%= render partial:'form', locals: { donation: @donation, donator: @donator, token: @token } %>
-<% else %>
-  <div class="flex flex-col items-center text-center p-4 rounded-lg bg-white">
-    <h1>Lien invalide ou expiré.</h1>
-  </div>
-<% end %>
+    <%= render partial:'form', locals: { donation: @donation, donator: @donator, token: @token } %>
+  <% else %>
+    <div class="flex flex-col items-center text-center p-4 rounded-lg bg-white">
+      <h1>Lien invalide ou expiré.</h1>
+    </div>
+  <% end %>
+</div>

@@ -1,7 +1,3 @@
-<div class="mb-7 inline-block">
-  <%= link_to dashboard(current_user) do %>
-    <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
-  <% end %>
-</div>
+<%= render partial:"shared/back_dashboard" %>
 
 <%= render partial: 'form_donator', locals: { donator: @donator } %>

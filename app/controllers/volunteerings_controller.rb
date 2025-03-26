@@ -11,9 +11,16 @@ class VolunteeringsController < ApplicationController
       .order(status: :asc)
   end
 
-  def actions
-    @volunteering = Volunteering.find(params[:id])
-    render partial: 'actions', locals: { volunteering: @volunteering }
+  def destroy
+    @volunteering = current_user.donator.volunteerings.find(params[:id])
+
+    if @volunteering.status_pending?
+      @volunteering.destroy
+      return redirect_to donator_volunteerings_path(current_user.donator)
+    end
+
+    @volunteering.status_archived!
+    redirect_to donator_volunteerings_path(current_user.donator)
   end
 
   def paused
@@ -35,15 +42,9 @@ class VolunteeringsController < ApplicationController
     redirect_to donator_volunteerings_path(current_user.donator)
   end
 
-  def destroy
-    @volunteering = current_user.donator.volunteerings.find(params[:id])
-
-    if @volunteering.status_pending?
-      @volunteering.destroy
-      return redirect_to donator_volunteerings_path(current_user.donator)
-    end
-
-    @volunteering.status_archived!
-    redirect_to donator_volunteerings_path(current_user.donator)
+  # render partial action
+  def actions
+    @volunteering = Volunteering.find(params[:id])
+    render partial: 'actions', locals: { volunteering: @volunteering }
   end
 end

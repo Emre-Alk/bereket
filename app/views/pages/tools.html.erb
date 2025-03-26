@@ -1,8 +1,4 @@
-<div class="mb-5 inline-block">
-  <%= link_to asso_root_path do %>
-    <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
-  <% end %>
-</div>
+<%= render partial:"shared/back_dashboard" %>
 
 <%# title %>
 <div class="mb-5 flex flex-col justify-between items-center">
@@ -11,7 +7,7 @@
 </div>
 
 <%# grid of all tools (active and inactive) %>
-<div class="mt-10 grid grid-cols-2 md:grid-cols-max gap-8">
+<div class="mx-5 mt-10 grid grid-cols-2 md:grid-cols-max gap-8">
 
   <%# card of a tool %>
   <%= link_to '#', class:"text-center rounded-md shadow-md bg-white h-32 w-full" do %>
@@ -40,7 +36,7 @@
   <% end %>
 
   <%# card of a tool %>
-  <%= link_to volunteerings_path, class:"text-center rounded-md shadow-md bg-white h-32 w-full" do %>
+  <%= link_to '#', class:"text-center rounded-md shadow-md bg-white h-32 w-full" do %>
     <figure class="h-full flex flex-col items-center justify-evenly">
       <%= icon('fa-solid', 'people-group', class:'fa-2x' ) %>
       <figcaption class="text-sm">

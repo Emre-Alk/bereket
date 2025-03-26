@@ -1,6 +1,6 @@
-<%= render partial: 'shared/back_nav_donator' %>
+<%= render partial:"shared/back_dashboard" %>
 
-<div class="space-y-8" data-controller="volunteering">
+<div class="space-y-8 mx-5 sm:grid sm:grid-cols-3 sm:gap-8 sm:place-items-center sm:space-y-0" data-controller="volunteering">
 
   <% @volunteerings.each do |v| %>
     <%= render partial:'volunteerings/card_host_place', locals: { v: v } %>
@@ -11,6 +11,7 @@
       data-volunteering-target="filter"
       data-action="click->volunteering#toggleModal"></div>
 
-  <%# modal %>
-  <div data-volunteering-target="modal" class="fixed z-50 inset-x-0 -bottom-1/2 h-1/2 p-8 rounded-t-3xlflex flex-col justify-between bg-white transition transform delay-0 duration-700 ease-in-out"></div>
+  <%# modal action %>
+  <div data-volunteering-target="modal" class="fixed z-50 inset-x-0 -bottom-1/2 h-1/2 p-8 rounded-t-3xl flex flex-col justify-between bg-white transition transform delay-0 duration-700 ease-in-out"></div>
+
 </div>

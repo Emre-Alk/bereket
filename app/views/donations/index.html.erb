@@ -1,31 +1,29 @@
 <!-- TODO: review the design maybe use a table element. see if can DRY with a partial withing a table (a pdf btn is needed)-->
-<div class="mb-7 inline-block">
-  <%= link_to dashboard(current_user), class:"mb-7" do %>
-    <%= svg_tag('chevron_left', class:'size-6 stroke-2') %>
-  <% end %>
-</div>
+<%= render partial:"shared/back_dashboard" %>
 
-<div class="bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-2 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
+<div class="mx-5 bg-white flex flex-col min-h-24 gap-2 divide-y divide-black/30 rounded-lg p-1 overflow-y-auto shadow-[0_0_12px_1px_rgba(0,0,0,0.1)] shadow-black/10">
   <% if @donations.empty? %>
-    <p>Vous n'avez pas encore reçu de dons.</p>
+    <p class="text-center"> <%= current_user.donator? ? "Vous n'avez pas encore fait de dons" : "Vous n'avez pas encore reçu de dons" %></p>
   <% end %>
 
   <% @donations.each do |don| %>
     <% if current_user.donator? %>
 
-      <div class="bg-white flex flex-row px-2 pt-2 items-center gap-x-5">
+      <div class="bg-white flex flex-row pt-4 py-2 items-center gap-x-4">
 
-        <%= link_to place_path(don.place), class:'flex flex-row items-center gap-4 w-3/4' do %>
-          <div class="bg-white">
-            <%= don.place.place_image.attached? ? cl_image_tag(don.place.place_image.key, class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full') %>
-          </div>
+        <div class="flex flex-row gap-x-3">
+          <%= link_to place_path(don.place), class:'flex flex-row items-center gap-2 ' do %>
+            <div class="bg-white">
+              <%= don.place.place_image.attached? ? cl_image_tag(don.place.place_image.key, crop:'crop', class:'size-14 rounded-full') : image_tag("default_avatar.png", class:'size-14 rounded-full') %>
+            </div>
+          <% end %>
 
           <div class="bg-white flex flex-col justify-evenly roboto-medium text-sm">
-              <p><%= don.place.name %></p>
+              <p class="text-nowrap truncate"><%= don.place.name %></p>
               <p><%= number_to_currency(don.amount.to_f / 100, locale: :fr, strip_insignificant_zeros: true) %></p>
               <p class="roboto-regular text-sm">Le <%= don.occured_on.strftime("%d/%m/%Y") %></p>
           </div>
-        <% end %>
+        </div>
 
         <div data-controller="pdf-generate" data-pdf-generate-don-id-value="<%= don.id %>" data-pdf-generate-donator-id-value="<%= @donator.id %>" class="flex-none">
 

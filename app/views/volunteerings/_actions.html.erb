@@ -1,38 +1,50 @@
-<div>
-  <%# close modal %>
-  <button class="inline size-fit" data-action="click->volunteering#toggleModal">
-    <%= svg_tag('cross_icon', class: 'size-6') %>
-  </button>
+<%# close modal %>
+<button class="inline size-fit" data-action="click->volunteering#toggleModal">
+  <%= svg_tag('cross_icon', class: 'size-6') %>
+</button>
 
-  <div class="h-5/6 flex flex-col justify-between pb-4">
+<%# modal content %>
+<div class="h-5/6 flex flex-col justify-between pb-4">
 
-   <div class="">
+  <%# recall of the selected host place %>
+  <div class="">
+    <div>
       <h2 class="text-base/7 font-medium text-gray-900">
         Votre bénévolat à
-        <span class="ml-1 before:block before:absolute before:-inset-1 before:-skew-y-1 before:bg-pink-500 relative inline-block">
-          <span data-volunteering-target="title" class="relative text-white text-lg capitalize font-semibold "> <%= volunteering.host_place.name %></span>
+        <span class="ml-1 before:block before:absolute before:-inset-1 before:-skew-y-1 before:bg-indigo-500 relative inline-block">
+          <span class="relative text-white text-lg capitalize font-semibold"> <%= volunteering.host_place.name %></span>
         </span>
       </h2>
-      <!--
-      <p class="mt-4 text-sm/6 text-gray-600"></p>
-      -->
+      <p class="text-end mt-2 text-sm/6 text-gray-600"> Bénévole depuis <%= distance_of_time_in_words_to_now(volunteering.created_at) %></p>
     </div>
 
-    <div class="flex flex-col gap-y-6">
-      <%# pause/activate btn %>
-      <%= link_to "#", data: { volunteering_target:"pauseBtn", action:"click->volunteering#pause", turbo_method: :post } do %>
-        <div class="flex flex-row justify-center items-center gap-x-4 bg-indigo-500 text-white rounded-lg px-4 py-2 w-full">
-          <p data-volunteering-target="pauseText" class="text-lg"><%= I18n.t('volunteering.pause') %></p>
-        </div>
-      <% end %>
-
-      <%# delete/cancel btn %>
-      <%= link_to "#", data: { volunteering_target:"deleteBtn", turbo_method: :delete } do %>
-        <div class="flex flex-row justify-center items-center gap-x-4 bg-red-500 text-white rounded-lg px-4 py-2 w-full">
-          <p data-volunteering-target="deleteText" class="text-lg"><%= I18n.t('volunteering.delete') %></p>
-        </div>
-      <% end %>
+    <%# recall of my KPIs in this host place as volunteer %>
+    <div>
+      <h2 class="text-base/7 font-medium text-gray-900">Mes permissions</h2>
+      <ul class="mt-2 text-end text-sm/6 text-gray-600">
+        <li>
+          <p class="">Enregistrer des dons: <span class="inline-block align-bottom ml-10"><%= !volunteering.has_access_to_donation ? svg_tag('check_circle_solid', class:"size-6 text-green-500") : svg_tag('x_circle_solid', class:"size-6 text-rose-500") %></span></p>
+        </li>
+      </ul>
     </div>
   </div>
 
+  <%# buttons %>
+  <div class="flex flex-col gap-y-6">
+    <% if !volunteering.status_pending? %>
+      <%# pause/activate btn %>
+      <%= link_to pause_volunteering_path(volunteering), id: "card-#{volunteering.id}", data: { action:"click->volunteering#pause", turbo_method: :post } do %>
+        <div class="flex flex-row justify-center items-center gap-x-4 bg-indigo-500 text-white rounded-lg px-4 py-2 w-full">
+          <p class="text-lg tracking-wide"><%= volunteering.status_paused? ? I18n.t('wording.activate') : I18n.t('volunteering.pause') %></p>
+        </div>
+      <% end %>
+    <% end %>
+
+    <%# delete/cancel btn %>
+    <%= link_to volunteering_path(volunteering), data: { turbo_method: :delete } do %>
+      <div class="flex flex-row justify-center items-center gap-x-4 bg-red-500 text-white rounded-lg px-4 py-2 w-full">
+        <p class="text-lg tracking-wide"><%= volunteering.status_pending? ? I18n.t('wording.cancel') : I18n.t('wording.delete') %></p>
+      </div>
+    <% end %>
+  </div>
 </div>

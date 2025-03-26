@@ -1,8 +1,8 @@
 class Assos::PlacesController < AssosController
   def index
     # list all the current asso's places
-    @places = current_user.asso.places.includes(donations: :donator)
-    @stats_per_place = @places.map { |place| [place, place.donations.sum(&:amount_net), place.donations.group_by(&:donator)] }
+    places = current_user.asso.places.includes(:donations, :donators).with_attached_place_image
+    @stats_per_place = places.map { |place| [place, place.donations.sum(&:amount_net), place.donations.group_by(&:donator)] }
   end
 
   def show
@@ -82,6 +82,8 @@ class Assos::PlacesController < AssosController
     # thus, place.place_image exists
     # at the end of the code, the attach method replaces the previous.
     # not efficient since for each upload, 2 calls to cloudinary are made
+    return unless uploaded_image
+
     extension = place.place_image.filename.extension
     filename = "place.name_#{Time.now.to_i}"
     folder_path = "asso/#{place.asso.id}/places/#{place.id}/images"

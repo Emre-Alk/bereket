@@ -256,14 +256,14 @@ fr:
       short: "%d %b %Hh%M"
     pm: pm
   volunteering:
-    delete: "Supprimer ce bénévolat"
     pause: "Mettre en pause"
-    activate: "Activer"
-    cancel: "Annuler la demande"
   wording:
-    log_in: 'Se connecter'
-    sign_up: "Créer mon compte"
-    forgot_password: "Mot de passe oublié ?"
-    pending: "En attente"
+    activate: "Activer"
     active: "Actif"
+    cancel: "Annuler"
+    delete: "Supprimer"
+    forgot_password: "Mot de passe oublié ?"
+    log_in: 'Se connecter'
     paused: "En pause"
+    pending: "En attente"
+    sign_up: "Créer mon compte"
